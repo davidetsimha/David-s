@@ -1,0 +1,118 @@
+{
+  "nav": {
+    "home": "דף הבית",
+    "receptions": "אירועים",
+    "shabbat": "הזמנות שבת",
+    "gallery": "גלריה",
+    "faq": "שאלות נפוצות",
+    "contact": "צור קשר"
+  },
+  "home": {
+    "heroTitle": "אומנות הקונדיטוריה הצרפתית",
+    "heroSubtitle": "יצירות אומן בהשגחת בד״ץ בית יוסף",
+    "discoverBtn": "גלו את היצירות שלנו",
+    "orderBtn": "הזמינו לשבת",
+    "receptionsTitle": "אירועים וקבלות פנים",
+    "receptionsSubtitle": "הפכו את האירוע שלכם לרגע בלתי נשכח",
+    "shabbatTitle": "הזמנות שבת",
+    "shabbatSubtitle": "הזמינו עוגות ומאפים לשבת",
+    "viewProducts": "צפו בכל המוצרים"
+  },
+  "receptions": {
+    "title": "אירועים וקבלות פנים",
+    "subtitle": "תנו לנו לארגן את האירוע שלכם",
+    "eventTypes": {
+      "bar_mitzvah": "בר מצווה",
+      "bat_mitzvah": "בת מצווה",
+      "brit": "ברית מילה",
+      "wedding": "חתונה",
+      "private_party": "מסיבה פרטית"
+    },
+    "quoteForm": {
+      "title": "בקשת הצעת מחיר",
+      "name": "שם מלא",
+      "email": "אימייל",
+      "phone": "טלפון",
+      "eventType": "סוג האירוע",
+      "eventDate": "תאריך האירוע",
+      "guestCount": "מספר אורחים",
+      "message": "הודעה (אופציונלי)",
+      "submit": "שלח בקשה",
+      "success": "הבקשה נשלחה בהצלחה!"
+    }
+  },
+  "products": {
+    "title": "המוצרים שלנו",
+    "addToCart": "הוסף לסל",
+    "outOfStock": "אזל מהמלאי",
+    "allCategories": "כל הקטגוריות",
+    "price": "מחיר"
+  },
+  "cart": {
+    "title": "סל הקניות",
+    "empty": "הסל שלך ריק",
+    "subtotal": "סיכום ביניים",
+    "checkout": "לתשלום",
+    "continueShopping": "המשך בקניות",
+    "remove": "הסר",
+    "quantity": "כמות"
+  },
+  "checkout": {
+    "title": "השלמת הזמנה",
+    "customerInfo": "הפרטים שלך",
+    "name": "שם מלא",
+    "email": "אימייל",
+    "phone": "טלפון",
+    "deliveryMethod": "אופן משלוח",
+    "pickup": "איסוף עצמי",
+    "delivery": "משלוח בירושלים",
+    "address": "כתובת למשלוח",
+    "notes": "הערות / הוראות מיוחדות",
+    "orderSummary": "סיכום הזמנה",
+    "total": "סה״כ",
+    "payNow": "לתשלום",
+    "success": {
+      "title": "ההזמנה אושרה!",
+      "message": "תודה על הזמנתך. תקבל אימייל אישור בקרוב."
+    },
+    "cancel": {
+      "title": "ההזמנה בוטלה",
+      "message": "ההזמנה בוטלה. הסל שלך נשמר."
+    }
+  },
+  "gallery": {
+    "title": "גלריה",
+    "all": "הכל",
+    "receptions": "אירועים",
+    "products": "מוצרים"
+  },
+  "faq": {
+    "title": "שאלות נפוצות"
+  },
+  "contact": {
+    "title": "צור קשר",
+    "address": "כתובת",
+    "phone": "טלפון",
+    "email": "אימייל",
+    "hours": "שעות פעילות",
+    "form": {
+      "name": "שם",
+      "email": "אימייל",
+      "phone": "טלפון",
+      "message": "הודעה",
+      "submit": "שלח",
+      "success": "ההודעה נשלחה בהצלחה!"
+    }
+  },
+  "footer": {
+    "rights": "כל הזכויות שמורות",
+    "certification": "בהשגחת בד״ץ בית יוסף",
+    "delivery": "משלוחים בירושלים בלבד"
+  },
+  "common": {
+    "loading": "טוען...",
+    "error": "אירעה שגיאה",
+    "required": "שדה חובה",
+    "optional": "אופציונלי"
+  }
+}

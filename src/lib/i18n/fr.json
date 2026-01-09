@@ -1,0 +1,118 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "receptions": "Réceptions",
+    "shabbat": "Commandes Shabbat",
+    "gallery": "Galerie",
+    "faq": "FAQ",
+    "contact": "Contact"
+  },
+  "home": {
+    "heroTitle": "L'Art de la Pâtisserie Française",
+    "heroSubtitle": "Créations artisanales sous supervision Badatz Beit Yossef",
+    "discoverBtn": "Découvrir nos créations",
+    "orderBtn": "Commander pour Shabbat",
+    "receptionsTitle": "Réceptions & Événements",
+    "receptionsSubtitle": "Faites de votre événement un moment inoubliable",
+    "shabbatTitle": "Commandes Shabbat",
+    "shabbatSubtitle": "Commandez vos gâteaux et pâtisseries pour Shabbat",
+    "viewProducts": "Voir tous les produits"
+  },
+  "receptions": {
+    "title": "Réceptions & Événements",
+    "subtitle": "Confiez-nous la réalisation de vos événements",
+    "eventTypes": {
+      "bar_mitzvah": "Bar Mitzvah",
+      "bat_mitzvah": "Bat Mitzvah",
+      "brit": "Brit Mila",
+      "wedding": "Mariage",
+      "private_party": "Fête privée"
+    },
+    "quoteForm": {
+      "title": "Demander un devis",
+      "name": "Nom complet",
+      "email": "Email",
+      "phone": "Téléphone",
+      "eventType": "Type d'événement",
+      "eventDate": "Date de l'événement",
+      "guestCount": "Nombre d'invités",
+      "message": "Message (optionnel)",
+      "submit": "Envoyer la demande",
+      "success": "Votre demande a été envoyée avec succès!"
+    }
+  },
+  "products": {
+    "title": "Nos Produits",
+    "addToCart": "Ajouter au panier",
+    "outOfStock": "Indisponible",
+    "allCategories": "Toutes les catégories",
+    "price": "Prix"
+  },
+  "cart": {
+    "title": "Votre Panier",
+    "empty": "Votre panier est vide",
+    "subtotal": "Sous-total",
+    "checkout": "Commander",
+    "continueShopping": "Continuer mes achats",
+    "remove": "Retirer",
+    "quantity": "Quantité"
+  },
+  "checkout": {
+    "title": "Finaliser la commande",
+    "customerInfo": "Vos informations",
+    "name": "Nom complet",
+    "email": "Email",
+    "phone": "Téléphone",
+    "deliveryMethod": "Mode de livraison",
+    "pickup": "Retrait en boutique",
+    "delivery": "Livraison à Jérusalem",
+    "address": "Adresse de livraison",
+    "notes": "Notes / Instructions spéciales",
+    "orderSummary": "Récapitulatif",
+    "total": "Total",
+    "payNow": "Payer maintenant",
+    "success": {
+      "title": "Commande confirmée!",
+      "message": "Merci pour votre commande. Vous recevrez un email de confirmation."
+    },
+    "cancel": {
+      "title": "Commande annulée",
+      "message": "Votre commande a été annulée. Votre panier a été conservé."
+    }
+  },
+  "gallery": {
+    "title": "Galerie",
+    "all": "Tout",
+    "receptions": "Réceptions",
+    "products": "Produits"
+  },
+  "faq": {
+    "title": "Questions Fréquentes"
+  },
+  "contact": {
+    "title": "Contact",
+    "address": "Adresse",
+    "phone": "Téléphone",
+    "email": "Email",
+    "hours": "Horaires",
+    "form": {
+      "name": "Nom",
+      "email": "Email",
+      "phone": "Téléphone",
+      "message": "Message",
+      "submit": "Envoyer",
+      "success": "Message envoyé avec succès!"
+    }
+  },
+  "footer": {
+    "rights": "Tous droits réservés",
+    "certification": "Sous supervision Badatz Beit Yossef",
+    "delivery": "Livraison à Jérusalem uniquement"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur s'est produite",
+    "required": "Obligatoire",
+    "optional": "Optionnel"
+  }
+}
