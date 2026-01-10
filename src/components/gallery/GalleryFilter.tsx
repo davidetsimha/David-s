@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import type { GalleryCategory } from '../../types';
 
 type FilterOption = 'all' | GalleryCategory;
@@ -9,11 +10,13 @@ interface GalleryFilterProps {
 
 const filters: { key: FilterOption; labelHe: string; labelFr: string }[] = [
   { key: 'all', labelHe: 'הכל', labelFr: 'Tout' },
-  { key: 'receptions', labelHe: 'קבלות פנים', labelFr: 'Receptions' },
+  { key: 'receptions', labelHe: 'קבלות פנים', labelFr: 'Réceptions' },
   { key: 'products', labelHe: 'מוצרים', labelFr: 'Produits' },
 ];
 
 export function GalleryFilter({ activeFilter, onFilterChange }: GalleryFilterProps) {
+  const { i18n } = useTranslation();
+  const currentLang = i18n.language;
   return (
     <div className="flex flex-wrap justify-center gap-2 md:gap-4">
       {filters.map((filter) => (
@@ -30,7 +33,9 @@ export function GalleryFilter({ activeFilter, onFilterChange }: GalleryFilterPro
             }
           `}
         >
-          <span className="relative z-10">{filter.labelHe}</span>
+          <span className="relative z-10">
+            {currentLang === 'he' ? filter.labelHe : filter.labelFr}
+          </span>
           {activeFilter === filter.key && (
             <span className="absolute inset-0 rounded-full bg-gold-400/20 animate-pulse" />
           )}
