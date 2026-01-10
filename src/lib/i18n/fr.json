@@ -82,26 +82,81 @@
   },
   "gallery": {
     "title": "Galerie",
+    "pageTitle": "Notre Galerie",
+    "pageSubtitle": "Créations de pâtisserie exquises de notre cuisine",
     "all": "Tout",
     "receptions": "Réceptions",
     "products": "Produits"
   },
   "faq": {
-    "title": "Questions Fréquentes"
+    "title": "Questions Fréquentes",
+    "pageTitle": "Questions Fréquentes",
+    "pageSubtitle": "Réponses aux questions les plus courantes",
+    "contactCta": "Vous n'avez pas trouvé de réponse à votre question ?",
+    "contactLink": "Contactez-nous",
+    "items": {
+      "kashrut": {
+        "question": "Quel est le niveau de cacherout des pâtisseries ?",
+        "answer": "Tous nos produits sont fabriqués sous la supervision du Grand Rabbinat et possèdent un certificat de cacherout strict. Nous maintenons une séparation complète entre laitier et parve."
+      },
+      "delivery": {
+        "question": "Y a-t-il une possibilité de livraison ?",
+        "answer": "Oui ! Nous effectuons des livraisons dans toute la région de Gush Dan et le centre. Livraisons gratuites jusqu'à 5 km de la boutique, au-delà des frais de livraison s'appliquent. Retrait en boutique également disponible."
+      },
+      "advance": {
+        "question": "Combien de temps à l'avance faut-il commander ?",
+        "answer": "Pour les commandes régulières - au moins 48 heures à l'avance. Pour les gâteaux spéciaux et réceptions - au moins une semaine à l'avance. Pendant les périodes chargées comme les fêtes, il est recommandé de commander plus tôt."
+      },
+      "custom": {
+        "question": "Est-il possible de commander des gâteaux personnalisés ?",
+        "answer": "Absolument ! Nous nous spécialisons dans les gâteaux décorés pour événements - anniversaires, mariages, bar/bat mitzvah et plus. Contactez-nous pour organiser une consultation et présenter des designs."
+      },
+      "hours": {
+        "question": "Quelles sont les heures d'ouverture de la boutique ?",
+        "answer": "La boutique est ouverte du dimanche au jeudi de 07h00 à 19h00, le vendredi de 07h00 à 14h00. Veilles de fêtes et jours fériés - merci de vérifier sur la page d'accueil ou de nous contacter."
+      },
+      "dietary": {
+        "question": "Y a-t-il des options sans gluten ou véganes ?",
+        "answer": "Nous avons une sélection de produits sans gluten et plusieurs options véganes. Il est recommandé de nous contacter à l'avance pour vérifier la disponibilité ou commander des produits spécifiques."
+      }
+    }
   },
   "contact": {
     "title": "Contact",
+    "pageTitle": "Contactez-nous",
+    "pageSubtitle": "Nous serons ravis de vous entendre et de vous aider avec toute question",
+    "detailsTitle": "Coordonnées",
+    "formTitle": "Envoyez-nous un message",
     "address": "Adresse",
     "phone": "Téléphone",
     "email": "Email",
     "hours": "Horaires",
     "form": {
       "name": "Nom",
+      "nameLabel": "Nom complet",
+      "namePlaceholder": "Jean Dupont",
       "email": "Email",
-      "phone": "Téléphone",
+      "phoneLabel": "Téléphone (optionnel)",
+      "phonePlaceholder": "050-0000000",
       "message": "Message",
-      "submit": "Envoyer",
-      "success": "Message envoyé avec succès!"
+      "messagePlaceholder": "Écrivez-nous votre message...",
+      "submit": "Envoyer le message",
+      "success": "Merci pour votre message !",
+      "successMessage": "Nous vous répondrons dans les plus brefs délais.",
+      "nameError": "Veuillez entrer un nom complet",
+      "emailError": "Veuillez entrer une adresse email valide",
+      "phoneError": "Veuillez entrer un numéro de téléphone valide",
+      "messageError": "Le message doit contenir au moins 10 caractères"
+    },
+    "info": {
+      "address": "Adresse",
+      "addressValue": "42 rue de l'Or, Tel Aviv",
+      "phone": "Téléphone",
+      "phoneValue": "03-1234567",
+      "email": "Email",
+      "emailValue": "info@davids-patisserie.co.il",
+      "hours": "Horaires d'ouverture",
+      "hoursValue": "Dim-Jeu 07h00-19h00 | Ven 07h00-14h00"
     }
   },
   "footer": {
@@ -114,5 +169,10 @@
     "error": "Une erreur s'est produite",
     "required": "Obligatoire",
     "optional": "Optionnel"
+  },
+  "notFound": {
+    "title": "Page non trouvée",
+    "message": "La page que vous recherchez n'existe pas.",
+    "backHome": "Retour à l'accueil"
   }
 }

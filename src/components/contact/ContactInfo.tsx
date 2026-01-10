@@ -1,4 +1,5 @@
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface ContactInfoItem {
   icon: typeof MapPin;
@@ -7,33 +8,34 @@ interface ContactInfoItem {
   href?: string;
 }
 
-const contactItems: ContactInfoItem[] = [
-  {
-    icon: MapPin,
-    label: 'כתובת',
-    value: 'רחוב הזהב 42, תל אביב',
-    href: 'https://maps.google.com/?q=רחוב+הזהב+42+תל+אביב',
-  },
-  {
-    icon: Phone,
-    label: 'טלפון',
-    value: '03-1234567',
-    href: 'tel:031234567',
-  },
-  {
-    icon: Mail,
-    label: 'אימייל',
-    value: 'info@davids-patisserie.co.il',
-    href: 'mailto:info@davids-patisserie.co.il',
-  },
-  {
-    icon: Clock,
-    label: 'שעות פעילות',
-    value: 'א\'-ה\' 07:00-19:00 | שישי 07:00-14:00',
-  },
-];
-
 export function ContactInfo() {
+  const { t } = useTranslation();
+
+  const contactItems: ContactInfoItem[] = [
+    {
+      icon: MapPin,
+      label: t('contact.info.address'),
+      value: t('contact.info.addressValue'),
+      href: 'https://maps.google.com/?q=רחוב+הזהב+42+תל+אביב',
+    },
+    {
+      icon: Phone,
+      label: t('contact.info.phone'),
+      value: t('contact.info.phoneValue'),
+      href: 'tel:031234567',
+    },
+    {
+      icon: Mail,
+      label: t('contact.info.email'),
+      value: t('contact.info.emailValue'),
+      href: 'mailto:info@davids-patisserie.co.il',
+    },
+    {
+      icon: Clock,
+      label: t('contact.info.hours'),
+      value: t('contact.info.hoursValue'),
+    },
+  ];
   return (
     <div className="space-y-6">
       {contactItems.map((item) => {

@@ -1,20 +1,22 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { useTranslation } from 'react-i18next';
 import { useCreateContact } from '../../hooks/useContact';
 import { Input, Textarea, Button } from '../ui';
 
-const contactSchema = z.object({
-  name: z.string().min(2, 'נא להזין שם מלא'),
-  email: z.string().email('נא להזין כתובת אימייל תקינה'),
-  phone: z.string().optional(),
-  message: z.string().min(10, 'ההודעה צריכה להכיל לפחות 10 תווים'),
-});
-
-type ContactFormData = z.infer<typeof contactSchema>;
-
 export function ContactForm() {
+  const { t } = useTranslation();
   const { mutate, isPending, isSuccess } = useCreateContact();
+
+  const contactSchema = z.object({
+    name: z.string().min(2, t('contact.form.nameError')),
+    email: z.string().email(t('contact.form.emailError')),
+    phone: z.string().optional(),
+    message: z.string().min(10, t('contact.form.messageError')),
+  });
+
+  type ContactFormData = z.infer<typeof contactSchema>;
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
@@ -30,8 +32,8 @@ export function ContactForm() {
     return (
       <div className="text-center py-12 px-6 bg-cream-100 rounded-2xl border border-gold-200">
         <div className="text-4xl mb-4">&#10004;</div>
-        <h3 className="font-display text-xl text-gold-700 mb-2">תודה על פנייתך!</h3>
-        <p className="text-gold-600/80">נחזור אליך בהקדם האפשרי.</p>
+        <h3 className="font-display text-xl text-gold-700 mb-2">{t('contact.form.success')}</h3>
+        <p className="text-gold-600/80">{t('contact.form.successMessage')}</p>
       </div>
     );
   }
@@ -39,14 +41,14 @@ export function ContactForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       <Input
-        label="שם מלא"
-        placeholder="ישראל ישראלי"
+        label={t('contact.form.nameLabel')}
+        placeholder={t('contact.form.namePlaceholder')}
         error={errors.name?.message}
         {...register('name')}
       />
 
       <Input
-        label="אימייל"
+        label={t('contact.form.email')}
         type="email"
         placeholder="your@email.com"
         error={errors.email?.message}
@@ -54,23 +56,23 @@ export function ContactForm() {
       />
 
       <Input
-        label="טלפון (אופציונלי)"
+        label={t('contact.form.phoneLabel')}
         type="tel"
-        placeholder="050-0000000"
+        placeholder={t('contact.form.phonePlaceholder')}
         error={errors.phone?.message}
         {...register('phone')}
       />
 
       <Textarea
-        label="הודעה"
-        placeholder="כתבו לנו את הודעתכם..."
+        label={t('contact.form.message')}
+        placeholder={t('contact.form.messagePlaceholder')}
         rows={5}
         error={errors.message?.message}
         {...register('message')}
       />
 
       <Button type="submit" loading={isPending} className="w-full">
-        שלח הודעה
+        {t('contact.form.submit')}
       </Button>
     </form>
   );

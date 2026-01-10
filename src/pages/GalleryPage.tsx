@@ -1,10 +1,12 @@
 import { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useGalleryImages } from '../hooks/useGallery';
 import { GalleryFilter, PhotoGrid, Lightbox } from '../components/gallery';
 import type { FilterOption } from '../components/gallery';
 import { Spinner } from '../components/ui';
 
 export function GalleryPage() {
+  const { t } = useTranslation();
   const [activeFilter, setActiveFilter] = useState<FilterOption>('all');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
@@ -33,10 +35,10 @@ export function GalleryPage() {
       <section className="relative py-16 md:py-24 bg-gradient-to-b from-cream-100 to-cream-50">
         <div className="container mx-auto px-4 text-center">
           <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-gold-700 mb-4">
-            הגלריה שלנו
+            {t('gallery.pageTitle')}
           </h1>
           <p className="text-gold-600/80 text-lg max-w-xl mx-auto">
-            יצירות קונדיטוריה מעולות מהמטבח שלנו
+            {t('gallery.pageSubtitle')}
           </p>
           <div className="mt-8 w-24 h-0.5 bg-gold-400 mx-auto" />
         </div>
