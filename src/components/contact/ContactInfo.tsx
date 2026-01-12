@@ -16,13 +16,13 @@ export function ContactInfo() {
       icon: MapPin,
       label: t('contact.info.address'),
       value: t('contact.info.addressValue'),
-      href: 'https://maps.google.com/?q=רחוב+הזהב+42+תל+אביב',
+      href: 'https://maps.google.com/?q=מרכז+ספיר+6+ירושלים',
     },
     {
       icon: Phone,
       label: t('contact.info.phone'),
       value: t('contact.info.phoneValue'),
-      href: 'tel:031234567',
+      href: 'tel:0587819457',
     },
     {
       icon: Mail,
@@ -36,6 +36,7 @@ export function ContactInfo() {
       value: t('contact.info.hoursValue'),
     },
   ];
+
   return (
     <div className="space-y-6">
       {contactItems.map((item) => {
