@@ -59,7 +59,7 @@ export const quoteRequestSchema = z.object({
   phone: z
     .string()
     .regex(phoneRegex, 'Numero de telephone invalide'),
-  event_type: z.enum(['bar_mitzvah', 'bat_mitzvah', 'brit', 'wedding', 'private_party'], {
+  event_type: z.enum(['bar_mitzvah', 'bat_mitzvah', 'brit', 'private_party'], {
     message: 'Veuillez choisir un type d\'evenement',
   }),
   event_date: z

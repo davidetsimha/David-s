@@ -25,7 +25,6 @@
       "bar_mitzvah": "Bar Mitzvah",
       "bat_mitzvah": "Bat Mitzvah",
       "brit": "Brit Mila",
-      "wedding": "Mariage",
       "private_party": "Fête privée"
     },
     "quoteForm": {
@@ -109,7 +108,7 @@
       },
       "custom": {
         "question": "Est-il possible de commander des gâteaux personnalisés ?",
-        "answer": "Absolument ! Nous nous spécialisons dans les gâteaux décorés pour événements - anniversaires, mariages, bar/bat mitzvah et plus. Contactez-nous pour organiser une consultation et présenter des designs."
+        "answer": "Absolument ! Nous nous spécialisons dans les gâteaux décorés pour événements - anniversaires, bar/bat mitzvah, brit mila et plus. Contactez-nous pour organiser une consultation et présenter des designs."
       },
       "hours": {
         "question": "Quelles sont les heures d'ouverture de la boutique ?",

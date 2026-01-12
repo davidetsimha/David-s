@@ -20,7 +20,6 @@ const eventLabels: Record<string, string> = {
   bar_mitzvah: 'Bar Mitzvah',
   bat_mitzvah: 'Bat Mitzvah',
   brit: 'Brit',
-  wedding: 'Wedding',
   private_party: 'Private Party',
 };
 

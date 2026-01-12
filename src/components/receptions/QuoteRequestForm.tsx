@@ -42,7 +42,6 @@ export function QuoteRequestForm({ preselectedType }: QuoteRequestFormProps) {
   });
 
   const eventOptions = [
-    { value: 'wedding', label: t('Mariage', 'חתונה') },
     { value: 'bar_mitzvah', label: t('Bar Mitzvah', 'בר מצווה') },
     { value: 'bat_mitzvah', label: t('Bat Mitzvah', 'בת מצווה') },
     { value: 'brit', label: t('Brit Mila', 'ברית מילה') },

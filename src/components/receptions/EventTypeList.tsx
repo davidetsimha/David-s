@@ -1,5 +1,4 @@
 import {
-  Heart,
   Star,
   Baby,
   PartyPopper,
@@ -10,14 +9,6 @@ import { useLanguageStore } from '../../stores/languageStore';
 import type { EventType } from '../../types';
 
 const EVENT_TYPES = [
-  {
-    type: 'wedding' as EventType,
-    icon: Heart,
-    titleFr: 'Mariage',
-    titleHe: 'חתונה',
-    descFr: 'Une journee inoubliable',
-    descHe: 'יום בלתי נשכח',
-  },
   {
     type: 'bar_mitzvah' as EventType,
     icon: Star,

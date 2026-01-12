@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Heart, Star, Sparkles } from 'lucide-react';
+import { Star, Sparkles, Baby } from 'lucide-react';
 import { ROUTES } from '../../config/routes';
 
 const eventTypes = [
-  { key: 'wedding', icon: Heart, image: '/images/events/wedding.jpg' },
   { key: 'bar_mitzvah', icon: Star, image: '/images/events/bar-mitzvah.jpg' },
+  { key: 'brit', icon: Baby, image: '/images/events/brit.jpg' },
   { key: 'private_party', icon: Sparkles, image: '/images/events/private.jpg' },
 ];
 
