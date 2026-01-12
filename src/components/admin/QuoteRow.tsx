@@ -20,8 +20,16 @@ const statusMap: Record<QuoteStatus, 'pending' | 'confirmed' | 'processing' | 'c
 const eventLabels: Record<string, string> = {
   bar_mitzvah: 'Bar Mitzvah',
   bat_mitzvah: 'Bat Mitzvah',
-  brit: 'Brit',
-  private_party: 'Private Party',
+  brit: 'Brit Mila',
+  private_party: 'Fete privee',
+};
+
+const statusLabels: Record<QuoteStatus, string> = {
+  new: 'nouveau',
+  contacted: 'contacte',
+  quoted: 'devis envoye',
+  confirmed: 'confirme',
+  rejected: 'rejete',
 };
 
 export function QuoteRow({ quote, onStatusChange, onViewDetails }: QuoteRowProps) {
@@ -55,25 +63,25 @@ export function QuoteRow({ quote, onStatusChange, onViewDetails }: QuoteRowProps
         </div>
       </td>
       <td className="px-4 py-4">
-        <Badge status={statusMap[quote.status]}>{quote.status}</Badge>
+        <Badge status={statusMap[quote.status]}>{statusLabels[quote.status]}</Badge>
       </td>
       <td className="px-4 py-4">
         <div className="flex gap-2">
           <button
             onClick={onViewDetails}
             className="p-2 rounded-lg text-gray-400 hover:text-gold-600 hover:bg-gold-50"
-            title="View details"
+            title="Voir les details"
           >
             <Eye className="w-4 h-4" />
           </button>
           {quote.status === 'new' && (
             <Button size="sm" variant="outline" onClick={() => onStatusChange(quote.id, 'contacted')}>
-              Contacted
+              Contacte
             </Button>
           )}
           {quote.status === 'contacted' && (
             <Button size="sm" variant="outline" onClick={() => onStatusChange(quote.id, 'quoted')}>
-              Quoted
+              Devis envoye
             </Button>
           )}
         </div>

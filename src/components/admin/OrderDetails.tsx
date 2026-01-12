@@ -29,11 +29,18 @@ export function OrderDetails({ order, open, onClose, onStatusChange }: OrderDeta
     year: 'numeric',
   });
 
+  const statusLabels: Record<OrderStatus, string> = {
+    pending: 'en attente',
+    confirmed: 'confirmee',
+    completed: 'terminee',
+    cancelled: 'annulee',
+  };
+
   return (
-    <Modal open={open} onClose={onClose} title={`Order #${order.id.slice(0, 8)}`}>
+    <Modal open={open} onClose={onClose} title={`Commande #${order.id.slice(0, 8)}`}>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <Badge status={order.status}>{order.status}</Badge>
+          <Badge status={order.status}>{statusLabels[order.status]}</Badge>
           <span className="text-sm text-gray-500">{date}</span>
         </div>
 
@@ -54,7 +61,7 @@ export function OrderDetails({ order, open, onClose, onStatusChange }: OrderDeta
 
         <div>
           <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
-            <Package className="w-4 h-4" /> Items
+            <Package className="w-4 h-4" /> Articles
           </h4>
           <div className="space-y-2">
             {order.items?.map((item) => (
@@ -62,19 +69,19 @@ export function OrderDetails({ order, open, onClose, onStatusChange }: OrderDeta
                 <span className="text-gray-700">
                   {item.product_name_fr} <span className="text-gray-400">x{item.quantity}</span>
                 </span>
-                <span className="font-medium">{(item.unit_price * item.quantity).toFixed(2)} ILS</span>
+                <span className="font-medium">{(item.unit_price * item.quantity).toFixed(2)} ₪</span>
               </div>
             ))}
             <div className="flex justify-between pt-2 font-semibold">
               <span>Total</span>
-              <span className="text-gold-600">{order.total_amount.toFixed(2)} ILS</span>
+              <span className="text-gold-600">{order.total_amount.toFixed(2)} ₪</span>
             </div>
           </div>
         </div>
 
         {nextStatus && (
           <Button onClick={() => onStatusChange(order.id, nextStatus)} className="w-full">
-            Mark as {nextStatus}
+            Marquer comme {statusLabels[nextStatus]}
           </Button>
         )}
       </div>

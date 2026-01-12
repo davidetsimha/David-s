@@ -18,24 +18,24 @@ export function AdminQuotes() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-2xl lg:text-3xl text-gray-900">Quote Requests</h1>
-        <p className="text-gray-500 mt-1">Manage event catering inquiries</p>
+        <h1 className="font-display text-2xl lg:text-3xl text-gray-900">Demandes de devis</h1>
+        <p className="text-gray-500 mt-1">Gerez les demandes de traiteur pour evenements</p>
       </div>
 
       <Card padding="none" hover={false}>
         {isLoading ? (
           <div className="flex justify-center py-12"><Spinner size="lg" /></div>
         ) : quotes?.length === 0 ? (
-          <div className="text-center py-12 text-gray-500">No quote requests yet</div>
+          <div className="text-center py-12 text-gray-500">Aucune demande de devis</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="border-b border-gray-100">
                   <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Contact</th>
-                  <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Event</th>
+                  <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Evenement</th>
                   <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase hidden sm:table-cell">Details</th>
-                  <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Status</th>
+                  <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Statut</th>
                   <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Actions</th>
                 </tr>
               </thead>

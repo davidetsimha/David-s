@@ -40,3 +40,10 @@ export interface CreateProductDTO {
   available?: boolean;
   sort_order?: number;
 }
+
+export interface CreateCategoryDTO {
+  name_fr: string;
+  name_he: string;
+  slug: string;
+  sort_order?: number;
+}

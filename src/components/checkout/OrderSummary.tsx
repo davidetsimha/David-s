@@ -1,19 +1,22 @@
 import { useTranslation } from 'react-i18next';
 import { useCartStore } from '../../stores';
+import { useConfig } from '../../hooks/useConfig';
 import type { DeliveryMethod } from './DeliveryOptions';
 
 interface OrderSummaryProps {
   deliveryMethod: DeliveryMethod;
 }
 
-const DELIVERY_FEE = 15;
+const DEFAULT_DELIVERY_FEE = 15;
 
 export function OrderSummary({ deliveryMethod }: OrderSummaryProps) {
   const { items, subtotal } = useCartStore();
   const { t, i18n } = useTranslation();
+  const { data: deliveryFeeConfig } = useConfig('delivery_fee');
 
   const subTotal = subtotal();
-  const deliveryFee = deliveryMethod === 'delivery' ? DELIVERY_FEE : 0;
+  const deliveryFeeAmount = deliveryFeeConfig ? parseFloat(deliveryFeeConfig) : DEFAULT_DELIVERY_FEE;
+  const deliveryFee = deliveryMethod === 'delivery' ? deliveryFeeAmount : 0;
   const total = subTotal + deliveryFee;
 
   return (

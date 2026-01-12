@@ -7,11 +7,11 @@ import { useOrders, useUpdateOrderStatus } from '../../hooks/useOrders';
 import type { Order, OrderStatus } from '../../types';
 
 const tabs: { label: string; status?: OrderStatus }[] = [
-  { label: 'All' },
-  { label: 'Pending', status: 'pending' },
-  { label: 'Confirmed', status: 'confirmed' },
-  { label: 'Completed', status: 'completed' },
-  { label: 'Cancelled', status: 'cancelled' },
+  { label: 'Toutes' },
+  { label: 'En attente', status: 'pending' },
+  { label: 'Confirmees', status: 'confirmed' },
+  { label: 'Terminees', status: 'completed' },
+  { label: 'Annulees', status: 'cancelled' },
 ];
 
 export function AdminOrders() {
@@ -30,8 +30,8 @@ export function AdminOrders() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-3xl text-gray-900">Orders</h1>
-        <p className="text-gray-500 mt-1">Track and manage customer orders</p>
+        <h1 className="font-display text-3xl text-gray-900">Commandes</h1>
+        <p className="text-gray-500 mt-1">Suivez et gerez les commandes clients</p>
       </div>
 
       <div className="flex gap-2 border-b border-gray-200">
@@ -54,15 +54,15 @@ export function AdminOrders() {
         {isLoading ? (
           <div className="flex justify-center py-12"><Spinner size="lg" /></div>
         ) : orders?.length === 0 ? (
-          <div className="text-center py-12 text-gray-500">No orders found</div>
+          <div className="text-center py-12 text-gray-500">Aucune commande trouvee</div>
         ) : (
           <table className="w-full">
             <thead>
               <tr className="border-b border-gray-100">
-                <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Order</th>
-                <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Customer</th>
+                <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Commande</th>
+                <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Client</th>
                 <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Date</th>
-                <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Status</th>
+                <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Statut</th>
                 <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Total</th>
                 <th className="w-16"></th>
               </tr>

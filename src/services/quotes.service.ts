@@ -36,3 +36,18 @@ export async function updateQuoteStatus(
   if (error) throw error;
   return data as QuoteRequest;
 }
+
+export async function updateQuoteNotes(
+  id: string,
+  adminNotes: string
+): Promise<QuoteRequest> {
+  const { data, error } = await supabase
+    .from('quote_requests')
+    .update({ admin_notes: adminNotes, updated_at: new Date().toISOString() })
+    .eq('id', id)
+    .select('*')
+    .single();
+
+  if (error) throw error;
+  return data as QuoteRequest;
+}

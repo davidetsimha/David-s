@@ -4,6 +4,7 @@ import {
   getQuotes,
   createQuote,
   updateQuoteStatus,
+  updateQuoteNotes,
 } from '../services/quotes.service';
 import type { QuoteStatus, CreateQuoteDTO } from '../types';
 
@@ -29,6 +30,17 @@ export function useUpdateQuoteStatus() {
   return useMutation({
     mutationFn: ({ id, status }: { id: string; status: QuoteStatus }) =>
       updateQuoteStatus(id, status),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.quotes.all });
+    },
+  });
+}
+
+export function useUpdateQuoteNotes() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, notes }: { id: string; notes: string }) =>
+      updateQuoteNotes(id, notes),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.quotes.all });
     },

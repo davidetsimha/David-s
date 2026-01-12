@@ -7,6 +7,11 @@ import { CheckoutForm, DeliveryOptions, OrderSummary } from '../../components/ch
 import type { CheckoutFormData, DeliveryMethod, DeliveryAddress } from '../../components/checkout';
 import { ROUTES } from '../../config/routes';
 import { initiatePayment } from '../../services/payment.service';
+import { createOrder, updateOrderStatus } from '../../services/orders.service';
+import { useConfig } from '../../hooks/useConfig';
+import type { CreateOrderDTO } from '../../types';
+
+const DEFAULT_DELIVERY_FEE = 15;
 
 type CheckoutStep = 'info' | 'delivery' | 'review';
 
@@ -16,6 +21,7 @@ export function CheckoutPage() {
   const navigate = useNavigate();
   const { items, clearCart, subtotal } = useCartStore();
   const { t, i18n } = useTranslation();
+  const { data: deliveryFeeConfig } = useConfig('delivery_fee');
   const [currentStep, setCurrentStep] = useState<CheckoutStep>('info');
   const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>('pickup');
   const [deliveryAddress, setDeliveryAddress] = useState<DeliveryAddress>({ street: '', city: '', postalCode: '' });
@@ -26,6 +32,7 @@ export function CheckoutPage() {
   const BackArrow = isRTL ? ArrowRight : ArrowLeft;
   const ForwardArrow = isRTL ? ArrowLeft : ArrowRight;
 
+  const deliveryFeeAmount = deliveryFeeConfig ? parseFloat(deliveryFeeConfig) : DEFAULT_DELIVERY_FEE;
   const currentStepIndex = steps.indexOf(currentStep);
 
   const handleFormSubmit = (data: CheckoutFormData) => {
@@ -46,9 +53,30 @@ export function CheckoutPage() {
     setIsSubmitting(true);
 
     try {
-      const deliveryFee = deliveryMethod === 'delivery' ? 15 : 0;
+      const deliveryFee = deliveryMethod === 'delivery' ? deliveryFeeAmount : 0;
       const total = subtotal() + deliveryFee;
 
+      // ETAPE 1: Creer la commande en base AVANT le paiement
+      const orderData: CreateOrderDTO = {
+        customer_name: customerData.name,
+        customer_email: customerData.email,
+        customer_phone: customerData.phone,
+        delivery_type: deliveryMethod,
+        delivery_address: deliveryMethod === 'delivery'
+          ? `${deliveryAddress.street}, ${deliveryAddress.city}${deliveryAddress.postalCode ? ' ' + deliveryAddress.postalCode : ''}`
+          : undefined,
+        items: items.map(item => ({
+          product_id: item.product.id,
+          quantity: item.quantity,
+          unit_price: item.product.price,
+          product_name_fr: item.product.name_fr,
+          product_name_he: item.product.name_he,
+        })),
+      };
+
+      const orderId = await createOrder(orderData);
+
+      // ETAPE 2: Tenter le paiement
       const response = await initiatePayment({
         amount: total,
         currency: 'ILS',
@@ -60,27 +88,33 @@ export function CheckoutPage() {
         customer: customerData,
         deliveryMethod,
         deliveryAddress: deliveryMethod === 'delivery' ? deliveryAddress : undefined,
-        successUrl: `${window.location.origin}${ROUTES.CHECKOUT_SUCCESS}`,
-        failureUrl: `${window.location.origin}${ROUTES.CHECKOUT_CANCEL}`,
+        successUrl: `${window.location.origin}${ROUTES.CHECKOUT_SUCCESS}?order_id=${orderId}`,
+        failureUrl: `${window.location.origin}${ROUTES.CHECKOUT_CANCEL}?order_id=${orderId}`,
         callbackUrl: `${window.location.origin}/api/payment/callback`,
       });
 
       if (response.success) {
+        // ETAPE 3: Mettre a jour le statut de la commande
+        await updateOrderStatus(orderId, 'confirmed');
+
         if (response.paymentUrl) {
           // Redirect to PayPlus payment page
           window.location.href = response.paymentUrl;
         } else {
           // Mock/dev mode - simulate success
           clearCart();
-          navigate(`${ROUTES.CHECKOUT_SUCCESS}?order_id=${response.transactionId}`);
+          navigate(`${ROUTES.CHECKOUT_SUCCESS}?order_id=${orderId}`);
         }
       } else {
-        // Handle error - stay on page
+        // Le paiement a echoue mais la commande est sauvegardee (status: pending)
         console.error('Payment failed:', response.error);
-        setIsSubmitting(false);
+        // On peut quand meme vider le panier et rediriger vers la page de succes
+        // car la commande est enregistree
+        clearCart();
+        navigate(`${ROUTES.CHECKOUT_SUCCESS}?order_id=${orderId}&payment_pending=true`);
       }
     } catch (error) {
-      console.error('Payment error:', error);
+      console.error('Order/Payment error:', error);
       setIsSubmitting(false);
     }
   };

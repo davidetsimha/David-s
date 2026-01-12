@@ -19,6 +19,7 @@ import { NotFoundPage } from './pages/NotFoundPage';
 import { AdminLoginPage } from './pages/admin/AdminLoginPage';
 import { AdminDashboard } from './pages/admin/AdminDashboard';
 import { AdminProducts } from './pages/admin/AdminProducts';
+import { AdminCategories } from './pages/admin/AdminCategories';
 import { AdminOrders } from './pages/admin/AdminOrders';
 import { AdminQuotes } from './pages/admin/AdminQuotes';
 
@@ -53,6 +54,7 @@ export default function App() {
         >
           <Route path={ROUTES.ADMIN} element={<AdminDashboard />} />
           <Route path={ROUTES.ADMIN_PRODUCTS} element={<AdminProducts />} />
+          <Route path={ROUTES.ADMIN_CATEGORIES} element={<AdminCategories />} />
           <Route path={ROUTES.ADMIN_ORDERS} element={<AdminOrders />} />
           <Route path={ROUTES.ADMIN_QUOTES} element={<AdminQuotes />} />
         </Route>

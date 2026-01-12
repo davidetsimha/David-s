@@ -9,12 +9,12 @@ import { useCategories } from '../../hooks/useCategories';
 import type { Product } from '../../types';
 
 const schema = z.object({
-  name_fr: z.string().min(1, 'French name is required'),
-  name_he: z.string().min(1, 'Hebrew name is required'),
+  name_fr: z.string().min(1, 'Le nom en francais est requis'),
+  name_he: z.string().min(1, 'Le nom en hebreu est requis'),
   description_fr: z.string().optional(),
   description_he: z.string().optional(),
-  price: z.coerce.number().min(0, 'Price must be positive'),
-  category_id: z.string().min(1, 'Category is required'),
+  price: z.coerce.number().min(0, 'Le prix doit etre positif'),
+  category_id: z.string().min(1, 'La categorie est requise'),
   image_url: z.string().url().optional().or(z.literal('')),
   available: z.boolean(),
 });
@@ -53,8 +53,8 @@ export function ProductForm({ product, onSubmit, loading }: ProductFormProps) {
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-5">
       <div className="grid grid-cols-2 gap-4">
-        <Input label="Name (FR)" {...register('name_fr')} error={errors.name_fr?.message} />
-        <Input label="Name (HE)" {...register('name_he')} error={errors.name_he?.message} dir="rtl" />
+        <Input label="Nom (FR)" {...register('name_fr')} error={errors.name_fr?.message} />
+        <Input label="Nom (HE)" {...register('name_he')} error={errors.name_he?.message} dir="rtl" />
       </div>
 
       <div className="grid grid-cols-2 gap-4">
@@ -63,20 +63,20 @@ export function ProductForm({ product, onSubmit, loading }: ProductFormProps) {
       </div>
 
       <div className="grid grid-cols-2 gap-4">
-        <Input label="Price" type="number" step="0.01" {...register('price')} error={errors.price?.message} />
-        <Select label="Category" options={categoryOptions} {...register('category_id')} error={errors.category_id?.message} />
+        <Input label="Prix" type="number" step="0.01" {...register('price')} error={errors.price?.message} />
+        <Select label="Categorie" options={categoryOptions} {...register('category_id')} error={errors.category_id?.message} />
       </div>
 
-      <Input label="Image URL" {...register('image_url')} placeholder="https://..." />
+      <Input label="URL de l'image" {...register('image_url')} placeholder="https://..." />
 
       <label className="flex items-center gap-3 cursor-pointer">
         <input type="checkbox" {...register('available')} className="w-5 h-5 rounded border-gray-300 text-gold-500 focus:ring-gold-500" />
-        <span className="text-sm font-medium text-gray-700">Available for sale</span>
+        <span className="text-sm font-medium text-gray-700">Disponible a la vente</span>
       </label>
 
       <div className="pt-4 border-t border-gray-100">
         <Button type="submit" loading={loading} className="w-full">
-          {product ? 'Update Product' : 'Create Product'}
+          {product ? 'Mettre a jour' : 'Creer le produit'}
         </Button>
       </div>
     </form>

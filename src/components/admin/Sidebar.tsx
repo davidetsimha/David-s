@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Package, ShoppingBag, MessageSquare, LogOut, X } from 'lucide-react';
+import { LayoutDashboard, Package, Tag, ShoppingBag, MessageSquare, LogOut, X } from 'lucide-react';
 import { ROUTES } from '../../config/routes';
 import { supabase } from '../../services/supabase';
 import { ConfirmModal } from './ConfirmModal';
 
 const navItems = [
-  { to: ROUTES.ADMIN, icon: LayoutDashboard, label: 'Dashboard', end: true },
-  { to: ROUTES.ADMIN_PRODUCTS, icon: Package, label: 'Products' },
-  { to: ROUTES.ADMIN_ORDERS, icon: ShoppingBag, label: 'Orders' },
-  { to: ROUTES.ADMIN_QUOTES, icon: MessageSquare, label: 'Quotes' },
+  { to: ROUTES.ADMIN, icon: LayoutDashboard, label: 'Tableau de bord', end: true },
+  { to: ROUTES.ADMIN_PRODUCTS, icon: Package, label: 'Produits' },
+  { to: ROUTES.ADMIN_CATEGORIES, icon: Tag, label: 'Categories' },
+  { to: ROUTES.ADMIN_ORDERS, icon: ShoppingBag, label: 'Commandes' },
+  { to: ROUTES.ADMIN_QUOTES, icon: MessageSquare, label: 'Devis' },
 ];
 
 interface SidebarProps {
@@ -89,7 +90,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
               text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-all duration-200"
           >
             <LogOut className="w-5 h-5" />
-            <span className="font-medium">Logout</span>
+            <span className="font-medium">Deconnexion</span>
           </button>
         </div>
       </aside>
@@ -98,9 +99,9 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         open={logoutConfirm}
         onClose={() => setLogoutConfirm(false)}
         onConfirm={handleLogout}
-        title="Logout"
-        message="Are you sure you want to logout?"
-        confirmText="Logout"
+        title="Deconnexion"
+        message="Etes-vous sur de vouloir vous deconnecter ?"
+        confirmText="Deconnexion"
         variant="danger"
       />
     </>
