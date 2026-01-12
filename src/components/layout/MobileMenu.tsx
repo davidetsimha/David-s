@@ -7,6 +7,7 @@ import { LanguageSwitch } from './LanguageSwitch';
 
 const navItems = [
   { key: 'home', route: ROUTES.HOME },
+  { key: 'about', route: ROUTES.ABOUT },
   { key: 'receptions', route: ROUTES.RECEPTIONS },
   { key: 'shabbat', route: ROUTES.SHABBAT },
   { key: 'gallery', route: ROUTES.GALLERY },

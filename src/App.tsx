@@ -6,6 +6,7 @@ import { ROUTES } from './config/routes';
 
 // Public pages
 import { HomePage } from './pages/HomePage';
+import { AboutPage } from './pages/AboutPage';
 import { ReceptionsPage } from './pages/ReceptionsPage';
 import { ShabbatOrdersPage } from './pages/ShabbatOrdersPage';
 import { GalleryPage } from './pages/GalleryPage';
@@ -28,6 +29,7 @@ export default function App() {
         {/* Public routes with PageLayout */}
         <Route element={<PageLayout />}>
           <Route path={ROUTES.HOME} element={<HomePage />} />
+          <Route path={ROUTES.ABOUT} element={<AboutPage />} />
           <Route path={ROUTES.RECEPTIONS} element={<ReceptionsPage />} />
           <Route path={ROUTES.SHABBAT} element={<ShabbatOrdersPage />} />
           <Route path={ROUTES.CHECKOUT} element={<CheckoutPage />} />

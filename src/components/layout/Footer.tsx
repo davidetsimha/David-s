@@ -4,6 +4,7 @@ import { ROUTES } from '../../config/routes';
 
 const quickLinks = [
   { key: 'home', route: ROUTES.HOME },
+  { key: 'about', route: ROUTES.ABOUT },
   { key: 'receptions', route: ROUTES.RECEPTIONS },
   { key: 'shabbat', route: ROUTES.SHABBAT },
   { key: 'gallery', route: ROUTES.GALLERY },
@@ -11,8 +12,8 @@ const quickLinks = [
 ];
 
 const socialLinks = [
-  { name: 'Instagram', href: 'https://instagram.com/davids.patisserie', icon: InstagramIcon },
-  { name: 'Facebook', href: 'https://facebook.com/davids.patisserie', icon: FacebookIcon },
+  { name: 'Instagram', href: 'https://instagram.com/davids_patisserie', icon: InstagramIcon },
+  { name: 'Facebook', href: 'https://facebook.com/davidspatisserie', icon: FacebookIcon },
 ];
 
 export function Footer() {
