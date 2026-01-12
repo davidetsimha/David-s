@@ -48,7 +48,7 @@ export function OrderSummary({ deliveryMethod }: OrderSummaryProps) {
               </p>
             </div>
             <p className="text-sm font-medium text-stone-700">
-              {(product.price * quantity).toFixed(2)} CHF
+              {(product.price * quantity).toFixed(2)} ₪
             </p>
           </div>
         ))}
@@ -57,18 +57,18 @@ export function OrderSummary({ deliveryMethod }: OrderSummaryProps) {
       <div className="p-5 bg-white border-t border-cream-200 space-y-2">
         <div className="flex justify-between text-sm">
           <span className="text-stone-500">{t('checkout.subtotal')}</span>
-          <span className="text-stone-700">{subTotal.toFixed(2)} CHF</span>
+          <span className="text-stone-700">{subTotal.toFixed(2)} ₪</span>
         </div>
         <div className="flex justify-between text-sm">
           <span className="text-stone-500">{t('checkout.deliveryFee')}</span>
           <span className="text-stone-700">
-            {deliveryFee === 0 ? t('common.free') : `${deliveryFee.toFixed(2)} CHF`}
+            {deliveryFee === 0 ? t('common.free') : `${deliveryFee.toFixed(2)} ₪`}
           </span>
         </div>
         <div className="flex justify-between pt-3 border-t border-cream-200">
           <span className="font-medium text-stone-800">{t('checkout.total')}</span>
           <span className="font-display text-xl text-gold-700">
-            {total.toFixed(2)} CHF
+            {total.toFixed(2)} ₪
           </span>
         </div>
       </div>

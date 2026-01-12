@@ -54,7 +54,7 @@ export function CartDrawer() {
             <div className="border-t border-cream-200 p-5 bg-cream-50/50">
               <div className="flex justify-between mb-4">
                 <span className="text-stone-600">{t('cart.subtotal')}</span>
-                <span className="font-display text-lg text-gold-700">{subtotal().toFixed(2)} CHF</span>
+                <span className="font-display text-lg text-gold-700">{subtotal().toFixed(2)} ₪</span>
               </div>
               <Link to={ROUTES.CHECKOUT} onClick={closeCart}
                 className="flex items-center justify-center gap-2 w-full py-3.5 bg-gold-500
