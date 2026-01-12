@@ -87,7 +87,7 @@ export function HeroSection() {
       </div>
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+      <div className="absolute bottom-8 inset-x-0 flex justify-center">
         <div className="w-px h-12 bg-gradient-to-b from-gold-500/50 to-transparent animate-pulse" />
       </div>
     </section>

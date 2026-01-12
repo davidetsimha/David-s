@@ -36,8 +36,8 @@ export function CertificationBadge() {
               <Shield className="w-12 h-12 md:w-14 md:h-14 text-white" />
             </div>
             {/* Decorative Dots */}
-            <div className="absolute -top-2 -right-2 w-4 h-4 bg-gold-400 rounded-full" />
-            <div className="absolute -bottom-1 -left-1 w-3 h-3 bg-gold-500 rounded-full" />
+            <div className="absolute -top-2 -end-2 w-4 h-4 bg-gold-400 rounded-full" />
+            <div className="absolute -bottom-1 -start-1 w-3 h-3 bg-gold-500 rounded-full" />
           </div>
 
           {/* Text Content */}
