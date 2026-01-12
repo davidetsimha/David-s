@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { CheckCircle, ArrowRight, ArrowLeft, Phone } from 'lucide-react';
 import { ROUTES } from '../../config/routes';
 
-const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '+972 XX XXX XXXX';
+const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '058-781-9457';
 
 export function CheckoutSuccessPage() {
   const { t, i18n } = useTranslation();
