@@ -11,8 +11,6 @@ export interface Order {
   notes: string | null;
   status: OrderStatus;
   total_amount: number;
-  stripe_payment_intent_id: string | null;
-  stripe_session_id: string | null;
   created_at: string;
   items?: OrderItem[];
 }
