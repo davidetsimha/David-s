@@ -77,7 +77,7 @@ export function MobileMenu() {
   return (
     <>
       <div
-        className={`fixed inset-0 bg-stone-900/60 backdrop-blur-sm z-40
+        className={`lg:hidden fixed inset-0 bg-stone-900/60 backdrop-blur-sm z-40
           transition-opacity duration-300
           ${isMobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         onClick={closeMobileMenu}
@@ -86,7 +86,7 @@ export function MobileMenu() {
       <nav
         ref={menuRef}
         aria-label="Mobile navigation"
-        className={`fixed top-0 end-0
+        className={`lg:hidden fixed top-0 end-0
           h-full w-[280px] max-w-[85vw] bg-cream-50 z-50 shadow-2xl
           transform transition-transform duration-300 ease-out
           ${isMobileMenuOpen ? 'translate-x-0' : 'ltr:translate-x-full rtl:-translate-x-full'}`}
