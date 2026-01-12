@@ -1,4 +1,5 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Plus, Search, LayoutGrid, List, SlidersHorizontal } from 'lucide-react';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
@@ -38,6 +39,7 @@ const availabilityOptions = [
 ];
 
 export function AdminProducts() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { data: products, isLoading } = useProducts();
   const { data: categories } = useCategories();
   const createMutation = useCreateProduct();
@@ -52,11 +54,21 @@ export function AdminProducts() {
 
   // Filters & View
   const [viewMode, setViewMode] = useState<ViewMode>('list');
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState(searchParams.get('search') ?? '');
   const [categoryFilter, setCategoryFilter] = useState('');
   const [availabilityFilter, setAvailabilityFilter] = useState<AvailabilityFilter>('all');
   const [sortValue, setSortValue] = useState('name_asc');
   const [showFilters, setShowFilters] = useState(false);
+
+  // Sync search with URL params
+  useEffect(() => {
+    const urlSearch = searchParams.get('search');
+    if (urlSearch && urlSearch !== search) {
+      setSearch(urlSearch);
+      // Clear URL param after reading it
+      setSearchParams({}, { replace: true });
+    }
+  }, [searchParams]);
 
   const currentSort = sortOptions.find(s => s.value === sortValue) ?? sortOptions[0];
 

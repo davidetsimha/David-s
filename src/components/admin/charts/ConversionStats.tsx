@@ -76,7 +76,7 @@ function GaugeChart({ value, size = 200 }: { value: number; size?: number }) {
   ];
 
   return (
-    <svg width={size} height={size / 2 + 30} viewBox={`0 0 ${size} ${size / 2 + 30}`}>
+    <svg width={size} height={size / 2 + 60} viewBox={`0 0 ${size} ${size / 2 + 60}`}>
       <defs>
         <filter id="gaugeGlow" x="-50%" y="-50%" width="200%" height="200%">
           <feGaussianBlur stdDeviation="3" result="blur" />

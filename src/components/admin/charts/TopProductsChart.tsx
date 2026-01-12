@@ -1,10 +1,17 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Loader2, Package, TrendingUp } from 'lucide-react';
 import { useTopProducts } from '../../../hooks/useOrders';
+import { ROUTES } from '../../../config/routes';
 
 export function TopProductsChart() {
+  const navigate = useNavigate();
   const { data: products, isLoading } = useTopProducts(5);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  const handleProductClick = (productName: string) => {
+    navigate(`${ROUTES.ADMIN_PRODUCTS}?search=${encodeURIComponent(productName)}`);
+  };
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('he-IL', {
@@ -58,6 +65,7 @@ export function TopProductsChart() {
               <div
                 key={product.product_name_fr}
                 className="group cursor-pointer"
+                onClick={() => handleProductClick(product.product_name_fr)}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
               >
