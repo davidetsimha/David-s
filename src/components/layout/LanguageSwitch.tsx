@@ -1,12 +1,20 @@
 import { useTranslation } from 'react-i18next';
-import { useLanguageStore } from '../../stores';
+import { useLanguageStore, useUIStore } from '../../stores';
+import type { Language } from '../../stores';
 
 export function LanguageSwitch() {
   const { i18n } = useTranslation();
-  const { language, setLanguage } = useLanguageStore();
+  const { setLanguage } = useLanguageStore();
+  const { closeMobileMenu } = useUIStore();
+
+  // Use i18n.language as source of truth
+  const currentLang = (i18n.language === 'he' ? 'he' : 'fr') as Language;
 
   const toggleLanguage = () => {
-    const newLang = language === 'fr' ? 'he' : 'fr';
+    // Close mobile menu FIRST to prevent slide animation during direction change
+    closeMobileMenu();
+
+    const newLang = currentLang === 'fr' ? 'he' : 'fr';
     setLanguage(newLang);
     i18n.changeLanguage(newLang);
     document.documentElement.dir = newLang === 'he' ? 'rtl' : 'ltr';
@@ -18,14 +26,14 @@ export function LanguageSwitch() {
       onClick={toggleLanguage}
       className="group relative px-3 py-1.5 text-sm font-medium tracking-wide
         text-gold-700 hover:text-gold-900 transition-colors duration-200"
-      aria-label={language === 'fr' ? 'Switch to Hebrew' : 'Passer en Francais'}
+      aria-label={currentLang === 'fr' ? 'Switch to Hebrew' : 'Passer en Français'}
     >
       <span className="relative z-10 flex items-center gap-1.5">
-        <span className={`transition-opacity duration-200 ${language === 'fr' ? 'opacity-100' : 'opacity-50'}`}>
+        <span className={`transition-opacity duration-200 ${currentLang === 'fr' ? 'opacity-100' : 'opacity-50'}`}>
           FR
         </span>
         <span className="w-px h-3 bg-gold-300" />
-        <span className={`transition-opacity duration-200 ${language === 'he' ? 'opacity-100' : 'opacity-50'}`}>
+        <span className={`transition-opacity duration-200 ${currentLang === 'he' ? 'opacity-100' : 'opacity-50'}`}>
           HE
         </span>
       </span>
