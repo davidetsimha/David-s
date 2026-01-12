@@ -94,7 +94,7 @@ export async function getRevenueByDateRange(days: number): Promise<RevenueDataPo
     const dateStr = order.created_at.split('T')[0];
     const existing = revenueByDate.get(dateStr);
     if (existing) {
-      existing.revenue += order.total_amount;
+      existing.revenue += Number(order.total_amount);
       existing.orders += 1;
     }
   });
@@ -123,14 +123,14 @@ export async function getTopSellingProducts(limit: number = 5): Promise<TopProdu
     const key = item.product_name_fr;
     const existing = productMap.get(key);
     if (existing) {
-      existing.quantity += item.quantity;
-      existing.revenue += item.quantity * item.unit_price;
+      existing.quantity += Number(item.quantity);
+      existing.revenue += Number(item.quantity) * Number(item.unit_price);
     } else {
       productMap.set(key, {
         product_name_fr: item.product_name_fr,
         product_name_he: item.product_name_he,
-        quantity: item.quantity,
-        revenue: item.quantity * item.unit_price,
+        quantity: Number(item.quantity),
+        revenue: Number(item.quantity) * Number(item.unit_price),
       });
     }
   });
@@ -171,16 +171,16 @@ export async function getSalesByCategory(): Promise<CategorySales[]> {
   items?.forEach((item) => {
     const category = item.product_id ? productCategoryMap.get(item.product_id) || 'Autre' : 'Autre';
     const existing = categoryMap.get(category);
-    const itemTotal = item.quantity * item.unit_price;
+    const itemTotal = Number(item.quantity) * Number(item.unit_price);
 
     if (existing) {
       existing.total += itemTotal;
-      existing.count += item.quantity;
+      existing.count += Number(item.quantity);
     } else {
       categoryMap.set(category, {
         category_name: category,
         total: itemTotal,
-        count: item.quantity,
+        count: Number(item.quantity),
       });
     }
   });
