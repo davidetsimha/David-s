@@ -6,7 +6,10 @@
     "shabbat": "הזמנות שבת",
     "gallery": "גלריה",
     "faq": "שאלות נפוצות",
-    "contact": "צור קשר"
+    "contact": "צור קשר",
+    "ariaMain": "ניווט ראשי",
+    "ariaMobile": "ניווט נייד",
+    "ariaFooter": "ניווט תחתון"
   },
   "common": {
     "loading": "טוען...",
@@ -31,7 +34,10 @@
     "choose": "בחר...",
     "next": "הבא",
     "back": "חזרה",
-    "edit": "עריכה"
+    "edit": "עריכה",
+    "menu": "תפריט",
+    "closeModal": "סגור חלון",
+    "contactWhatsApp": "צור קשר בוואטסאפ"
   },
   "home": {
     "heroTitle": "אומנות הקונדיטוריה הצרפתית",

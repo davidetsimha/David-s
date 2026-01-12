@@ -14,7 +14,7 @@ export function WhatsAppButton() {
       target="_blank"
       rel="noopener noreferrer"
       className={`fixed bottom-6 z-50 group ${isRTL ? 'start-6' : 'end-6'}`}
-      aria-label="WhatsApp"
+      aria-label={t('common.contactWhatsApp')}
     >
       <span className="flex items-center justify-center w-14 h-14 rounded-full
         bg-[#25D366] shadow-lg shadow-[#25D366]/30

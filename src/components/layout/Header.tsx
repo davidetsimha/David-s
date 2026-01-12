@@ -45,7 +45,7 @@ export function Header() {
             </span>
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-1" aria-label="Main navigation">
+          <nav className="hidden lg:flex items-center gap-1" aria-label={t('nav.ariaMain')}>
             {navItems.map(({ key, route }) => (
               <Link
                 key={key}
@@ -76,9 +76,10 @@ export function Header() {
 }
 
 function CartButton({ count, onClick }: { count: number; onClick: () => void }) {
+  const { t } = useTranslation();
   return (
     <button onClick={onClick} className="relative p-2 text-gold-700 hover:text-gold-900
-      transition-colors rounded focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 focus-visible:outline-none" aria-label="Cart">
+      transition-colors rounded focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 focus-visible:outline-none" aria-label={t('cart.title')}>
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
       </svg>
@@ -91,9 +92,10 @@ function CartButton({ count, onClick }: { count: number; onClick: () => void }) 
 }
 
 function HamburgerButton({ onClick }: { onClick: () => void }) {
+  const { t } = useTranslation();
   return (
     <button onClick={onClick} className="lg:hidden p-2 text-gold-700 hover:text-gold-900
-      transition-colors rounded focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 focus-visible:outline-none" aria-label="Menu">
+      transition-colors rounded focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 focus-visible:outline-none" aria-label={t('common.menu')}>
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
       </svg>

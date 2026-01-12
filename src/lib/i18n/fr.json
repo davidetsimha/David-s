@@ -6,7 +6,10 @@
     "shabbat": "Commandes Shabbat",
     "gallery": "Galerie",
     "faq": "FAQ",
-    "contact": "Contact"
+    "contact": "Contact",
+    "ariaMain": "Navigation principale",
+    "ariaMobile": "Navigation mobile",
+    "ariaFooter": "Navigation pied de page"
   },
   "common": {
     "loading": "Chargement...",
@@ -31,7 +34,10 @@
     "choose": "Choisir...",
     "next": "Suivant",
     "back": "Retour",
-    "edit": "Modifier"
+    "edit": "Modifier",
+    "menu": "Menu",
+    "closeModal": "Fermer la fenêtre",
+    "contactWhatsApp": "Contacter par WhatsApp"
   },
   "home": {
     "heroTitle": "L'Art de la Pâtisserie Française",

@@ -32,7 +32,7 @@ export function Footer() {
             <p className="text-cream-200 text-sm">{t('footer.delivery')}</p>
           </div>
 
-          <nav aria-label="Footer navigation">
+          <nav aria-label={t('nav.ariaFooter')}>
             <h4 className="text-sm font-semibold tracking-wider uppercase text-gold-400 mb-4">
               {t('nav.home')}
             </h4>

@@ -86,7 +86,7 @@ export function MobileMenu() {
       />
       <nav
         ref={menuRef}
-        aria-label="Mobile navigation"
+        aria-label={t('nav.ariaMobile')}
         className={`lg:hidden fixed top-0 end-0
           h-full w-[280px] max-w-[85vw] bg-cream-50 z-50 shadow-2xl
           transform transition-transform duration-300 ease-out

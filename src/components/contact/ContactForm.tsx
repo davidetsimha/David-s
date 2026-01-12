@@ -50,7 +50,7 @@ export function ContactForm() {
       <Input
         label={t('contact.form.email')}
         type="email"
-        placeholder="your@email.com"
+        placeholder={t('contact.form.emailPlaceholder')}
         error={errors.email?.message}
         {...register('email')}
       />
