@@ -11,14 +11,31 @@ export function AdminDashboard() {
   const { data: orders, isLoading: ordersLoading } = useOrders();
   const { data: quotes, isLoading: quotesLoading } = useQuotes();
 
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+
   const todayOrders = orders?.filter((o) => {
-    const today = new Date().toDateString();
-    return new Date(o.created_at).toDateString() === today;
+    return new Date(o.created_at).toDateString() === today.toDateString();
+  }) ?? [];
+
+  const yesterdayOrders = orders?.filter((o) => {
+    return new Date(o.created_at).toDateString() === yesterday.toDateString();
   }) ?? [];
 
   const pendingQuotes = quotes?.filter((q) => q.status === 'new') ?? [];
   const todayRevenue = todayOrders.reduce((sum, o) => sum + o.total_amount, 0);
+  const yesterdayRevenue = yesterdayOrders.reduce((sum, o) => sum + o.total_amount, 0);
   const recentOrders = orders?.slice(0, 5) ?? [];
+
+  // Calculer les tendances réelles
+  const ordersTrend = yesterdayOrders.length > 0
+    ? Math.round(((todayOrders.length - yesterdayOrders.length) / yesterdayOrders.length) * 100)
+    : todayOrders.length > 0 ? 100 : 0;
+
+  const revenueTrend = yesterdayRevenue > 0
+    ? Math.round(((todayRevenue - yesterdayRevenue) / yesterdayRevenue) * 100)
+    : todayRevenue > 0 ? 100 : 0;
 
   const orderColumns = [
     { key: 'id', header: 'Commande', render: (o: Order) => <span className="font-mono text-sm">#{o.id.slice(0, 8)}</span> },
@@ -41,9 +58,19 @@ export function AdminDashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatsCard icon={<ShoppingBag className="w-5 h-5" />} label="Commandes du jour" value={todayOrders.length} trend={{ value: 12, label: 'vs hier' }} />
+        <StatsCard
+          icon={<ShoppingBag className="w-5 h-5" />}
+          label="Commandes du jour"
+          value={todayOrders.length}
+          trend={ordersTrend !== 0 ? { value: ordersTrend, label: 'vs hier' } : undefined}
+        />
         <StatsCard icon={<MessageSquare className="w-5 h-5" />} label="Devis en attente" value={pendingQuotes.length} />
-        <StatsCard icon={<DollarSign className="w-5 h-5" />} label="CA du jour" value={`${todayRevenue.toFixed(0)} ₪`} trend={{ value: 8, label: 'vs hier' }} />
+        <StatsCard
+          icon={<DollarSign className="w-5 h-5" />}
+          label="CA du jour"
+          value={`${todayRevenue.toFixed(0)} ₪`}
+          trend={revenueTrend !== 0 ? { value: revenueTrend, label: 'vs hier' } : undefined}
+        />
         <StatsCard icon={<TrendingUp className="w-5 h-5" />} label="Total commandes" value={orders?.length ?? 0} />
       </div>
 

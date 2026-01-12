@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Package, Tag, ShoppingBag, MessageSquare, LogOut, X } from 'lucide-react';
+import { LayoutDashboard, Package, Tag, ShoppingBag, MessageSquare, LogOut, X, Image, HelpCircle } from 'lucide-react';
 import { ROUTES } from '../../config/routes';
 import { supabase } from '../../services/supabase';
 import { ConfirmModal } from './ConfirmModal';
@@ -11,6 +11,8 @@ const navItems = [
   { to: ROUTES.ADMIN_CATEGORIES, icon: Tag, label: 'Categories' },
   { to: ROUTES.ADMIN_ORDERS, icon: ShoppingBag, label: 'Commandes' },
   { to: ROUTES.ADMIN_QUOTES, icon: MessageSquare, label: 'Devis' },
+  { to: ROUTES.ADMIN_MEDIA, icon: Image, label: 'Medias' },
+  { to: ROUTES.ADMIN_FAQ, icon: HelpCircle, label: 'FAQ' },
 ];
 
 interface SidebarProps {

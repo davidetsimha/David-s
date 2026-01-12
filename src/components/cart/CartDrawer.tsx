@@ -24,9 +24,11 @@ export function CartDrawer() {
     return () => window.removeEventListener('keydown', handleEsc);
   }, [isOpen, closeCart]);
 
+  // RTL: drawer à gauche, sort vers la gauche
+  // LTR: drawer à droite, sort vers la droite
   const panelClass = `fixed top-0 bottom-0 z-50 w-full max-w-md bg-white shadow-2xl
     flex flex-col transition-transform duration-300 ease-out
-    ${isRTL ? 'start-0' : 'end-0'}
+    ${isRTL ? 'left-0' : 'right-0'}
     ${isOpen ? 'translate-x-0' : isRTL ? '-translate-x-full' : 'translate-x-full'}`;
 
   return (

@@ -14,5 +14,7 @@ export const ROUTES = {
   ADMIN_CATEGORIES: '/admin/categories',
   ADMIN_ORDERS: '/admin/orders',
   ADMIN_QUOTES: '/admin/quotes',
+  ADMIN_MEDIA: '/admin/media',
+  ADMIN_FAQ: '/admin/faq',
   ADMIN_LOGIN: '/admin/login',
 } as const;

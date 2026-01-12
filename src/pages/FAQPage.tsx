@@ -1,42 +1,54 @@
 import { useTranslation } from 'react-i18next';
+import { Loader2 } from 'lucide-react';
 import { Accordion } from '../components/faq';
 import type { FAQItem } from '../components/faq';
+import { useFAQs } from '../hooks/useFAQs';
 
 export function FAQPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const { data: faqs, isLoading } = useFAQs();
+  const isHebrew = i18n.language === 'he';
 
-  const faqItems: FAQItem[] = [
-    {
-      id: '1',
-      question: t('faq.items.kashrut.question'),
-      answer: t('faq.items.kashrut.answer'),
-    },
-    {
-      id: '2',
-      question: t('faq.items.delivery.question'),
-      answer: t('faq.items.delivery.answer'),
-    },
-    {
-      id: '3',
-      question: t('faq.items.advance.question'),
-      answer: t('faq.items.advance.answer'),
-    },
-    {
-      id: '4',
-      question: t('faq.items.custom.question'),
-      answer: t('faq.items.custom.answer'),
-    },
-    {
-      id: '5',
-      question: t('faq.items.hours.question'),
-      answer: t('faq.items.hours.answer'),
-    },
-    {
-      id: '6',
-      question: t('faq.items.dietary.question'),
-      answer: t('faq.items.dietary.answer'),
-    },
-  ];
+  // Utiliser les FAQs de Supabase si disponibles, sinon fallback sur i18n
+  const faqItems: FAQItem[] = faqs && faqs.length > 0
+    ? faqs.map((faq) => ({
+        id: faq.id,
+        question: isHebrew ? faq.question_he : faq.question_fr,
+        answer: isHebrew ? faq.answer_he : faq.answer_fr,
+      }))
+    : [
+        {
+          id: '1',
+          question: t('faq.items.kashrut.question'),
+          answer: t('faq.items.kashrut.answer'),
+        },
+        {
+          id: '2',
+          question: t('faq.items.delivery.question'),
+          answer: t('faq.items.delivery.answer'),
+        },
+        {
+          id: '3',
+          question: t('faq.items.advance.question'),
+          answer: t('faq.items.advance.answer'),
+        },
+        {
+          id: '4',
+          question: t('faq.items.custom.question'),
+          answer: t('faq.items.custom.answer'),
+        },
+        {
+          id: '5',
+          question: t('faq.items.hours.question'),
+          answer: t('faq.items.hours.answer'),
+        },
+        {
+          id: '6',
+          question: t('faq.items.dietary.question'),
+          answer: t('faq.items.dietary.answer'),
+        },
+      ];
+
   return (
     <div className="min-h-screen bg-cream-50">
       {/* Hero Section */}
@@ -54,7 +66,13 @@ export function FAQPage() {
 
       {/* FAQ Content */}
       <section className="max-w-6xl mx-auto px-4 py-12 max-w-3xl">
-        <Accordion items={faqItems} defaultOpenIndex={0} />
+        {isLoading ? (
+          <div className="flex justify-center py-12">
+            <Loader2 className="w-8 h-8 animate-spin text-gold-500" />
+          </div>
+        ) : (
+          <Accordion items={faqItems} defaultOpenIndex={0} />
+        )}
 
         {/* Contact CTA */}
         <div className="mt-12 text-center p-8 bg-cream-100 rounded-2xl border border-gold-200/50">

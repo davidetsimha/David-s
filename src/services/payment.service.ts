@@ -51,8 +51,17 @@ export interface PaymentResponse {
  * In production, this should call your backend which then calls PayPlus API
  */
 export async function initiatePayment(request: PaymentRequest): Promise<PaymentResponse> {
-  // TODO: Replace with actual backend endpoint
-  const backendUrl = import.meta.env.VITE_PAYMENT_API_URL || '/api/payment/create';
+  // Mode test: si pas d'API configurée ou en développement, simuler le succès
+  if (!import.meta.env.VITE_PAYMENT_API_URL || import.meta.env.DEV) {
+    console.info('Mode test activé: paiement simulé');
+    return {
+      success: true,
+      paymentUrl: undefined,
+      transactionId: `test_${Date.now()}`,
+    };
+  }
+
+  const backendUrl = import.meta.env.VITE_PAYMENT_API_URL;
 
   try {
     const response = await fetch(backendUrl, {
@@ -98,17 +107,6 @@ export async function initiatePayment(request: PaymentRequest): Promise<PaymentR
     };
   } catch (error) {
     console.error('Payment error:', error);
-
-    // For development/demo: simulate success
-    if (import.meta.env.DEV || !import.meta.env.VITE_PAYMENT_API_URL) {
-      console.warn('Using mock payment for development');
-      return {
-        success: true,
-        paymentUrl: undefined, // Will use internal flow
-        transactionId: `mock_${Date.now()}`,
-      };
-    }
-
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Payment failed',

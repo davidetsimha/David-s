@@ -22,6 +22,8 @@ import { AdminProducts } from './pages/admin/AdminProducts';
 import { AdminCategories } from './pages/admin/AdminCategories';
 import { AdminOrders } from './pages/admin/AdminOrders';
 import { AdminQuotes } from './pages/admin/AdminQuotes';
+import { AdminMedia } from './pages/admin/AdminMedia';
+import { AdminFAQ } from './pages/admin/AdminFAQ';
 
 export default function App() {
   return (
@@ -57,6 +59,8 @@ export default function App() {
           <Route path={ROUTES.ADMIN_CATEGORIES} element={<AdminCategories />} />
           <Route path={ROUTES.ADMIN_ORDERS} element={<AdminOrders />} />
           <Route path={ROUTES.ADMIN_QUOTES} element={<AdminQuotes />} />
+          <Route path={ROUTES.ADMIN_MEDIA} element={<AdminMedia />} />
+          <Route path={ROUTES.ADMIN_FAQ} element={<AdminFAQ />} />
         </Route>
 
         {/* 404 */}

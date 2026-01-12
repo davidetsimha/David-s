@@ -35,4 +35,16 @@ export const queryKeys = {
     all: ['gallery'] as const,
     list: (category?: string) => [...queryKeys.gallery.all, 'list', category] as const,
   },
+  faqs: {
+    all: ['faqs'] as const,
+    list: () => [...queryKeys.faqs.all, 'list'] as const,
+  },
+  creations: {
+    all: ['creations'] as const,
+    list: () => [...queryKeys.creations.all, 'list'] as const,
+  },
+  eventTypes: {
+    all: ['eventTypes'] as const,
+    list: () => [...queryKeys.eventTypes.all, 'list'] as const,
+  },
 } as const;
