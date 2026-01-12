@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { XCircle, ArrowRight, ArrowLeft, ShoppingBag } from 'lucide-react';
-import { useLanguageStore } from '../../stores';
 import { ROUTES } from '../../config/routes';
 
 export function CheckoutCancelPage() {
-  const { t, direction } = useLanguageStore();
-  const isRTL = direction === 'rtl';
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.dir() === 'rtl';
+  const direction = i18n.dir();
   const Arrow = isRTL ? ArrowLeft : ArrowRight;
   const BackArrow = isRTL ? ArrowRight : ArrowLeft;
 
@@ -22,26 +23,20 @@ export function CheckoutCancelPage() {
         </div>
 
         <h1 className="font-display text-3xl text-stone-800 mb-3">
-          {t('Commande annulée', 'ההזמנה בוטלה')}
+          {t('checkout.orderCancelled')}
         </h1>
 
         <p className="text-stone-600 mb-8 leading-relaxed">
-          {t(
-            "Votre commande a été annulée. Vos articles sont toujours dans votre panier si vous souhaitez réessayer.",
-            'הזמנתך בוטלה. הפריטים שלך עדיין בסל הקניות אם תרצה לנסות שוב.'
-          )}
+          {t('checkout.cancel.message')}
         </p>
 
         {/* Message Box */}
         <div className="bg-white rounded-xl p-5 border border-cream-200 mb-8 text-start">
           <p className="text-sm text-stone-500 mb-2">
-            {t('Besoin d\'aide?', 'צריך עזרה?')}
+            {t('checkout.needHelp', 'Besoin d\'aide?')}
           </p>
           <p className="text-stone-700">
-            {t(
-              'Si vous avez rencontré un problème, n\'hésitez pas à nous contacter.',
-              'אם נתקלת בבעיה, אל תהסס ליצור איתנו קשר.'
-            )}
+            {t('checkout.helpMessage', 'Si vous avez rencontre un probleme, n\'hesitez pas a nous contacter.')}
           </p>
         </div>
 
@@ -56,7 +51,7 @@ export function CheckoutCancelPage() {
               transition-all duration-200"
           >
             <ShoppingBag className="w-4 h-4" />
-            {t('Réessayer', 'נסה שוב')}
+            {t('checkout.retry')}
           </Link>
 
           <Link
@@ -65,7 +60,7 @@ export function CheckoutCancelPage() {
               text-stone-600 hover:text-gold-700 font-medium transition-colors"
           >
             <BackArrow className="w-4 h-4" />
-            {t("Retour à l'accueil", 'חזרה לדף הבית')}
+            {t('notFound.backHome')}
           </Link>
 
           <Link
@@ -73,7 +68,7 @@ export function CheckoutCancelPage() {
             className="block w-full py-2 text-sm text-gold-600 hover:text-gold-700
               transition-colors"
           >
-            {t('Nous contacter', 'צור קשר')}
+            {t('checkout.contactUs')}
             <Arrow className="w-3 h-3 inline-block ms-1" />
           </Link>
         </div>

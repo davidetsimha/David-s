@@ -31,7 +31,7 @@ export function AccordionItem({ question, answer, defaultOpen = false }: Accordi
         <span className={`
           flex-shrink-0 w-8 h-8 rounded-full
           flex items-center justify-center
-          transition-all duration-300
+          transition-all duration-200
           ${isOpen
             ? 'bg-gold-500 text-white rotate-180'
             : 'bg-cream-200 text-gold-600 group-hover:bg-gold-100'

@@ -1,4 +1,5 @@
 import { useForm, type SubmitHandler } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Send, CheckCircle } from 'lucide-react';
@@ -8,16 +9,15 @@ import { Select } from '../ui/Select';
 import { Textarea } from '../ui/Textarea';
 import { Button } from '../ui/Button';
 import { useCreateQuote } from '../../hooks/useQuotes';
-import { useLanguageStore } from '../../stores/languageStore';
 import type { EventType } from '../../types';
 
 const schema = z.object({
-  name: z.string().min(2, 'Name required'),
-  email: z.string().email('Valid email required'),
-  phone: z.string().min(9, 'Phone required'),
-  event_type: z.string().min(1, 'Select event type'),
-  event_date: z.string().min(1, 'Select date'),
-  guest_count: z.coerce.number().min(1, 'At least 1 guest'),
+  name: z.string().min(2),
+  email: z.string().email(),
+  phone: z.string().min(9),
+  event_type: z.string().min(1),
+  event_date: z.string().min(1),
+  guest_count: z.coerce.number().min(1),
   message: z.string().optional(),
 });
 
@@ -28,7 +28,7 @@ interface QuoteRequestFormProps {
 }
 
 export function QuoteRequestForm({ preselectedType }: QuoteRequestFormProps) {
-  const { t } = useLanguageStore();
+  const { t } = useTranslation();
   const [submitted, setSubmitted] = useState(false);
   const { mutate, isPending } = useCreateQuote();
 
@@ -42,10 +42,10 @@ export function QuoteRequestForm({ preselectedType }: QuoteRequestFormProps) {
   });
 
   const eventOptions = [
-    { value: 'bar_mitzvah', label: t('Bar Mitzvah', 'בר מצווה') },
-    { value: 'bat_mitzvah', label: t('Bat Mitzvah', 'בת מצווה') },
-    { value: 'brit', label: t('Brit Mila', 'ברית מילה') },
-    { value: 'private_party', label: t('Fete Privee', 'מסיבה פרטית') },
+    { value: 'bar_mitzvah', label: t('receptions.eventTypes.bar_mitzvah') },
+    { value: 'bat_mitzvah', label: t('receptions.eventTypes.bat_mitzvah') },
+    { value: 'brit', label: t('receptions.eventTypes.brit') },
+    { value: 'private_party', label: t('receptions.eventTypes.private_party') },
   ];
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
@@ -58,11 +58,11 @@ export function QuoteRequestForm({ preselectedType }: QuoteRequestFormProps) {
     return (
       <div className="text-center py-12">
         <CheckCircle className="w-16 h-16 text-gold-500 mx-auto mb-4" />
-        <h3 className="font-display text-2xl text-gray-900 mb-2">
-          {t('Merci!', 'תודה!')}
+        <h3 className="font-display text-2xl text-stone-900 mb-2">
+          {t('common.thanksTitle')}
         </h3>
-        <p className="text-gray-600">
-          {t('Nous vous contacterons bientot', 'ניצור איתך קשר בהקדם')}
+        <p className="text-stone-600">
+          {t('common.thanksMessage')}
         </p>
       </div>
     );
@@ -72,12 +72,12 @@ export function QuoteRequestForm({ preselectedType }: QuoteRequestFormProps) {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <Input
-          label={t('Nom complet', 'שם מלא')}
+          label={t('receptions.quoteForm.name')}
           {...register('name')}
           error={errors.name?.message}
         />
         <Input
-          label={t('Email', 'אימייל')}
+          label={t('receptions.quoteForm.email')}
           type="email"
           {...register('email')}
           error={errors.email?.message}
@@ -86,15 +86,15 @@ export function QuoteRequestForm({ preselectedType }: QuoteRequestFormProps) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <Input
-          label={t('Telephone', 'טלפון')}
+          label={t('receptions.quoteForm.phone')}
           type="tel"
           {...register('phone')}
           error={errors.phone?.message}
         />
         <Select
-          label={t('Type d\'evenement', 'סוג אירוע')}
+          label={t('receptions.quoteForm.eventType')}
           options={eventOptions}
-          placeholder={t('Choisir...', 'בחר...')}
+          placeholder={t('common.choose')}
           {...register('event_type')}
           error={errors.event_type?.message}
         />
@@ -102,13 +102,13 @@ export function QuoteRequestForm({ preselectedType }: QuoteRequestFormProps) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <Input
-          label={t('Date', 'תאריך')}
+          label={t('receptions.quoteForm.eventDate')}
           type="date"
           {...register('event_date')}
           error={errors.event_date?.message}
         />
         <Input
-          label={t('Nombre d\'invites', 'מספר אורחים')}
+          label={t('receptions.quoteForm.guestCount')}
           type="number"
           min={1}
           {...register('guest_count')}
@@ -117,14 +117,14 @@ export function QuoteRequestForm({ preselectedType }: QuoteRequestFormProps) {
       </div>
 
       <Textarea
-        label={t('Message (optionnel)', 'הודעה (אופציונלי)')}
+        label={t('receptions.quoteForm.message')}
         {...register('message')}
         rows={3}
       />
 
       <Button type="submit" loading={isPending} size="lg" className="w-full">
         <Send className="w-5 h-5" />
-        {t('Envoyer la demande', 'שלח בקשה')}
+        {t('receptions.quoteForm.submit')}
       </Button>
     </form>
   );

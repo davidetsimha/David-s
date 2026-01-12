@@ -1,12 +1,20 @@
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { CheckCircle, ArrowRight, ArrowLeft, Phone } from 'lucide-react';
-import { useLanguageStore } from '../../stores';
 import { ROUTES } from '../../config/routes';
 
+const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '+972 XX XXX XXXX';
+
 export function CheckoutSuccessPage() {
-  const { t, direction } = useLanguageStore();
-  const isRTL = direction === 'rtl';
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.dir() === 'rtl';
+  const direction = i18n.dir();
   const Arrow = isRTL ? ArrowLeft : ArrowRight;
+
+  // Get order ID from URL params or location state
+  const [searchParams] = useSearchParams();
+  const location = useLocation();
+  const orderId = searchParams.get('order_id') || (location.state as { orderId?: string })?.orderId;
 
   return (
     <div className="min-h-screen bg-cream-50 flex items-center justify-center p-4" dir={direction}>
@@ -21,32 +29,31 @@ export function CheckoutSuccessPage() {
         </div>
 
         <h1 className="font-display text-3xl text-stone-800 mb-3">
-          {t('Commande confirmée!', 'ההזמנה אושרה!')}
+          {t('checkout.success.title')}
         </h1>
 
         <p className="text-stone-600 mb-8 leading-relaxed">
-          {t(
-            'Merci pour votre commande! Nous vous contacterons sous peu pour confirmer les détails.',
-            'תודה על הזמנתך! ניצור איתך קשר בקרוב לאישור הפרטים.'
-          )}
+          {t('checkout.success.message')}
         </p>
 
-        {/* Order Number */}
-        <div className="bg-white rounded-xl p-5 border border-cream-200 mb-8">
-          <p className="text-sm text-stone-500 mb-1">
-            {t('Numéro de commande', 'מספר הזמנה')}
-          </p>
-          <p className="font-display text-xl text-gold-700">
-            #DP-{Date.now().toString().slice(-6)}
-          </p>
-        </div>
+        {/* Order Number - only show if we have a real order ID */}
+        {orderId && (
+          <div className="bg-white rounded-xl p-5 border border-cream-200 mb-8">
+            <p className="text-sm text-stone-500 mb-1">
+              {t('checkout.orderNumber')}
+            </p>
+            <p className="font-display text-xl text-gold-700">
+              #{orderId}
+            </p>
+          </div>
+        )}
 
         {/* Contact Info */}
         <div className="flex items-center justify-center gap-3 text-sm text-stone-600 mb-8">
           <Phone className="w-4 h-4" />
-          <span>{t('Questions?', 'שאלות?')}</span>
-          <a href="tel:+41000000000" className="text-gold-600 hover:text-gold-700 font-medium">
-            +41 00 000 00 00
+          <span>{t('common.questions')}</span>
+          <a href={`tel:${WHATSAPP_NUMBER.replace(/\s/g, '')}`} className="text-gold-600 hover:text-gold-700 font-medium">
+            {WHATSAPP_NUMBER}
           </a>
         </div>
 
@@ -60,7 +67,7 @@ export function CheckoutSuccessPage() {
               hover:bg-gold-600 hover:shadow-lg
               transition-all duration-200"
           >
-            {t("Retour à l'accueil", 'חזרה לדף הבית')}
+            {t('notFound.backHome')}
             <Arrow className="w-4 h-4" />
           </Link>
 
@@ -69,7 +76,7 @@ export function CheckoutSuccessPage() {
             className="block w-full py-3 text-gold-700 hover:text-gold-800
               font-medium transition-colors"
           >
-            {t('Voir plus de produits', 'צפה במוצרים נוספים')}
+            {t('cart.viewMoreProducts')}
           </Link>
         </div>
       </div>

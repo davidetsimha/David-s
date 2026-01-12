@@ -7,6 +7,28 @@
     "faq": "שאלות נפוצות",
     "contact": "צור קשר"
   },
+  "common": {
+    "loading": "טוען...",
+    "error": "אירעה שגיאה",
+    "required": "שדה חובה",
+    "optional": "אופציונלי",
+    "close": "סגור",
+    "decrease": "הפחת",
+    "increase": "הוסף",
+    "delete": "הסר",
+    "currency": "CHF",
+    "free": "חינם",
+    "quantity": "כמות",
+    "all": "הכל",
+    "unavailable": "לא זמין",
+    "add": "הוסף",
+    "undo": "בטל",
+    "noProductsFound": "לא נמצאו מוצרים",
+    "questions": "שאלות?",
+    "thanksTitle": "תודה!",
+    "thanksMessage": "ניצור איתך קשר בהקדם",
+    "choose": "בחר..."
+  },
   "home": {
     "heroTitle": "אומנות הקונדיטוריה הצרפתית",
     "heroSubtitle": "יצירות אומן בהשגחת בד״ץ בית יוסף",
@@ -18,14 +40,30 @@
     "shabbatSubtitle": "הזמינו עוגות ומאפים לשבת",
     "viewProducts": "צפו בכל המוצרים"
   },
+  "shabbat": {
+    "title": "הזמנות שבת",
+    "orderBefore": "הזמנה עד יום חמישי",
+    "subtitle": "מאפים טריים מוכנים לשבת שלכם"
+  },
   "receptions": {
-    "title": "אירועים וקבלות פנים",
+    "title": "קבלות פנים ואירועים",
     "subtitle": "תנו לנו לארגן את האירוע שלכם",
+    "customEvents": "אירועים בהתאמה אישית",
+    "heroSubtitle": "יצירות קונדיטוריה יוצאות דופן לרגעים היקרים שלכם",
+    "ourCreations": "היצירות שלנו",
+    "quoteTitle": "בקשת הצעת מחיר",
+    "quoteSubtitle": "ספרו לנו על האירוע שלכם, נחזור אליכם בהקדם",
     "eventTypes": {
       "bar_mitzvah": "בר מצווה",
       "bat_mitzvah": "בת מצווה",
       "brit": "ברית מילה",
       "private_party": "מסיבה פרטית"
+    },
+    "eventDesc": {
+      "bar_mitzvah": "חגיגת הרגע",
+      "bat_mitzvah": "יום מיוחד",
+      "brit": "קבלת פני החיים",
+      "private_party": "האירועים שלכם"
     },
     "quoteForm": {
       "title": "בקשת הצעת מחיר",
@@ -49,27 +87,52 @@
   },
   "cart": {
     "title": "סל הקניות",
+    "yourCart": "סל הקניות שלך",
     "empty": "הסל שלך ריק",
-    "subtotal": "סיכום ביניים",
+    "emptyMessage": "גלו את המאפים הטעימים שלנו והוסיפו את המועדפים עליכם",
+    "subtotal": "סכום ביניים",
     "checkout": "לתשלום",
-    "continueShopping": "המשך בקניות",
+    "continueShopping": "המשך לקנות",
     "remove": "הסר",
-    "quantity": "כמות"
+    "quantity": "כמות",
+    "discoverProducts": "גלו את המוצרים שלנו",
+    "orderSummary": "סיכום הזמנה",
+    "delivery": "משלוח",
+    "deliveryCalculated": "יחושב בקופה",
+    "total": "סה\"כ",
+    "itemRemoved": "הפריט הוסר",
+    "viewMoreProducts": "צפה במוצרים נוספים"
   },
   "checkout": {
-    "title": "השלמת הזמנה",
+    "title": "סיום ההזמנה",
     "customerInfo": "הפרטים שלך",
     "name": "שם מלא",
-    "email": "אימייל",
-    "phone": "טלפון",
+    "email": "כתובת אימייל",
+    "phone": "מספר טלפון",
     "deliveryMethod": "אופן משלוח",
     "pickup": "איסוף עצמי",
-    "delivery": "משלוח בירושלים",
+    "pickupSubtitle": "חינם - מוכן תוך 24 שעות",
+    "delivery": "משלוח עד הבית",
+    "deliverySubtitle": "החל מ-15 CHF",
     "address": "כתובת למשלוח",
+    "deliveryNotes": "הוראות משלוח (אופציונלי)",
     "notes": "הערות / הוראות מיוחדות",
-    "orderSummary": "סיכום הזמנה",
-    "total": "סה״כ",
+    "orderSummary": "ההזמנה שלך",
+    "subtotal": "סכום ביניים",
+    "deliveryFee": "משלוח",
+    "total": "סה\"כ",
     "payNow": "לתשלום",
+    "confirmOrder": "אישור הזמנה",
+    "securePayment": "תשלום מאובטח ונתונים מוגנים",
+    "backToProducts": "חזרה למוצרים",
+    "emptyCart": "סל הקניות שלך ריק",
+    "paymentAccepted": "אמצעי תשלום",
+    "postalCode": "מיקוד",
+    "city": "עיר",
+    "orderNumber": "מספר הזמנה",
+    "orderCancelled": "ההזמנה בוטלה",
+    "retry": "נסה שוב",
+    "contactUs": "צור קשר",
     "success": {
       "title": "ההזמנה אושרה!",
       "message": "תודה על הזמנתך. תקבל אימייל אישור בקרוב."
@@ -161,17 +224,17 @@
   "footer": {
     "rights": "כל הזכויות שמורות",
     "certification": "בהשגחת בד״ץ בית יוסף",
-    "delivery": "משלוחים בירושלים בלבד"
-  },
-  "common": {
-    "loading": "טוען...",
-    "error": "אירעה שגיאה",
-    "required": "שדה חובה",
-    "optional": "אופציונלי"
+    "delivery": "משלוחים בירושלים בלבד",
+    "address": "ירושלים, ישראל",
+    "phone": "+972 50 123 4567",
+    "email": "contact@davids-patisserie.com"
   },
   "notFound": {
     "title": "הדף לא נמצא",
     "message": "הדף שאתם מחפשים לא קיים.",
     "backHome": "חזרה לדף הבית"
+  },
+  "whatsapp": {
+    "message": "שלום, אשמח לקבל מידע נוסף..."
   }
 }

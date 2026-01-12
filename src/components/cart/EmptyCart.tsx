@@ -1,11 +1,11 @@
+import { useTranslation } from 'react-i18next';
 import { ShoppingBag } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useLanguageStore } from '../../stores';
 import { useCartStore } from '../../stores';
 import { ROUTES } from '../../config/routes';
 
 export function EmptyCart() {
-  const { t } = useLanguageStore();
+  const { t } = useTranslation();
   const { closeCart } = useCartStore();
 
   return (
@@ -15,17 +15,15 @@ export function EmptyCart() {
           flex items-center justify-center">
           <ShoppingBag className="w-10 h-10 text-gold-400" strokeWidth={1.5} />
         </div>
-        <div className="absolute inset-0 rounded-full bg-gold-200/30 animate-ping" />
+        {/* Subtle pulse animation - finite, not infinite ping */}
+        <div className="absolute inset-0 rounded-full bg-gold-200/30 animate-pulse" />
       </div>
 
       <h3 className="font-display text-xl text-stone-800 mb-2">
-        {t('Votre panier est vide', 'סל הקניות שלך ריק')}
+        {t('cart.empty')}
       </h3>
       <p className="text-stone-500 text-sm mb-6 max-w-xs">
-        {t(
-          'Explorez nos délicieuses pâtisseries et ajoutez vos favoris',
-          'גלו את המאפים הטעימים שלנו והוסיפו את המועדפים עליכם'
-        )}
+        {t('cart.emptyMessage')}
       </p>
 
       <Link
@@ -38,7 +36,7 @@ export function EmptyCart() {
           active:shadow-sm active:translate-y-0.5
           transition-all duration-200"
       >
-        {t('Découvrir nos produits', 'גלו את המוצרים שלנו')}
+        {t('cart.discoverProducts')}
       </Link>
     </div>
   );

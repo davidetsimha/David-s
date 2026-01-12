@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
   Star,
   Baby,
@@ -5,41 +6,32 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { EventTypeCard } from './EventTypeCard';
-import { useLanguageStore } from '../../stores/languageStore';
 import type { EventType } from '../../types';
 
 const EVENT_TYPES = [
   {
     type: 'bar_mitzvah' as EventType,
     icon: Star,
-    titleFr: 'Bar Mitzvah',
-    titleHe: 'בר מצווה',
-    descFr: 'Celebrer ce moment',
-    descHe: 'חגיגת הרגע',
+    titleKey: 'receptions.eventTypes.bar_mitzvah',
+    descKey: 'receptions.eventDesc.bar_mitzvah',
   },
   {
     type: 'bat_mitzvah' as EventType,
     icon: Sparkles,
-    titleFr: 'Bat Mitzvah',
-    titleHe: 'בת מצווה',
-    descFr: 'Un jour special',
-    descHe: 'יום מיוחד',
+    titleKey: 'receptions.eventTypes.bat_mitzvah',
+    descKey: 'receptions.eventDesc.bat_mitzvah',
   },
   {
     type: 'brit' as EventType,
     icon: Baby,
-    titleFr: 'Brit Mila',
-    titleHe: 'ברית מילה',
-    descFr: 'Accueillir la vie',
-    descHe: 'קבלת פני החיים',
+    titleKey: 'receptions.eventTypes.brit',
+    descKey: 'receptions.eventDesc.brit',
   },
   {
     type: 'private_party' as EventType,
     icon: PartyPopper,
-    titleFr: 'Fete Privee',
-    titleHe: 'מסיבה פרטית',
-    descFr: 'Vos evenements',
-    descHe: 'האירועים שלכם',
+    titleKey: 'receptions.eventTypes.private_party',
+    descKey: 'receptions.eventDesc.private_party',
   },
 ];
 
@@ -49,12 +41,13 @@ interface EventTypeListProps {
 }
 
 export function EventTypeList({ selected, onSelect }: EventTypeListProps) {
-  const { t, direction } = useLanguageStore();
+  const { t, i18n } = useTranslation();
+  const direction = i18n.dir();
 
   return (
     <section className="py-8">
-      <h2 className="font-display text-2xl text-gray-900 mb-6">
-        {t('Type d\'evenement', 'סוג האירוע')}
+      <h2 className="font-display text-2xl text-stone-900 mb-6">
+        {t('receptions.quoteForm.eventType')}
       </h2>
 
       <div
@@ -65,10 +58,8 @@ export function EventTypeList({ selected, onSelect }: EventTypeListProps) {
           <EventTypeCard
             key={event.type}
             icon={event.icon}
-            titleFr={event.titleFr}
-            titleHe={event.titleHe}
-            descFr={event.descFr}
-            descHe={event.descHe}
+            titleKey={event.titleKey}
+            descKey={event.descKey}
             isSelected={selected === event.type}
             onClick={() => onSelect(event.type)}
           />

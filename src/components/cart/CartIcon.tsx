@@ -1,21 +1,22 @@
+import { useTranslation } from 'react-i18next';
 import { ShoppingBag } from 'lucide-react';
 import { useCartStore } from '../../stores';
-import { useLanguageStore } from '../../stores';
 
 export function CartIcon() {
   const { totalItems, openCart } = useCartStore();
-  const { direction, t } = useLanguageStore();
+  const { t, i18n } = useTranslation();
+  const direction = i18n.dir();
   const count = totalItems();
 
   return (
     <button
       onClick={openCart}
-      className="relative p-2.5 group transition-all duration-300"
-      aria-label={t('Panier', 'סל קניות')}
+      className="relative p-2.5 group transition-all duration-200 rounded-full focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 focus-visible:outline-none"
+      aria-label={t('cart.title')}
     >
       <ShoppingBag
         className="w-6 h-6 text-gold-700 group-hover:text-gold-900
-          group-hover:scale-105 transition-all duration-300"
+          group-hover:scale-105 transition-all duration-200"
         strokeWidth={1.5}
       />
       {count > 0 && (
@@ -25,14 +26,14 @@ export function CartIcon() {
             bg-gold-600 text-white rounded-full
             shadow-md shadow-gold-600/30
             animate-scale-in
-            ${direction === 'rtl' ? '-left-0.5' : '-right-0.5'}`}
+            ${direction === 'rtl' ? '-start-0.5' : '-end-0.5'}`}
         >
           {count > 99 ? '99+' : count}
         </span>
       )}
       <span
         className="absolute inset-0 rounded-full bg-gold-100
-          scale-0 group-hover:scale-100 transition-transform duration-300 -z-10"
+          scale-0 group-hover:scale-100 transition-transform duration-200 -z-10"
       />
     </button>
   );

@@ -17,7 +17,7 @@ export function LanguageSwitch() {
     <button
       onClick={toggleLanguage}
       className="group relative px-3 py-1.5 text-sm font-medium tracking-wide
-        text-gold-700 hover:text-gold-900 transition-colors duration-300"
+        text-gold-700 hover:text-gold-900 transition-colors duration-200"
       aria-label={language === 'fr' ? 'Switch to Hebrew' : 'Passer en Francais'}
     >
       <span className="relative z-10 flex items-center gap-1.5">
@@ -31,7 +31,7 @@ export function LanguageSwitch() {
       </span>
       <span className="absolute inset-0 rounded-full border border-gold-200
         group-hover:border-gold-400 group-hover:bg-gold-50/50
-        transition-all duration-300" />
+        transition-all duration-200" />
     </button>
   );
 }

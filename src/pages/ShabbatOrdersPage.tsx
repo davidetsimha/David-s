@@ -1,13 +1,13 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Calendar } from 'lucide-react';
 import { ProductFilters } from '../components/shabbat/ProductFilters';
 import { ProductGrid } from '../components/shabbat/ProductGrid';
 import { useProducts } from '../hooks/useProducts';
 import { useCategories } from '../hooks/useCategories';
-import { useLanguageStore } from '../stores/languageStore';
 
 export function ShabbatOrdersPage() {
-  const { t } = useLanguageStore();
+  const { t } = useTranslation();
   const [categoryId, setCategoryId] = useState<string>();
 
   const { data: categories = [] } = useCategories();
@@ -19,30 +19,27 @@ export function ShabbatOrdersPage() {
   return (
     <div className="min-h-screen bg-cream-50">
       {/* Header */}
-      <section className="py-12 px-4 bg-gradient-to-b from-gold-50 to-cream-50">
-        <div className="max-w-5xl mx-auto text-center">
+      <section className="py-16 md:py-20 px-4 bg-gradient-to-b from-cream-100 to-cream-50">
+        <div className="max-w-6xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-gold-100 rounded-full mb-4">
             <Calendar className="w-4 h-4 text-gold-600" />
             <span className="text-sm font-medium text-gold-700">
-              {t('Commande avant jeudi', 'הזמנה עד יום חמישי')}
+              {t('shabbat.orderBefore')}
             </span>
           </div>
 
-          <h1 className="font-display text-4xl md:text-5xl text-gray-900 mb-3">
-            {t('Commandes Shabbat', 'הזמנות שבת')}
+          <h1 className="font-display text-4xl md:text-5xl text-stone-900 mb-3">
+            {t('shabbat.title')}
           </h1>
 
-          <p className="text-gray-600 max-w-xl mx-auto">
-            {t(
-              'Patisseries fraiches preparees pour votre Shabbat',
-              'מאפים טריים מוכנים לשבת שלכם'
-            )}
+          <p className="text-stone-600 max-w-xl mx-auto">
+            {t('shabbat.subtitle')}
           </p>
         </div>
       </section>
 
       {/* Content */}
-      <div className="max-w-5xl mx-auto px-4 py-8">
+      <div className="max-w-6xl mx-auto px-4 py-8">
         <ProductFilters
           categories={categories}
           selectedId={categoryId}

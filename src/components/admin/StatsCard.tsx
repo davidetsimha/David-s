@@ -17,7 +17,7 @@ export const StatsCard = forwardRef<HTMLDivElement, StatsCardProps>(
         ref={ref}
         className={`
           bg-white rounded-xl border border-gray-100 p-6
-          hover:shadow-lg hover:border-gold-200 transition-all duration-300
+          hover:shadow-lg hover:border-gold-200 transition-all duration-200
           ${className}
         `}
         {...props}

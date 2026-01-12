@@ -1,6 +1,6 @@
+import { useTranslation } from 'react-i18next';
 import { ProductCard } from './ProductCard';
 import { Skeleton } from '../ui/Skeleton';
-import { useLanguageStore } from '../../stores/languageStore';
 import type { Product } from '../../types';
 
 interface ProductGridProps {
@@ -9,7 +9,7 @@ interface ProductGridProps {
 }
 
 export function ProductGrid({ products, isLoading }: ProductGridProps) {
-  const { t } = useLanguageStore();
+  const { t } = useTranslation();
 
   if (isLoading) {
     return (
@@ -31,8 +31,8 @@ export function ProductGrid({ products, isLoading }: ProductGridProps) {
   if (products.length === 0) {
     return (
       <div className="text-center py-16">
-        <p className="text-gray-500">
-          {t('Aucun produit trouve', 'לא נמצאו מוצרים')}
+        <p className="text-stone-500">
+          {t('common.noProductsFound')}
         </p>
       </div>
     );

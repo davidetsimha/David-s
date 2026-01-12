@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;600;700&family=Heebo:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
 
 @import "tailwindcss";
 
@@ -24,7 +24,8 @@
 
   /* Font families */
   --font-sans: 'Heebo', system-ui, sans-serif;
-  --font-display: 'Playfair Display', serif;
+  --font-display: 'Playfair Display', 'Frank Ruhl Libre', serif;
+  --font-display-he: 'Frank Ruhl Libre', 'Playfair Display', serif;
 
   /* Animations */
   --animate-fade-in: fadeIn 0.2s ease-out;
@@ -54,7 +55,7 @@
 
   body {
     font-family: var(--font-sans);
-    color: var(--color-gray-900);
+    color: var(--color-stone-900);
     background-color: var(--color-cream-50);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -63,6 +64,17 @@
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
+  }
+
+  /* Hebrew font for RTL */
+  [dir="rtl"] h1,
+  [dir="rtl"] h2,
+  [dir="rtl"] h3,
+  [dir="rtl"] h4,
+  [dir="rtl"] h5,
+  [dir="rtl"] h6,
+  [dir="rtl"] .font-display {
+    font-family: var(--font-display-he);
   }
 }
 
@@ -118,7 +130,7 @@
   .input-field {
     width: 100%;
     padding: 0.75rem 1rem;
-    border: 1px solid var(--color-gray-300);
+    border: 1px solid var(--color-stone-300);
     border-radius: 0.5rem;
   }
 
@@ -129,14 +141,14 @@
   }
 
   .input-field::placeholder {
-    color: var(--color-gray-400);
+    color: var(--color-stone-400);
   }
 
   .card {
     background-color: white;
     border-radius: 0.75rem;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    border: 1px solid var(--color-gray-100);
+    border: 1px solid var(--color-stone-100);
     overflow: hidden;
   }
 }

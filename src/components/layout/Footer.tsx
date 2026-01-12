@@ -24,42 +24,42 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
           <div>
-            <h3 className="font-display text-2xl text-gold-400 mb-4">David's</h3>
-            <p className="text-cream-300 text-sm leading-relaxed mb-4">
+            <h3 className="font-display text-xl md:text-2xl text-gold-400 mb-4">David's</h3>
+            <p className="text-cream-200 text-sm leading-relaxed mb-4">
               {t('footer.certification')}
             </p>
-            <p className="text-cream-400 text-sm">{t('footer.delivery')}</p>
+            <p className="text-cream-200 text-sm">{t('footer.delivery')}</p>
           </div>
 
-          <div>
+          <nav aria-label="Footer navigation">
             <h4 className="text-sm font-semibold tracking-wider uppercase text-gold-400 mb-4">
               {t('nav.home')}
             </h4>
             <ul className="space-y-2">
               {quickLinks.map(({ key, route }) => (
                 <li key={key}>
-                  <Link to={route} className="text-cream-300 hover:text-gold-400
-                    text-sm transition-colors">{t(`nav.${key}`)}</Link>
+                  <Link to={route} className="text-cream-200 hover:text-gold-400
+                    text-sm transition-colors rounded focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900 focus-visible:outline-none">{t(`nav.${key}`)}</Link>
                 </li>
               ))}
             </ul>
-          </div>
+          </nav>
 
           <div>
             <h4 className="text-sm font-semibold tracking-wider uppercase text-gold-400 mb-4">
               {t('contact.title')}
             </h4>
-            <address className="not-italic text-sm text-cream-300 space-y-2">
-              <p>Jerusalem, Israel</p>
-              <p>+972 50 123 4567</p>
-              <p>contact@davids-patisserie.com</p>
+            <address className="not-italic text-sm text-cream-200 space-y-2">
+              <p>{t('footer.address')}</p>
+              <p>{t('footer.phone')}</p>
+              <p>{t('footer.email')}</p>
             </address>
             <div className="flex gap-3 mt-4">
               {socialLinks.map(({ name, href, icon: Icon }) => (
                 <a key={name} href={href} target="_blank" rel="noopener noreferrer"
                   className="w-9 h-9 flex items-center justify-center rounded-full
-                    bg-stone-800 text-cream-300 hover:bg-gold-600 hover:text-white
-                    transition-colors" aria-label={name}>
+                    bg-stone-800 text-cream-200 hover:bg-gold-600 hover:text-white
+                    transition-colors focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900 focus-visible:outline-none" aria-label={name}>
                   <Icon />
                 </a>
               ))}
@@ -67,7 +67,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-stone-800 text-center text-sm text-cream-500">
+        <div className="mt-12 pt-8 border-t border-stone-800 text-center text-sm text-cream-200">
           <p>&copy; {year} David's Patisserie. {t('footer.rights')}</p>
         </div>
       </div>

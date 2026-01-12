@@ -25,7 +25,7 @@ export function GalleryFilter({ activeFilter, onFilterChange }: GalleryFilterPro
           onClick={() => onFilterChange(filter.key)}
           className={`
             relative px-6 py-2.5 rounded-full font-medium text-sm md:text-base
-            transition-all duration-300 ease-out
+            transition-all duration-200 ease-out
             focus:outline-none focus:ring-2 focus:ring-gold-400 focus:ring-offset-2
             ${activeFilter === filter.key
               ? 'bg-gold-500 text-white shadow-lg shadow-gold-300/40'

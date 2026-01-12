@@ -1,14 +1,14 @@
+import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { User, Mail, Phone } from 'lucide-react';
-import { useLanguageStore } from '../../stores';
 import { Input } from '../ui/Input';
 
 const checkoutSchema = z.object({
-  name: z.string().min(2, 'Name is required'),
-  email: z.string().email('Invalid email'),
-  phone: z.string().min(9, 'Phone is required'),
+  name: z.string().min(2),
+  email: z.string().email(),
+  phone: z.string().min(9),
 });
 
 export type CheckoutFormData = z.infer<typeof checkoutSchema>;
@@ -19,24 +19,26 @@ interface CheckoutFormProps {
 }
 
 export function CheckoutForm({ onSubmit, isSubmitting }: CheckoutFormProps) {
-  const { t, direction } = useLanguageStore();
+  const { t, i18n } = useTranslation();
+  const direction = i18n.dir();
 
   const { register, handleSubmit, formState: { errors } } = useForm<CheckoutFormData>({
     resolver: zodResolver(checkoutSchema),
   });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" dir={direction}>
+    <form id="checkout-form" onSubmit={handleSubmit(onSubmit)} className="space-y-5" dir={direction}>
       <h3 className="font-display text-lg text-stone-800 mb-4">
-        {t('Vos informations', 'הפרטים שלך')}
+        {t('checkout.customerInfo')}
       </h3>
 
       <div className="relative">
-        <User className="absolute top-3.5 text-stone-400 w-5 h-5
+        <User className="absolute top-9 text-stone-400 w-5 h-5
           start-3 pointer-events-none" />
         <Input
           {...register('name')}
-          placeholder={t('Nom complet', 'שם מלא')}
+          label={t('checkout.name')}
+          placeholder={t('contact.form.namePlaceholder')}
           className="ps-11"
           error={errors.name?.message}
           disabled={isSubmitting}
@@ -44,12 +46,13 @@ export function CheckoutForm({ onSubmit, isSubmitting }: CheckoutFormProps) {
       </div>
 
       <div className="relative">
-        <Mail className="absolute top-3.5 text-stone-400 w-5 h-5
+        <Mail className="absolute top-9 text-stone-400 w-5 h-5
           start-3 pointer-events-none" />
         <Input
           {...register('email')}
           type="email"
-          placeholder={t('Adresse email', 'כתובת אימייל')}
+          label={t('checkout.email')}
+          placeholder="exemple@email.com"
           className="ps-11"
           error={errors.email?.message}
           disabled={isSubmitting}
@@ -57,12 +60,13 @@ export function CheckoutForm({ onSubmit, isSubmitting }: CheckoutFormProps) {
       </div>
 
       <div className="relative">
-        <Phone className="absolute top-3.5 text-stone-400 w-5 h-5
+        <Phone className="absolute top-9 text-stone-400 w-5 h-5
           start-3 pointer-events-none" />
         <Input
           {...register('phone')}
           type="tel"
-          placeholder={t('Numéro de téléphone', 'מספר טלפון')}
+          label={t('checkout.phone')}
+          placeholder={t('contact.form.phonePlaceholder')}
           className="ps-11"
           error={errors.phone?.message}
           disabled={isSubmitting}

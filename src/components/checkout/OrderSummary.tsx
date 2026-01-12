@@ -1,4 +1,5 @@
-import { useCartStore, useLanguageStore } from '../../stores';
+import { useTranslation } from 'react-i18next';
+import { useCartStore } from '../../stores';
 import type { DeliveryMethod } from './DeliveryOptions';
 
 interface OrderSummaryProps {
@@ -9,7 +10,7 @@ const DELIVERY_FEE = 15;
 
 export function OrderSummary({ deliveryMethod }: OrderSummaryProps) {
   const { items, subtotal } = useCartStore();
-  const { language, t } = useLanguageStore();
+  const { t, i18n } = useTranslation();
 
   const subTotal = subtotal();
   const deliveryFee = deliveryMethod === 'delivery' ? DELIVERY_FEE : 0;
@@ -19,7 +20,7 @@ export function OrderSummary({ deliveryMethod }: OrderSummaryProps) {
     <div className="bg-cream-50 rounded-xl border border-cream-200 overflow-hidden">
       <div className="p-5 border-b border-cream-200">
         <h3 className="font-display text-lg text-stone-800">
-          {t('Votre commande', 'ההזמנה שלך')}
+          {t('checkout.orderSummary')}
         </h3>
       </div>
 
@@ -30,7 +31,7 @@ export function OrderSummary({ deliveryMethod }: OrderSummaryProps) {
               {product.image_url ? (
                 <img
                   src={product.image_url}
-                  alt={language === 'fr' ? product.name_fr : product.name_he}
+                  alt={i18n.language === 'fr' ? product.name_fr : product.name_he}
                   className="w-full h-full object-cover"
                 />
               ) : (
@@ -40,10 +41,10 @@ export function OrderSummary({ deliveryMethod }: OrderSummaryProps) {
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-stone-800 truncate">
-                {language === 'fr' ? product.name_fr : product.name_he}
+                {i18n.language === 'fr' ? product.name_fr : product.name_he}
               </p>
               <p className="text-xs text-stone-500">
-                {t('Qté', 'כמות')}: {quantity}
+                {t('common.quantity')}: {quantity}
               </p>
             </div>
             <p className="text-sm font-medium text-stone-700">
@@ -55,17 +56,17 @@ export function OrderSummary({ deliveryMethod }: OrderSummaryProps) {
 
       <div className="p-5 bg-white border-t border-cream-200 space-y-2">
         <div className="flex justify-between text-sm">
-          <span className="text-stone-500">{t('Sous-total', 'סכום ביניים')}</span>
+          <span className="text-stone-500">{t('checkout.subtotal')}</span>
           <span className="text-stone-700">{subTotal.toFixed(2)} CHF</span>
         </div>
         <div className="flex justify-between text-sm">
-          <span className="text-stone-500">{t('Livraison', 'משלוח')}</span>
+          <span className="text-stone-500">{t('checkout.deliveryFee')}</span>
           <span className="text-stone-700">
-            {deliveryFee === 0 ? t('Gratuit', 'חינם') : `${deliveryFee.toFixed(2)} CHF`}
+            {deliveryFee === 0 ? t('common.free') : `${deliveryFee.toFixed(2)} CHF`}
           </span>
         </div>
         <div className="flex justify-between pt-3 border-t border-cream-200">
-          <span className="font-medium text-stone-800">{t('Total', 'סה"כ')}</span>
+          <span className="font-medium text-stone-800">{t('checkout.total')}</span>
           <span className="font-display text-xl text-gold-700">
             {total.toFixed(2)} CHF
           </span>

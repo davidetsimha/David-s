@@ -27,6 +27,7 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
   ({ status = 'pending', variant = 'default', className = '', children, ...props }, ref) => (
     <span
       ref={ref}
+      role="status"
       className={`
         inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full
         text-xs font-medium border transition-colors
@@ -35,7 +36,7 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
       `}
       {...props}
     >
-      <span className={`w-1.5 h-1.5 rounded-full ${statusDots[status]}`} />
+      <span className={`w-1.5 h-1.5 rounded-full ${statusDots[status]}`} aria-hidden="true" />
       {children}
     </span>
   )

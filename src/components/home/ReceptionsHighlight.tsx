@@ -27,10 +27,10 @@ export function ReceptionsHighlight() {
         {/* Section Header */}
         <div className="text-center mb-16">
           <div className="w-16 h-0.5 bg-gold-500 mx-auto mb-6" />
-          <h2 className="font-display text-4xl md:text-5xl text-gray-900 mb-4">
+          <h2 className="font-display text-4xl md:text-5xl text-stone-900 mb-4">
             {t('home.receptionsTitle')}
           </h2>
-          <p className="text-gray-600 text-lg max-w-xl mx-auto">
+          <p className="text-stone-600 text-lg max-w-xl mx-auto">
             {t('home.receptionsSubtitle')}
           </p>
         </div>
@@ -87,7 +87,7 @@ export function ReceptionsHighlight() {
             to={ROUTES.RECEPTIONS}
             className="inline-flex items-center gap-3 px-8 py-4 border-2 border-gold-500
               text-gold-600 font-medium tracking-wider uppercase text-sm
-              transition-all duration-500 hover:bg-gold-500 hover:text-white"
+              transition-all duration-200 hover:bg-gold-500 hover:text-white"
           >
             {t('receptions.quoteForm.title')}
           </Link>

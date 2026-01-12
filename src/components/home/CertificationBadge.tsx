@@ -5,7 +5,7 @@ export function CertificationBadge() {
   const { t } = useTranslation();
 
   return (
-    <section className="py-16 bg-gradient-to-b from-gray-900 to-gray-950 relative overflow-hidden">
+    <section className="py-16 bg-gradient-to-b from-stone-900 to-stone-950 relative overflow-hidden">
       {/* Decorative Background */}
       <div className="absolute inset-0 opacity-5">
         <div
@@ -48,7 +48,7 @@ export function CertificationBadge() {
             <h3 className="font-display text-2xl md:text-3xl text-white mb-2">
               {t('footer.certification')}
             </h3>
-            <p className="text-gray-400 text-sm max-w-md">
+            <p className="text-stone-400 text-sm max-w-md">
               {t('footer.delivery')}
             </p>
           </div>

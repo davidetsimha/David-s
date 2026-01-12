@@ -40,9 +40,9 @@ export function FAQPage() {
   return (
     <div className="min-h-screen bg-cream-50">
       {/* Hero Section */}
-      <section className="relative py-16 md:py-24 bg-gradient-to-b from-cream-100 to-cream-50">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-gold-700 mb-4">
+      <section className="relative py-16 md:py-20 bg-gradient-to-b from-cream-100 to-cream-50">
+        <div className="max-w-6xl mx-auto px-4 text-center">
+          <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-stone-900 mb-4">
             {t('faq.pageTitle')}
           </h1>
           <p className="text-gold-600/80 text-lg max-w-xl mx-auto">
@@ -53,7 +53,7 @@ export function FAQPage() {
       </section>
 
       {/* FAQ Content */}
-      <section className="container mx-auto px-4 py-12 max-w-3xl">
+      <section className="max-w-6xl mx-auto px-4 py-12 max-w-3xl">
         <Accordion items={faqItems} defaultOpenIndex={0} />
 
         {/* Contact CTA */}

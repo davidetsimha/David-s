@@ -30,7 +30,7 @@ export function Header() {
   const itemCount = totalItems();
 
   return (
-    <header className={`fixed top-0 inset-x-0 z-40 transition-all duration-300
+    <header className={`fixed top-0 inset-x-0 z-40 transition-all duration-200
       ${isScrolled ? 'bg-cream-50/95 backdrop-blur-md shadow-sm' : 'bg-transparent'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16 md:h-20">
@@ -44,12 +44,13 @@ export function Header() {
             </span>
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-1">
+          <nav className="hidden lg:flex items-center gap-1" aria-label="Main navigation">
             {navItems.map(({ key, route }) => (
               <Link
                 key={key}
                 to={route}
-                className={`relative px-3 py-2 text-sm tracking-wide transition-colors
+                className={`relative px-3 py-2 text-sm tracking-wide transition-colors rounded
+                  focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 focus-visible:outline-none
                   ${location.pathname === route
                     ? 'text-gold-700 font-medium'
                     : 'text-stone-600 hover:text-gold-700'}`}
@@ -76,12 +77,12 @@ export function Header() {
 function CartButton({ count, onClick }: { count: number; onClick: () => void }) {
   return (
     <button onClick={onClick} className="relative p-2 text-gold-700 hover:text-gold-900
-      transition-colors" aria-label="Cart">
+      transition-colors rounded focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 focus-visible:outline-none" aria-label="Cart">
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
       </svg>
       {count > 0 && (
-        <span className="absolute -top-0.5 -right-0.5 w-5 h-5 flex items-center justify-center
+        <span className="absolute -top-0.5 -end-0.5 w-5 h-5 flex items-center justify-center
           bg-gold-600 text-white text-xs font-medium rounded-full">{count}</span>
       )}
     </button>
@@ -91,7 +92,7 @@ function CartButton({ count, onClick }: { count: number; onClick: () => void }) 
 function HamburgerButton({ onClick }: { onClick: () => void }) {
   return (
     <button onClick={onClick} className="lg:hidden p-2 text-gold-700 hover:text-gold-900
-      transition-colors" aria-label="Menu">
+      transition-colors rounded focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 focus-visible:outline-none" aria-label="Menu">
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
       </svg>

@@ -7,6 +7,28 @@
     "faq": "FAQ",
     "contact": "Contact"
   },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur s'est produite",
+    "required": "Obligatoire",
+    "optional": "Optionnel",
+    "close": "Fermer",
+    "decrease": "Diminuer",
+    "increase": "Augmenter",
+    "delete": "Supprimer",
+    "currency": "CHF",
+    "free": "Gratuit",
+    "quantity": "Qte",
+    "all": "Tout",
+    "unavailable": "Indisponible",
+    "add": "Ajouter",
+    "undo": "Annuler",
+    "noProductsFound": "Aucun produit trouve",
+    "questions": "Questions?",
+    "thanksTitle": "Merci!",
+    "thanksMessage": "Nous vous contacterons bientot",
+    "choose": "Choisir..."
+  },
   "home": {
     "heroTitle": "L'Art de la Pâtisserie Française",
     "heroSubtitle": "Créations artisanales sous supervision Badatz Beit Yossef",
@@ -18,14 +40,30 @@
     "shabbatSubtitle": "Commandez vos gâteaux et pâtisseries pour Shabbat",
     "viewProducts": "Voir tous les produits"
   },
+  "shabbat": {
+    "title": "Commandes Shabbat",
+    "orderBefore": "Commande avant jeudi",
+    "subtitle": "Pâtisseries fraîches préparées pour votre Shabbat"
+  },
   "receptions": {
     "title": "Réceptions & Événements",
     "subtitle": "Confiez-nous la réalisation de vos événements",
+    "customEvents": "Événements sur mesure",
+    "heroSubtitle": "Créations pâtissières d'exception pour vos moments précieux",
+    "ourCreations": "Nos créations",
+    "quoteTitle": "Demande de devis",
+    "quoteSubtitle": "Décrivez votre événement, nous vous répondrons rapidement",
     "eventTypes": {
       "bar_mitzvah": "Bar Mitzvah",
       "bat_mitzvah": "Bat Mitzvah",
       "brit": "Brit Mila",
-      "private_party": "Fête privée"
+      "private_party": "Fete privee"
+    },
+    "eventDesc": {
+      "bar_mitzvah": "Celebrer ce moment",
+      "bat_mitzvah": "Un jour special",
+      "brit": "Accueillir la vie",
+      "private_party": "Vos evenements"
     },
     "quoteForm": {
       "title": "Demander un devis",
@@ -49,27 +87,52 @@
   },
   "cart": {
     "title": "Votre Panier",
+    "yourCart": "Votre Panier",
     "empty": "Votre panier est vide",
+    "emptyMessage": "Explorez nos delicieuses patisseries et ajoutez vos favoris",
     "subtotal": "Sous-total",
-    "checkout": "Commander",
+    "checkout": "Passer la commande",
     "continueShopping": "Continuer mes achats",
     "remove": "Retirer",
-    "quantity": "Quantité"
+    "quantity": "Quantite",
+    "discoverProducts": "Decouvrir nos produits",
+    "orderSummary": "Resume de la commande",
+    "delivery": "Livraison",
+    "deliveryCalculated": "Calcule a la caisse",
+    "total": "Total",
+    "itemRemoved": "Article supprime",
+    "viewMoreProducts": "Voir plus de produits"
   },
   "checkout": {
     "title": "Finaliser la commande",
     "customerInfo": "Vos informations",
     "name": "Nom complet",
-    "email": "Email",
-    "phone": "Téléphone",
+    "email": "Adresse email",
+    "phone": "Numéro de téléphone",
     "deliveryMethod": "Mode de livraison",
     "pickup": "Retrait en boutique",
-    "delivery": "Livraison à Jérusalem",
+    "pickupSubtitle": "Gratuit - Prêt sous 24h",
+    "delivery": "Livraison à domicile",
+    "deliverySubtitle": "À partir de 15 CHF",
     "address": "Adresse de livraison",
+    "deliveryNotes": "Instructions de livraison (optionnel)",
     "notes": "Notes / Instructions spéciales",
-    "orderSummary": "Récapitulatif",
+    "orderSummary": "Votre commande",
+    "subtotal": "Sous-total",
+    "deliveryFee": "Livraison",
     "total": "Total",
     "payNow": "Payer maintenant",
+    "confirmOrder": "Confirmer la commande",
+    "securePayment": "Paiement securise et donnees protegees",
+    "backToProducts": "Retour aux produits",
+    "emptyCart": "Votre panier est vide",
+    "paymentAccepted": "Paiement accepte",
+    "postalCode": "Code postal",
+    "city": "Ville",
+    "orderNumber": "Numero de commande",
+    "orderCancelled": "Commande annulee",
+    "retry": "Reessayer",
+    "contactUs": "Nous contacter",
     "success": {
       "title": "Commande confirmée!",
       "message": "Merci pour votre commande. Vous recevrez un email de confirmation."
@@ -161,17 +224,17 @@
   "footer": {
     "rights": "Tous droits réservés",
     "certification": "Sous supervision Badatz Beit Yossef",
-    "delivery": "Livraison à Jérusalem uniquement"
-  },
-  "common": {
-    "loading": "Chargement...",
-    "error": "Une erreur s'est produite",
-    "required": "Obligatoire",
-    "optional": "Optionnel"
+    "delivery": "Livraison à Jérusalem uniquement",
+    "address": "Jérusalem, Israël",
+    "phone": "+972 50 123 4567",
+    "email": "contact@davids-patisserie.com"
   },
   "notFound": {
     "title": "Page non trouvée",
     "message": "La page que vous recherchez n'existe pas.",
     "backHome": "Retour à l'accueil"
+  },
+  "whatsapp": {
+    "message": "Bonjour, je souhaite plus d'informations..."
   }
 }

@@ -65,7 +65,7 @@ export function HeroSection() {
           <Link
             to={ROUTES.RECEPTIONS}
             className="group relative px-10 py-4 bg-gold-500 text-white font-medium
-              tracking-wider uppercase text-sm overflow-hidden transition-all duration-500
+              tracking-wider uppercase text-sm overflow-hidden transition-all duration-200
               hover:bg-gold-400 hover:shadow-lg hover:shadow-gold-500/25"
           >
             <span className="relative z-10">{t('home.discoverBtn')}</span>
@@ -78,8 +78,8 @@ export function HeroSection() {
           <Link
             to={ROUTES.SHABBAT}
             className="group px-10 py-4 border-2 border-white/80 text-white font-medium
-              tracking-wider uppercase text-sm transition-all duration-500
-              hover:bg-white hover:text-gray-900 hover:border-white"
+              tracking-wider uppercase text-sm transition-all duration-200
+              hover:bg-white hover:text-stone-900 hover:border-white"
           >
             {t('home.orderBtn')}
           </Link>

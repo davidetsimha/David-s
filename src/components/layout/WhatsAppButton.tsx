@@ -1,27 +1,25 @@
-import { useLanguageStore } from '../../stores';
+import { useTranslation } from 'react-i18next';
 
 const WHATSAPP_NUMBER = '972501234567'; // Replace with actual number
 
 export function WhatsAppButton() {
-  const { direction, t } = useLanguageStore();
-  const isRTL = direction === 'rtl';
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.dir() === 'rtl';
 
-  const message = encodeURIComponent(
-    t('Bonjour, je souhaite plus d\'informations...', 'שלום, אשמח לקבל מידע נוסף...')
-  );
+  const message = encodeURIComponent(t('whatsapp.message'));
 
   return (
     <a
       href={`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`}
       target="_blank"
       rel="noopener noreferrer"
-      className={`fixed bottom-6 z-50 group ${isRTL ? 'left-6' : 'right-6'}`}
+      className={`fixed bottom-6 z-50 group ${isRTL ? 'start-6' : 'end-6'}`}
       aria-label="WhatsApp"
     >
       <span className="flex items-center justify-center w-14 h-14 rounded-full
         bg-[#25D366] shadow-lg shadow-[#25D366]/30
         hover:scale-110 hover:shadow-xl hover:shadow-[#25D366]/40
-        transition-all duration-300 ease-out">
+        transition-all duration-200 ease-out">
         <svg
           viewBox="0 0 24 24"
           fill="white"
@@ -34,7 +32,7 @@ export function WhatsAppButton() {
         px-3 py-1.5 rounded-lg bg-stone-900 text-white text-sm font-medium
         opacity-0 group-hover:opacity-100 pointer-events-none
         transition-all duration-200 shadow-lg
-        ${isRTL ? 'left-full ml-3' : 'right-full mr-3'}`}>
+        ${isRTL ? 'start-full ms-3' : 'end-full me-3'}`}>
         WhatsApp
       </span>
     </a>

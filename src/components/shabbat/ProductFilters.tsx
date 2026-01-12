@@ -1,4 +1,4 @@
-import { useLanguageStore } from '../../stores/languageStore';
+import { useTranslation } from 'react-i18next';
 import type { Category } from '../../types';
 
 interface ProductFiltersProps {
@@ -12,7 +12,8 @@ export function ProductFilters({
   selectedId,
   onSelect,
 }: ProductFiltersProps) {
-  const { t, direction } = useLanguageStore();
+  const { t, i18n } = useTranslation();
+  const direction = i18n.dir();
 
   return (
     <div
@@ -26,11 +27,11 @@ export function ProductFilters({
           transition-all duration-200
           ${!selectedId
             ? 'bg-gold-500 text-white shadow-md'
-            : 'bg-cream-100 text-gray-700 hover:bg-cream-200'
+            : 'bg-cream-100 text-stone-700 hover:bg-cream-200'
           }
         `}
       >
-        {t('Tout', 'הכל')}
+        {t('common.all')}
       </button>
 
       {categories.map((cat) => (
@@ -42,11 +43,11 @@ export function ProductFilters({
             transition-all duration-200
             ${selectedId === cat.id
               ? 'bg-gold-500 text-white shadow-md'
-              : 'bg-cream-100 text-gray-700 hover:bg-cream-200'
+              : 'bg-cream-100 text-stone-700 hover:bg-cream-200'
             }
           `}
         >
-          {t(cat.name_fr, cat.name_he)}
+          {i18n.language === 'fr' ? cat.name_fr : cat.name_he}
         </button>
       ))}
     </div>

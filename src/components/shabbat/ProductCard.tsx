@@ -1,7 +1,7 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Plus, Minus, ShoppingBag, ImageOff } from 'lucide-react';
 import { useCartStore } from '../../stores/cartStore';
-import { useLanguageStore } from '../../stores/languageStore';
 import type { Product } from '../../types';
 
 interface ProductCardProps {
@@ -9,12 +9,12 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const { t } = useLanguageStore();
+  const { t, i18n } = useTranslation();
   const { addItem, getItemQuantity, updateQuantity } = useCartStore();
   const [imgError, setImgError] = useState(false);
 
   const quantity = getItemQuantity(product.id);
-  const name = t(product.name_fr, product.name_he);
+  const name = i18n.language === 'fr' ? product.name_fr : product.name_he;
   const price = new Intl.NumberFormat('he-IL', {
     style: 'currency',
     currency: 'ILS',
@@ -25,7 +25,7 @@ export function ProductCard({ product }: ProductCardProps) {
   const handleDec = () => updateQuantity(product.id, quantity - 1);
 
   return (
-    <article className="group bg-white rounded-2xl border border-cream-200 overflow-hidden hover:shadow-lg hover:border-gold-200 transition-all duration-300">
+    <article className="group bg-white rounded-2xl border border-cream-200 overflow-hidden hover:shadow-lg hover:border-gold-200 transition-all duration-200">
       {/* Image */}
       <div className="relative aspect-square bg-cream-100 overflow-hidden">
         {product.image_url && !imgError ? (
@@ -42,9 +42,9 @@ export function ProductCard({ product }: ProductCardProps) {
         )}
 
         {!product.available && (
-          <div className="absolute inset-0 bg-gray-900/50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-stone-900/50 flex items-center justify-center">
             <span className="text-white font-medium text-sm">
-              {t('Indisponible', 'לא זמין')}
+              {t('common.unavailable')}
             </span>
           </div>
         )}
@@ -52,7 +52,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
       {/* Details */}
       <div className="p-4">
-        <h3 className="font-display text-lg text-gray-900 mb-1 truncate">
+        <h3 className="font-display text-lg text-stone-900 mb-1 truncate">
           {name}
         </h3>
         <p className="text-gold-600 font-semibold mb-4">{price}</p>
@@ -65,7 +65,7 @@ export function ProductCard({ product }: ProductCardProps) {
               className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-gold-500 text-white font-medium hover:bg-gold-600 transition-colors"
             >
               <ShoppingBag className="w-4 h-4" />
-              {t('Ajouter', 'הוסף')}
+              {t('common.add')}
             </button>
           ) : (
             <div className="flex items-center justify-between bg-cream-100 rounded-xl p-1">
@@ -73,14 +73,14 @@ export function ProductCard({ product }: ProductCardProps) {
                 onClick={handleDec}
                 className="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-cream-200 transition-colors"
               >
-                <Minus className="w-4 h-4 text-gray-600" />
+                <Minus className="w-4 h-4 text-stone-600" />
               </button>
-              <span className="font-semibold text-gray-900">{quantity}</span>
+              <span className="font-semibold text-stone-900">{quantity}</span>
               <button
                 onClick={handleInc}
                 className="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-cream-200 transition-colors"
               >
-                <Plus className="w-4 h-4 text-gray-600" />
+                <Plus className="w-4 h-4 text-stone-600" />
               </button>
             </div>
           )

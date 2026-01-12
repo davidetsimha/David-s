@@ -1,11 +1,12 @@
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
-import { Calendar, Users } from 'lucide-react';
+import { Calendar, Users, Eye } from 'lucide-react';
 import type { QuoteRequest, QuoteStatus } from '../../types';
 
 interface QuoteRowProps {
   quote: QuoteRequest;
   onStatusChange: (id: string, status: QuoteStatus) => void;
+  onViewDetails: () => void;
 }
 
 const statusMap: Record<QuoteStatus, 'pending' | 'confirmed' | 'processing' | 'completed' | 'cancelled'> = {
@@ -23,7 +24,7 @@ const eventLabels: Record<string, string> = {
   private_party: 'Private Party',
 };
 
-export function QuoteRow({ quote, onStatusChange }: QuoteRowProps) {
+export function QuoteRow({ quote, onStatusChange, onViewDetails }: QuoteRowProps) {
   const eventDate = new Date(quote.event_date).toLocaleDateString('fr-FR', {
     day: 'numeric',
     month: 'short',
@@ -43,7 +44,7 @@ export function QuoteRow({ quote, onStatusChange }: QuoteRowProps) {
           {eventLabels[quote.event_type] || quote.event_type}
         </span>
       </td>
-      <td className="px-4 py-4">
+      <td className="px-4 py-4 hidden sm:table-cell">
         <div className="flex items-center gap-4 text-sm text-gray-600">
           <span className="flex items-center gap-1">
             <Calendar className="w-4 h-4" /> {eventDate}
@@ -58,14 +59,21 @@ export function QuoteRow({ quote, onStatusChange }: QuoteRowProps) {
       </td>
       <td className="px-4 py-4">
         <div className="flex gap-2">
+          <button
+            onClick={onViewDetails}
+            className="p-2 rounded-lg text-gray-400 hover:text-gold-600 hover:bg-gold-50"
+            title="View details"
+          >
+            <Eye className="w-4 h-4" />
+          </button>
           {quote.status === 'new' && (
             <Button size="sm" variant="outline" onClick={() => onStatusChange(quote.id, 'contacted')}>
-              Mark Contacted
+              Contacted
             </Button>
           )}
           {quote.status === 'contacted' && (
             <Button size="sm" variant="outline" onClick={() => onStatusChange(quote.id, 'quoted')}>
-              Send Quote
+              Quoted
             </Button>
           )}
         </div>

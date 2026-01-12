@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useUIStore, useLanguageStore } from '../../stores';
@@ -19,15 +19,57 @@ export function MobileMenu() {
   const location = useLocation();
   const { isMobileMenuOpen, closeMobileMenu } = useUIStore();
   const { direction } = useLanguageStore();
+  const menuRef = useRef<HTMLElement>(null);
+  const previousActiveElement = useRef<HTMLElement | null>(null);
+
+  // Focus trap handler
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      closeMobileMenu();
+      return;
+    }
+
+    if (e.key !== 'Tab' || !menuRef.current) return;
+
+    const focusableElements = menuRef.current.querySelectorAll<HTMLElement>(
+      'a[href], button, input, textarea, select, [tabindex]:not([tabindex="-1"])'
+    );
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+
+    if (e.shiftKey && document.activeElement === firstElement) {
+      e.preventDefault();
+      lastElement?.focus();
+    } else if (!e.shiftKey && document.activeElement === lastElement) {
+      e.preventDefault();
+      firstElement?.focus();
+    }
+  }, [closeMobileMenu]);
 
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = 'hidden';
+      previousActiveElement.current = document.activeElement as HTMLElement;
+
+      // Focus first focusable element in menu
+      setTimeout(() => {
+        const firstFocusable = menuRef.current?.querySelector<HTMLElement>(
+          'a[href], button, input, textarea, select, [tabindex]:not([tabindex="-1"])'
+        );
+        firstFocusable?.focus();
+      }, 100);
+
+      window.addEventListener('keydown', handleKeyDown);
     } else {
       document.body.style.overflow = '';
+      // Return focus to hamburger button
+      previousActiveElement.current?.focus();
     }
-    return () => { document.body.style.overflow = ''; };
-  }, [isMobileMenuOpen]);
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isMobileMenuOpen, handleKeyDown]);
 
   useEffect(() => {
     closeMobileMenu();
@@ -40,9 +82,12 @@ export function MobileMenu() {
           transition-opacity duration-300
           ${isMobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         onClick={closeMobileMenu}
+        aria-hidden="true"
       />
       <nav
-        className={`fixed top-0 ${direction === 'rtl' ? 'left-0' : 'right-0'}
+        ref={menuRef}
+        aria-label="Mobile navigation"
+        className={`fixed top-0 ${direction === 'rtl' ? 'start-0' : 'end-0'}
           h-full w-[280px] max-w-[85vw] bg-cream-50 z-50 shadow-2xl
           transform transition-transform duration-300 ease-out
           ${isMobileMenuOpen
@@ -57,7 +102,7 @@ export function MobileMenu() {
                 <Link
                   to={route}
                   className={`block py-3 px-4 font-display text-lg tracking-wide rounded-lg
-                    transition-colors duration-200
+                    transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 focus-visible:outline-none
                     ${location.pathname === route
                       ? 'text-gold-700 bg-gold-50'
                       : 'text-stone-700 hover:text-gold-700 hover:bg-cream-100'}`}
