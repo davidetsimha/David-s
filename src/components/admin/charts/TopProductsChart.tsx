@@ -1,23 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
-import { Loader2, Package } from 'lucide-react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Cell } from 'recharts';
+import { useState } from 'react';
+import { Loader2, Package, TrendingUp } from 'lucide-react';
 import { useTopProducts } from '../../../hooks/useOrders';
 
 export function TopProductsChart() {
   const { data: products, isLoading } = useTopProducts(5);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [width, setWidth] = useState(400);
-
-  useEffect(() => {
-    const updateWidth = () => {
-      if (containerRef.current) {
-        setWidth(containerRef.current.offsetWidth);
-      }
-    };
-    updateWidth();
-    window.addEventListener('resize', updateWidth);
-    return () => window.removeEventListener('resize', updateWidth);
-  }, []);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('he-IL', {
@@ -27,72 +14,116 @@ export function TopProductsChart() {
     }).format(amount);
   };
 
-  const chartData = products?.map((p) => ({
-    name: p.product_name_fr.length > 12 ? p.product_name_fr.slice(0, 12) + '...' : p.product_name_fr,
-    fullName: p.product_name_fr,
-    quantity: p.quantity,
-    revenue: p.revenue,
-  })) ?? [];
+  const maxQuantity = Math.max(...(products?.map(p => p.quantity) ?? [1]));
 
-  const colors = ['#c9a962', '#d4b56e', '#dfbf7a', '#e5c98a', '#ebd39a'];
+  const colors = [
+    { bar: '#c9a962', bg: 'bg-gold-50' },
+    { bar: '#d4b56e', bg: 'bg-amber-50' },
+    { bar: '#e5bc64', bg: 'bg-yellow-50' },
+    { bar: '#f59e0b', bg: 'bg-orange-50' },
+    { bar: '#fbbf24', bg: 'bg-amber-50' },
+  ];
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-6">
+    <div className="p-6">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="font-medium text-gray-900">Top Produits</h3>
-        <Package className="w-5 h-5 text-gray-400" />
+        <div>
+          <h3 className="text-sm font-medium text-gray-500">Top Produits</h3>
+          <p className="text-xs text-gray-400 mt-0.5">Par quantite vendue</p>
+        </div>
+        <div className="p-2 bg-gray-50 rounded-lg">
+          <Package className="w-5 h-5 text-gray-400" />
+        </div>
       </div>
 
       {isLoading ? (
-        <div className="flex justify-center py-12">
+        <div className="flex justify-center py-16">
           <Loader2 className="w-6 h-6 animate-spin text-gold-500" />
         </div>
       ) : products?.length === 0 ? (
-        <p className="text-center text-gray-500 py-8">Aucune vente</p>
+        <div className="flex flex-col items-center justify-center py-12 text-center">
+          <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-3">
+            <Package className="w-6 h-6 text-gray-400" />
+          </div>
+          <p className="text-sm text-gray-500">Aucune vente</p>
+        </div>
       ) : (
-        <div ref={containerRef} className="w-full">
-          <BarChart
-            width={width}
-            height={250}
-            data={chartData}
-            layout="vertical"
-            margin={{ top: 0, right: 30, left: 0, bottom: 0 }}
-          >
-            <XAxis
-              type="number"
-              axisLine={false}
-              tickLine={false}
-              tick={{ fontSize: 12, fill: '#9ca3af' }}
-            />
-            <YAxis
-              type="category"
-              dataKey="name"
-              axisLine={false}
-              tickLine={false}
-              tick={{ fontSize: 11, fill: '#374151' }}
-              width={90}
-            />
-            <Tooltip
-              content={({ active, payload }) => {
-                if (active && payload && payload.length) {
-                  const d = payload[0].payload;
-                  return (
-                    <div className="bg-gray-900 text-white text-xs rounded-lg px-3 py-2 shadow-lg">
-                      <p className="font-medium">{d.fullName}</p>
-                      <p className="text-gray-300">{d.quantity} vendus</p>
-                      <p className="text-gold-400">{formatCurrency(d.revenue)}</p>
-                    </div>
-                  );
-                }
-                return null;
-              }}
-            />
-            <Bar dataKey="quantity" radius={[0, 4, 4, 0]} fill="#c9a962">
-              {chartData.map((_, index) => (
-                <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
-              ))}
-            </Bar>
-          </BarChart>
+        <div className="space-y-4">
+          {products?.map((product, index) => {
+            const percentage = (product.quantity / maxQuantity) * 100;
+            const color = colors[index % colors.length];
+            const isHovered = hoveredIndex === index;
+
+            return (
+              <div
+                key={product.product_name_fr}
+                className="group cursor-pointer"
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+              >
+                <div className="flex items-center justify-between mb-1.5">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className={`
+                      w-6 h-6 rounded-md flex items-center justify-center text-xs font-semibold
+                      transition-all duration-300
+                      ${isHovered ? 'bg-gray-900 text-white scale-110' : 'bg-gray-100 text-gray-500'}
+                    `}>
+                      {index + 1}
+                    </span>
+                    <span className={`
+                      text-sm truncate transition-colors duration-200
+                      ${isHovered ? 'text-gray-900 font-medium' : 'text-gray-600'}
+                    `}>
+                      {product.product_name_fr}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3 shrink-0">
+                    <span className={`
+                      text-sm font-semibold transition-all duration-200
+                      ${isHovered ? 'text-gold-600' : 'text-gray-900'}
+                    `}>
+                      {product.quantity}
+                    </span>
+                    <span className="text-xs text-gray-400 w-16 text-end">
+                      {formatCurrency(product.revenue)}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Progress bar */}
+                <div className="relative h-2 bg-gray-100 rounded-full overflow-hidden">
+                  <div
+                    className="absolute inset-y-0 start-0 rounded-full transition-all duration-700 ease-out"
+                    style={{
+                      width: `${percentage}%`,
+                      background: `linear-gradient(90deg, ${color.bar} 0%, ${color.bar}dd 100%)`,
+                      transform: isHovered ? 'scaleY(1.2)' : 'scaleY(1)',
+                      transformOrigin: 'center',
+                      boxShadow: isHovered ? `0 0 12px ${color.bar}66` : 'none',
+                    }}
+                  />
+                </div>
+              </div>
+            );
+          })}
+
+          {/* Total summary */}
+          <div className="mt-6 pt-4 border-t border-gray-100">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-sm text-gray-500">
+                <TrendingUp className="w-4 h-4" />
+                <span>Total vendu</span>
+              </div>
+              <div className="text-end">
+                <span className="text-lg font-semibold text-gray-900">
+                  {products?.reduce((sum, p) => sum + p.quantity, 0)}
+                </span>
+                <span className="text-sm text-gray-400 ms-2">
+                  ({formatCurrency(products?.reduce((sum, p) => sum + p.revenue, 0) ?? 0)})
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>
