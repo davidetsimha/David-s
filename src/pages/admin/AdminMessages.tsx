@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Mail, MailOpen, Trash2, Loader2, Phone, Calendar, User } from 'lucide-react';
+import { Mail, MailOpen, Trash2, Phone, Calendar, User } from 'lucide-react';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 import { Modal } from '../../components/ui/Modal';
+import { Spinner } from '../../components/ui/Spinner';
 import { ConfirmModal } from '../../components/admin/ConfirmModal';
 import {
   useContactMessages,
@@ -74,24 +75,28 @@ export function AdminMessages() {
 
   return (
     <div className="space-y-6">
+      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="font-display text-2xl lg:text-3xl text-gray-900">Messages</h1>
-          <p className="text-gray-500 mt-1">
-            {unreadCount > 0 ? `${unreadCount} message${unreadCount > 1 ? 's' : ''} non lu${unreadCount > 1 ? 's' : ''}` : 'Tous les messages sont lus'}
+          <h1 className="text-xl font-semibold text-gray-900">Messages</h1>
+          <p className="text-sm text-gray-500 mt-0.5">
+            {unreadCount > 0 ? `${unreadCount} non lu${unreadCount > 1 ? 's' : ''}` : 'Tous les messages sont lus'}
           </p>
         </div>
 
-        <div className="flex gap-2">
+        {/* Filter pills */}
+        <div className="flex gap-1 p-1 bg-gray-100 rounded-lg">
           {filters.map(({ key, label }) => (
             <button
               key={key}
               onClick={() => setFilter(key)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                filter === key
-                  ? 'bg-gold-500 text-white'
-                  : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
-              }`}
+              className={`
+                px-4 py-2 text-sm font-medium rounded-md transition-all
+                ${filter === key
+                  ? 'bg-white text-gray-900 shadow-soft'
+                  : 'text-gray-600 hover:text-gray-900'
+                }
+              `}
             >
               {label}
             </button>
@@ -99,15 +104,19 @@ export function AdminMessages() {
         </div>
       </div>
 
+      {/* Messages List */}
       {isLoading ? (
         <div className="flex justify-center py-12">
-          <Loader2 className="w-8 h-8 animate-spin text-gold-500" />
+          <Spinner size="lg" />
         </div>
       ) : messages?.length === 0 ? (
         <Card className="text-center py-12">
-          <Mail className="w-12 h-12 mx-auto text-gray-300 mb-3" />
-          <p className="text-gray-500">
-            {filter === 'unread' ? 'Aucun message non lu' : filter === 'read' ? 'Aucun message lu' : 'Aucun message'}
+          <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-3">
+            <Mail className="w-6 h-6 text-gray-400" />
+          </div>
+          <p className="text-sm font-medium text-gray-900">Aucun message</p>
+          <p className="text-sm text-gray-500 mt-1">
+            {filter === 'unread' ? 'Aucun message non lu' : filter === 'read' ? 'Aucun message lu' : 'Les messages apparaitront ici'}
           </p>
         </Card>
       ) : (
@@ -115,33 +124,33 @@ export function AdminMessages() {
           {messages?.map((message) => (
             <Card
               key={message.id}
+              padding="sm"
+              hover
               onClick={() => openMessage(message)}
-              className={`cursor-pointer hover:shadow-md transition-all ${
-                !message.read ? 'border-l-4 border-l-gold-500 bg-gold-50/30' : ''
-              }`}
+              className={`cursor-pointer ${!message.read ? 'ring-1 ring-gold-200 bg-gold-50/30' : ''}`}
             >
-              <div className="flex items-start gap-4">
-                <div className={`p-2 rounded-full ${!message.read ? 'bg-gold-100 text-gold-600' : 'bg-gray-100 text-gray-400'}`}>
-                  {message.read ? <MailOpen className="w-5 h-5" /> : <Mail className="w-5 h-5" />}
+              <div className="flex items-start gap-3">
+                <div className={`p-2 rounded-lg shrink-0 ${!message.read ? 'bg-gold-100 text-gold-600' : 'bg-gray-100 text-gray-400'}`}>
+                  {message.read ? <MailOpen className="w-4 h-4" /> : <Mail className="w-4 h-4" />}
                 </div>
 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <h3 className={`font-medium truncate ${!message.read ? 'text-gray-900' : 'text-gray-600'}`}>
+                    <h3 className={`text-sm font-medium truncate ${!message.read ? 'text-gray-900' : 'text-gray-600'}`}>
                       {message.name}
                     </h3>
                     <span className="text-xs text-gray-400 whitespace-nowrap">{formatDate(message.created_at)}</span>
                   </div>
-                  <p className="text-sm text-gray-500 truncate">{message.email}</p>
-                  <p className={`text-sm mt-1 line-clamp-2 ${!message.read ? 'text-gray-700' : 'text-gray-500'}`}>
+                  <p className="text-xs text-gray-500 truncate">{message.email}</p>
+                  <p className={`text-sm mt-1 line-clamp-1 ${!message.read ? 'text-gray-700' : 'text-gray-500'}`}>
                     {message.message}
                   </p>
                 </div>
 
-                <div className="flex gap-1 flex-shrink-0">
+                <div className="flex gap-1 shrink-0">
                   <button
                     onClick={(e) => toggleRead(message, e)}
-                    className="p-2 text-gray-400 hover:text-gold-600 hover:bg-gold-50 rounded-lg"
+                    className="p-1.5 text-gray-400 hover:text-gold-600 hover:bg-gold-50 rounded-lg transition-colors"
                     title={message.read ? 'Marquer comme non lu' : 'Marquer comme lu'}
                   >
                     {message.read ? <Mail className="w-4 h-4" /> : <MailOpen className="w-4 h-4" />}
@@ -151,7 +160,7 @@ export function AdminMessages() {
                       e.stopPropagation();
                       setDeleteId(message.id);
                     }}
-                    className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg"
+                    className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -170,9 +179,9 @@ export function AdminMessages() {
       >
         {selectedMessage && (
           <div className="space-y-4">
-            <div className="flex items-center gap-3 pb-4 border-b">
-              <div className="w-12 h-12 rounded-full bg-gold-100 flex items-center justify-center">
-                <User className="w-6 h-6 text-gold-600" />
+            <div className="flex items-center gap-3 pb-4 border-b border-gray-100">
+              <div className="w-10 h-10 rounded-full bg-gold-100 flex items-center justify-center">
+                <User className="w-5 h-5 text-gold-600" />
               </div>
               <div>
                 <h3 className="font-medium text-gray-900">{selectedMessage.name}</h3>
@@ -189,7 +198,7 @@ export function AdminMessages() {
                   </a>
                 </div>
               )}
-              <div className="flex items-center gap-2 text-gray-600">
+              <div className="flex items-center gap-2 text-gray-500">
                 <Calendar className="w-4 h-4" />
                 {new Date(selectedMessage.created_at).toLocaleDateString('fr-FR', {
                   day: 'numeric',
@@ -202,12 +211,13 @@ export function AdminMessages() {
             </div>
 
             <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-gray-700 whitespace-pre-wrap">{selectedMessage.message}</p>
+              <p className="text-sm text-gray-700 whitespace-pre-wrap">{selectedMessage.message}</p>
             </div>
 
-            <div className="flex justify-between pt-4">
+            <div className="flex justify-between pt-4 border-t border-gray-100">
               <Button
-                variant="outline"
+                variant="secondary"
+                size="sm"
                 onClick={() => {
                   markAsReadMutation.mutate({
                     id: selectedMessage.id,
@@ -220,18 +230,14 @@ export function AdminMessages() {
                 {selectedMessage.read ? 'Marquer non lu' : 'Marquer lu'}
               </Button>
 
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  className="text-red-600 border-red-200 hover:bg-red-50"
-                  onClick={() => {
-                    setDeleteId(selectedMessage.id);
-                  }}
-                >
-                  <Trash2 className="w-4 h-4" />
-                  Supprimer
-                </Button>
-              </div>
+              <Button
+                variant="danger"
+                size="sm"
+                onClick={() => setDeleteId(selectedMessage.id)}
+              >
+                <Trash2 className="w-4 h-4" />
+                Supprimer
+              </Button>
             </div>
           </div>
         )}

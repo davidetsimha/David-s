@@ -1,18 +1,29 @@
-import { type HTMLAttributes, forwardRef, useEffect, useRef, useCallback } from 'react';
+import { type HTMLAttributes, forwardRef, useEffect, useRef, useCallback, type ReactNode } from 'react';
 import { X } from 'lucide-react';
+
+type ModalSize = 'sm' | 'md' | 'lg' | 'xl';
 
 interface ModalProps extends HTMLAttributes<HTMLDivElement> {
   open: boolean;
   onClose: () => void;
   title?: string;
+  description?: string;
+  size?: ModalSize;
+  footer?: ReactNode;
 }
 
+const sizes: Record<ModalSize, string> = {
+  sm: 'max-w-md',
+  md: 'max-w-lg',
+  lg: 'max-w-2xl',
+  xl: 'max-w-4xl',
+};
+
 export const Modal = forwardRef<HTMLDivElement, ModalProps>(
-  ({ open, onClose, title, className = '', children, ...props }, ref) => {
+  ({ open, onClose, title, description, size = 'md', footer, className = '', children, ...props }, ref) => {
     const modalRef = useRef<HTMLDivElement>(null);
     const previousActiveElement = useRef<HTMLElement | null>(null);
 
-    // Focus trap handler
     const handleKeyDown = useCallback((e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose();
@@ -41,7 +52,6 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
         document.body.style.overflow = 'hidden';
         previousActiveElement.current = document.activeElement as HTMLElement;
 
-        // Focus first focusable element in modal
         setTimeout(() => {
           const firstFocusable = modalRef.current?.querySelector<HTMLElement>(
             'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
@@ -55,7 +65,6 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
           window.removeEventListener('keydown', handleKeyDown);
         };
       } else {
-        // Return focus to previous element
         previousActiveElement.current?.focus();
       }
     }, [open, handleKeyDown]);
@@ -64,14 +73,16 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
 
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        {/* Backdrop */}
         <div
-          className="absolute inset-0 bg-stone-900/50 backdrop-blur-sm animate-fade-in"
+          className="absolute inset-0 bg-gray-900/40 backdrop-blur-[2px] animate-fade-in"
           onClick={onClose}
           aria-hidden="true"
         />
+
+        {/* Modal */}
         <div
           ref={(node) => {
-            // Support both internal ref and forwarded ref
             (modalRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
             if (typeof ref === 'function') ref(node);
             else if (ref) ref.current = node;
@@ -79,29 +90,64 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
           role="dialog"
           aria-modal="true"
           aria-labelledby={title ? 'modal-title' : undefined}
+          aria-describedby={description ? 'modal-description' : undefined}
           className={`
-            relative z-10 w-full max-w-lg max-h-[90vh] overflow-auto
-            bg-white rounded-2xl shadow-xl
+            relative z-10 w-full max-h-[90vh] overflow-hidden
+            bg-white rounded-xl shadow-elevated
+            flex flex-col
             animate-scale-in
+            ${sizes[size]}
             ${className}
           `}
           {...props}
         >
-          <div className="sticky top-0 flex items-center justify-between p-6 pb-4 bg-white border-b border-stone-100">
-            {title && (
-              <h2 id="modal-title" className="font-display text-xl text-stone-900">
-                {title}
-              </h2>
-            )}
+          {/* Header */}
+          {(title || description) && (
+            <div className="flex items-start justify-between gap-4 p-5 border-b border-gray-100">
+              <div className="flex-1 min-w-0">
+                {title && (
+                  <h2 id="modal-title" className="text-base font-semibold text-gray-900">
+                    {title}
+                  </h2>
+                )}
+                {description && (
+                  <p id="modal-description" className="text-sm text-gray-500 mt-1">
+                    {description}
+                  </p>
+                )}
+              </div>
+              <button
+                onClick={onClose}
+                className="p-1.5 -me-1.5 -mt-1 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                aria-label="Fermer"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+          )}
+
+          {/* Close button if no header */}
+          {!title && !description && (
             <button
               onClick={onClose}
-              className="ms-auto p-2 -me-2 text-stone-400 hover:text-stone-600 hover:bg-stone-100 rounded-lg transition-colors focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 focus-visible:outline-none"
-              aria-label="Close modal"
+              className="absolute top-3 end-3 p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors z-10"
+              aria-label="Fermer"
             >
-              <X className="h-5 w-5" />
+              <X className="h-4 w-4" />
             </button>
+          )}
+
+          {/* Content */}
+          <div className="flex-1 overflow-y-auto p-5">
+            {children}
           </div>
-          <div className="p-6">{children}</div>
+
+          {/* Footer */}
+          {footer && (
+            <div className="p-5 pt-4 border-t border-gray-100 bg-gray-50/50">
+              {footer}
+            </div>
+          )}
         </div>
       </div>
     );

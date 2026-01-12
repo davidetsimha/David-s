@@ -16,31 +16,32 @@ export const StatsCard = forwardRef<HTMLDivElement, StatsCardProps>(
       <div
         ref={ref}
         className={`
-          bg-white rounded-xl border border-gray-100 p-6
-          hover:shadow-lg hover:border-gold-200 transition-all duration-200
+          bg-white rounded-xl border border-gray-100 shadow-card p-5
+          transition-all duration-150
           ${className}
         `}
         {...props}
       >
-        <div className="flex items-start justify-between mb-4">
-          <div className="p-3 rounded-lg bg-gold-50 text-gold-600">
+        <div className="flex items-center justify-between mb-4">
+          <div className="p-2.5 rounded-lg bg-gold-50/80 text-gold-600">
             {icon}
           </div>
           {trend && (
-            <div className={`flex items-center gap-1 text-sm font-medium
-              ${isPositive ? 'text-emerald-600' : 'text-red-500'}`}
-            >
-              {isPositive ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
+            <div className={`
+              inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium
+              ${isPositive ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-500'}
+            `}>
+              {isPositive ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
               <span>{Math.abs(trend.value)}%</span>
             </div>
           )}
         </div>
 
-        <p className="text-sm text-gray-500 mb-1">{label}</p>
-        <p className="text-2xl font-display font-semibold text-gray-900">{value}</p>
+        <p className="text-3xl font-semibold text-gray-900 tracking-tight">{value}</p>
+        <p className="text-sm text-gray-500 mt-1">{label}</p>
 
         {trend && (
-          <p className="text-xs text-gray-400 mt-2">{trend.label}</p>
+          <p className="text-xs text-gray-400 mt-3 pt-3 border-t border-gray-50">{trend.label}</p>
         )}
       </div>
     );

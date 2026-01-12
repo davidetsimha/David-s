@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { ShoppingBag } from 'lucide-react';
 import { Card } from '../../components/ui/Card';
 import { OrderRow } from '../../components/admin/OrderRow';
 import { OrderDetails } from '../../components/admin/OrderDetails';
@@ -27,56 +28,86 @@ export function AdminOrders() {
     });
   };
 
+  const counts = {
+    all: orders?.length ?? 0,
+    pending: orders?.filter(o => o.status === 'pending').length ?? 0,
+  };
+
   return (
     <div className="space-y-6">
+      {/* Header */}
       <div>
-        <h1 className="font-display text-3xl text-gray-900">Commandes</h1>
-        <p className="text-gray-500 mt-1">Suivez et gerez les commandes clients</p>
+        <h1 className="text-xl font-semibold text-gray-900">Commandes</h1>
+        <p className="text-sm text-gray-500 mt-0.5">
+          {counts.all} commande{counts.all > 1 ? 's' : ''}
+          {counts.pending > 0 && ` dont ${counts.pending} en attente`}
+        </p>
       </div>
 
-      <div className="flex gap-2 border-b border-gray-200">
+      {/* Tabs */}
+      <div className="flex gap-1 p-1 bg-gray-100 rounded-lg w-fit">
         {tabs.map((tab) => (
           <button
             key={tab.label}
             onClick={() => setActiveTab(tab.status)}
-            className={`px-4 py-3 text-sm font-medium border-b-2 -mb-px transition-colors
+            className={`
+              px-4 py-2 text-sm font-medium rounded-md transition-all
               ${activeTab === tab.status
-                ? 'border-gold-500 text-gold-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700'
-              }`}
+                ? 'bg-white text-gray-900 shadow-soft'
+                : 'text-gray-600 hover:text-gray-900'
+              }
+            `}
           >
             {tab.label}
           </button>
         ))}
       </div>
 
-      <Card padding="none" hover={false}>
+      {/* Orders Table */}
+      <Card padding="none">
         {isLoading ? (
-          <div className="flex justify-center py-12"><Spinner size="lg" /></div>
+          <div className="flex justify-center py-12">
+            <Spinner size="lg" />
+          </div>
         ) : orders?.length === 0 ? (
-          <div className="text-center py-12 text-gray-500">Aucune commande trouvee</div>
+          <div className="flex flex-col items-center justify-center py-12 text-center">
+            <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-3">
+              <ShoppingBag className="w-6 h-6 text-gray-400" />
+            </div>
+            <p className="text-sm font-medium text-gray-900">Aucune commande</p>
+            <p className="text-sm text-gray-500 mt-1">
+              {activeTab ? `Aucune commande ${activeTab === 'pending' ? 'en attente' : activeTab}` : 'Les commandes apparaitront ici'}
+            </p>
+          </div>
         ) : (
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-gray-100">
-                <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Commande</th>
-                <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Client</th>
-                <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Date</th>
-                <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Statut</th>
-                <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Total</th>
-                <th className="w-16"></th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-50">
-              {orders?.map((order) => (
-                <OrderRow key={order.id} order={order} onView={setSelectedOrder} />
-              ))}
-            </tbody>
-          </table>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-gray-100">
+                  <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Commande</th>
+                  <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Client</th>
+                  <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
+                  <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Statut</th>
+                  <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Total</th>
+                  <th className="w-12"></th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-50">
+                {orders?.map((order) => (
+                  <OrderRow key={order.id} order={order} onView={setSelectedOrder} />
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </Card>
 
-      <OrderDetails order={selectedOrder} open={!!selectedOrder} onClose={() => setSelectedOrder(null)} onStatusChange={handleStatusChange} />
+      <OrderDetails
+        order={selectedOrder}
+        open={!!selectedOrder}
+        onClose={() => setSelectedOrder(null)}
+        onStatusChange={handleStatusChange}
+      />
     </div>
   );
 }

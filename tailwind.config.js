@@ -26,15 +26,29 @@ export default {
           300: '#ede5d5',
           400: '#e2d5bf',
         },
+        // Neutral palette for admin
+        slate: {
+          25: '#fcfcfd',
+          50: '#f8fafc',
+          75: '#f3f6f9',
+        },
       },
       fontFamily: {
         sans: ['Heebo', 'system-ui', 'sans-serif'],
         display: ['Playfair Display', 'serif'],
       },
+      boxShadow: {
+        'soft': '0 1px 2px 0 rgb(0 0 0 / 0.03), 0 1px 3px 0 rgb(0 0 0 / 0.05)',
+        'card': '0 1px 3px 0 rgb(0 0 0 / 0.04), 0 2px 8px -1px rgb(0 0 0 / 0.04)',
+        'elevated': '0 4px 6px -1px rgb(0 0 0 / 0.05), 0 10px 20px -2px rgb(0 0 0 / 0.04)',
+        'dropdown': '0 4px 16px -2px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.04)',
+      },
       animation: {
         'fade-in': 'fadeIn 0.2s ease-out',
         'scale-in': 'scaleIn 0.2s ease-out',
         'shimmer': 'shimmer 1.5s infinite',
+        'slide-down': 'slideDown 0.15s ease-out',
+        'slide-up': 'slideUp 0.15s ease-out',
       },
       keyframes: {
         fadeIn: {
@@ -48,6 +62,14 @@ export default {
         shimmer: {
           '0%': { backgroundPosition: '200% 0' },
           '100%': { backgroundPosition: '-200% 0' },
+        },
+        slideDown: {
+          '0%': { opacity: '0', transform: 'translateY(-4px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        slideUp: {
+          '0%': { opacity: '0', transform: 'translateY(4px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
         },
       },
     },

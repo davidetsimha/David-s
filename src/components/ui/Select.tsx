@@ -1,15 +1,23 @@
 import { type SelectHTMLAttributes, forwardRef } from 'react';
 import { ChevronDown } from 'lucide-react';
 
+type SelectSize = 'sm' | 'md';
+
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
   error?: string;
   options: { value: string; label: string }[];
   placeholder?: string;
+  selectSize?: SelectSize;
 }
 
+const sizes: Record<SelectSize, string> = {
+  sm: 'h-9 ps-3 pe-8 text-sm',
+  md: 'h-10 ps-3.5 pe-9',
+};
+
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
-  ({ label, error, options, placeholder, id, className = '', ...props }, ref) => {
+  ({ label, error, options, placeholder, selectSize = 'md', id, className = '', ...props }, ref) => {
     const selectId = id || label?.toLowerCase().replace(/\s+/g, '-');
 
     return (
@@ -17,7 +25,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
         {label && (
           <label
             htmlFor={selectId}
-            className="block text-sm font-medium text-stone-700 mb-1.5 ps-0.5"
+            className="block text-sm font-medium text-gray-700 mb-1.5"
           >
             {label}
           </label>
@@ -27,13 +35,14 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             ref={ref}
             id={selectId}
             className={`
-              w-full px-4 py-3 pe-10 rounded-lg appearance-none cursor-pointer
-              bg-white border transition-all duration-200 text-stone-900
-              focus:outline-none focus:ring-2 focus:ring-offset-1
+              w-full rounded-lg appearance-none cursor-pointer text-sm
+              bg-white border transition-all duration-150 text-gray-900
+              focus:outline-none focus:ring-2 focus:ring-offset-0
               ${error
-                ? 'border-red-400 focus:border-red-500 focus:ring-red-200'
-                : 'border-stone-200 hover:border-gold-300 focus:border-gold-500 focus:ring-gold-200'
+                ? 'border-red-300 focus:border-red-400 focus:ring-red-100'
+                : 'border-gray-200 hover:border-gray-300 focus:border-gold-400 focus:ring-gold-100'
               }
+              ${sizes[selectSize]}
               ${className}
             `}
             {...props}
@@ -49,10 +58,10 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
               </option>
             ))}
           </select>
-          <ChevronDown className="absolute end-3 top-1/2 -translate-y-1/2 h-5 w-5 text-stone-400 pointer-events-none" />
+          <ChevronDown className="absolute end-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
         </div>
         {error && (
-          <p className="mt-1.5 text-sm text-red-500 ps-0.5">{error}</p>
+          <p className="mt-1.5 text-sm text-red-500">{error}</p>
         )}
       </div>
     );

@@ -7,7 +7,7 @@ import {
   updateProduct,
   deleteProduct,
 } from '../services/products.service';
-import type { ProductFilters, CreateProductDTO } from '../types';
+import type { ProductFilters, CreateProductDTO, Product } from '../types';
 
 export function useProducts(filters?: ProductFilters) {
   return useQuery({
@@ -51,6 +51,34 @@ export function useDeleteProduct() {
   return useMutation({
     mutationFn: (id: string) => deleteProduct(id),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.products.all });
+    },
+  });
+}
+
+export function useToggleProductAvailability() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, available }: { id: string; available: boolean }) =>
+      updateProduct(id, { available }),
+    onMutate: async ({ id, available }) => {
+      await queryClient.cancelQueries({ queryKey: queryKeys.products.all });
+      const previousProducts = queryClient.getQueryData(queryKeys.products.list());
+
+      queryClient.setQueryData(
+        queryKeys.products.list(),
+        (old: Product[] | undefined) =>
+          old?.map((p) => (p.id === id ? { ...p, available } : p))
+      );
+
+      return { previousProducts };
+    },
+    onError: (_, __, context) => {
+      if (context?.previousProducts) {
+        queryClient.setQueryData(queryKeys.products.list(), context.previousProducts);
+      }
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.products.all });
     },
   });
