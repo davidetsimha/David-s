@@ -1,4 +1,5 @@
 import { Loader2, Target, CheckCircle, XCircle, Clock } from 'lucide-react';
+import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import { useQuoteConversionRate } from '../../../hooks/useQuotes';
 
 export function ConversionStats() {
@@ -14,8 +15,11 @@ export function ConversionStats() {
     );
   }
 
-  const circumference = 2 * Math.PI * 40;
-  const strokeDashoffset = circumference - (circumference * (data?.rate ?? 0)) / 100;
+  const rate = data?.rate ?? 0;
+  const chartData = [
+    { name: 'Completed', value: rate },
+    { name: 'Remaining', value: 100 - rate },
+  ];
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-6">
@@ -27,38 +31,26 @@ export function ConversionStats() {
       <div className="flex items-center gap-6">
         {/* Progress Ring */}
         <div className="relative w-24 h-24 flex-shrink-0">
-          <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-            {/* Background circle */}
-            <circle
-              cx="50"
-              cy="50"
-              r="40"
-              fill="none"
-              stroke="#f3f4f6"
-              strokeWidth="8"
-            />
-            {/* Progress circle */}
-            <circle
-              cx="50"
-              cy="50"
-              r="40"
-              fill="none"
-              stroke="url(#gradient)"
-              strokeWidth="8"
-              strokeLinecap="round"
-              strokeDasharray={circumference}
-              strokeDashoffset={strokeDashoffset}
-              className="transition-all duration-500"
-            />
-            <defs>
-              <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#d4a846" />
-                <stop offset="100%" stopColor="#c9983a" />
-              </linearGradient>
-            </defs>
-          </svg>
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={chartData}
+                cx="50%"
+                cy="50%"
+                innerRadius={30}
+                outerRadius={40}
+                startAngle={90}
+                endAngle={-270}
+                dataKey="value"
+                strokeWidth={0}
+              >
+                <Cell fill="#c9a962" />
+                <Cell fill="#f3f4f6" />
+              </Pie>
+            </PieChart>
+          </ResponsiveContainer>
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-xl font-semibold text-gray-900">{data?.rate ?? 0}%</span>
+            <span className="text-xl font-semibold text-gray-900">{rate}%</span>
           </div>
         </div>
 

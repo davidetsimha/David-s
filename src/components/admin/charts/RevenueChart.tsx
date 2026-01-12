@@ -1,16 +1,31 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Loader2, TrendingUp, TrendingDown } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Cell } from 'recharts';
 import { useRevenueAnalytics } from '../../../hooks/useOrders';
 
 export function RevenueChart() {
   const [days, setDays] = useState(7);
   const { data, isLoading } = useRevenueAnalytics(days);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [dimensions, setDimensions] = useState({ width: 400, height: 250 });
 
-  const maxRevenue = Math.max(1, ...(data?.map((d) => d.revenue) ?? []));
+  useEffect(() => {
+    const updateDimensions = () => {
+      if (containerRef.current) {
+        setDimensions({
+          width: containerRef.current.offsetWidth,
+          height: 250,
+        });
+      }
+    };
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
+    return () => window.removeEventListener('resize', updateDimensions);
+  }, []);
+
   const totalRevenue = data?.reduce((sum, d) => sum + d.revenue, 0) ?? 0;
   const totalOrders = data?.reduce((sum, d) => sum + d.orders, 0) ?? 0;
 
-  // Compare first half vs second half for trend
   const midpoint = Math.floor((data?.length ?? 0) / 2);
   const firstHalfRevenue = data?.slice(0, midpoint).reduce((sum, d) => sum + d.revenue, 0) ?? 0;
   const secondHalfRevenue = data?.slice(midpoint).reduce((sum, d) => sum + d.revenue, 0) ?? 0;
@@ -28,6 +43,11 @@ export function RevenueChart() {
       maximumFractionDigits: 0,
     }).format(amount);
   };
+
+  const chartData = data?.map(d => ({
+    ...d,
+    name: formatDay(d.date),
+  })) ?? [];
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-6">
@@ -65,42 +85,48 @@ export function RevenueChart() {
           <Loader2 className="w-6 h-6 animate-spin text-gold-500" />
         </div>
       ) : (
-        <div className="relative">
-          {/* Bar Chart */}
-          <div className="flex items-end gap-1 h-40">
-            {data?.map((point) => {
-              const height = maxRevenue > 0 ? (point.revenue / maxRevenue) * 100 : 0;
-              return (
-                <div
-                  key={point.date}
-                  className="flex-1 group relative"
-                >
-                  <div
-                    className="w-full bg-gradient-to-t from-gold-500 to-gold-400 rounded-t transition-all hover:from-gold-600 hover:to-gold-500"
-                    style={{ height: `${Math.max(height, 2)}%` }}
-                  />
-                  {/* Tooltip */}
-                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10">
-                    {formatCurrency(point.revenue)}
-                    <br />
-                    {point.orders} cmd
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* X-axis labels */}
-          <div className="flex gap-1 mt-2">
-            {data?.map((point, index) => (
-              <div
-                key={point.date}
-                className="flex-1 text-center text-xs text-gray-400 truncate"
-              >
-                {days <= 7 || index % 2 === 0 ? formatDay(point.date) : ''}
-              </div>
-            ))}
-          </div>
+        <div ref={containerRef} className="w-full">
+          <BarChart
+            width={dimensions.width}
+            height={dimensions.height}
+            data={chartData}
+            margin={{ top: 10, right: 10, left: -10, bottom: 0 }}
+          >
+            <XAxis
+              dataKey="name"
+              axisLine={false}
+              tickLine={false}
+              tick={{ fontSize: 12, fill: '#9ca3af' }}
+            />
+            <YAxis
+              axisLine={false}
+              tickLine={false}
+              tick={{ fontSize: 12, fill: '#9ca3af' }}
+              tickFormatter={(value) => `${value >= 1000 ? `${value/1000}k` : value}`}
+            />
+            <Tooltip
+              content={({ active, payload }) => {
+                if (active && payload && payload.length) {
+                  const d = payload[0].payload;
+                  return (
+                    <div className="bg-gray-900 text-white text-xs rounded-lg px-3 py-2 shadow-lg">
+                      <p className="font-medium">{formatCurrency(d.revenue)}</p>
+                      <p className="text-gray-300">{d.orders} commandes</p>
+                    </div>
+                  );
+                }
+                return null;
+              }}
+            />
+            <Bar dataKey="revenue" radius={[4, 4, 0, 0]} fill="#c9a962">
+              {chartData.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={entry.revenue > 0 ? '#c9a962' : '#e5e7eb'}
+                />
+              ))}
+            </Bar>
+          </BarChart>
         </div>
       )}
     </div>
