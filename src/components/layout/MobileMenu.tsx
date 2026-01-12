@@ -3,7 +3,6 @@ import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useUIStore } from '../../stores';
 import { ROUTES } from '../../config/routes';
-import { LanguageSwitch } from './LanguageSwitch';
 
 const navItems = [
   { key: 'home', route: ROUTES.HOME },
@@ -110,9 +109,6 @@ export function MobileMenu() {
               </li>
             ))}
           </ul>
-          <div className="pt-6 border-t border-gold-100">
-            <LanguageSwitch />
-          </div>
         </div>
       </nav>
     </>
