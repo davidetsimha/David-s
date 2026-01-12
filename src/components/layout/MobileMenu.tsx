@@ -1,7 +1,7 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useUIStore, useLanguageStore } from '../../stores';
+import { useUIStore } from '../../stores';
 import { ROUTES } from '../../config/routes';
 import { LanguageSwitch } from './LanguageSwitch';
 
@@ -18,7 +18,6 @@ export function MobileMenu() {
   const { t } = useTranslation();
   const location = useLocation();
   const { isMobileMenuOpen, closeMobileMenu } = useUIStore();
-  const { direction } = useLanguageStore();
   const menuRef = useRef<HTMLElement>(null);
   const previousActiveElement = useRef<HTMLElement | null>(null);
 
@@ -87,12 +86,10 @@ export function MobileMenu() {
       <nav
         ref={menuRef}
         aria-label="Mobile navigation"
-        className={`fixed top-0 ${direction === 'rtl' ? 'start-0' : 'end-0'}
+        className={`fixed top-0 end-0
           h-full w-[280px] max-w-[85vw] bg-cream-50 z-50 shadow-2xl
           transform transition-transform duration-300 ease-out
-          ${isMobileMenuOpen
-            ? 'translate-x-0'
-            : direction === 'rtl' ? '-translate-x-full' : 'translate-x-full'}`}
+          ${isMobileMenuOpen ? 'translate-x-0' : 'ltr:translate-x-full rtl:-translate-x-full'}`}
       >
         <div className="flex flex-col h-full pt-20 pb-8 px-6">
           <ul className="flex-1 space-y-1">
