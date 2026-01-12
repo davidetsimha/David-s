@@ -31,18 +31,10 @@ const eventLabels: Record<string, string> = {
 
 const statusLabels: Record<QuoteStatus, string> = {
   new: 'nouveau',
-  contacted: 'contacte',
-  quoted: 'devis envoye',
+  contacted: 'en cours', // legacy
+  quoted: 'devis envoye', // legacy
   confirmed: 'confirme',
   rejected: 'rejete',
-};
-
-const statusFlow: Record<QuoteStatus, QuoteStatus | null> = {
-  new: 'contacted',
-  contacted: 'quoted',
-  quoted: 'confirmed',
-  confirmed: null,
-  rejected: null,
 };
 
 export function QuoteDetails({ quote, open, onClose, onStatusChange }: QuoteDetailsProps) {
@@ -57,7 +49,7 @@ export function QuoteDetails({ quote, open, onClose, onStatusChange }: QuoteDeta
 
   if (!quote) return null;
 
-  const nextStatus = statusFlow[quote.status];
+  const canChangeStatus = quote.status === 'new' || quote.status === 'contacted' || quote.status === 'quoted';
   const date = new Date(quote.created_at).toLocaleDateString('fr-FR', {
     weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
   });
@@ -128,18 +120,16 @@ export function QuoteDetails({ quote, open, onClose, onStatusChange }: QuoteDeta
           )}
         </div>
 
-        <div className="flex gap-3">
-          {nextStatus && (
-            <Button onClick={() => onStatusChange(quote.id, nextStatus)} className="flex-1">
-              Marquer comme {statusLabels[nextStatus]}
+        {canChangeStatus && (
+          <div className="flex gap-3">
+            <Button onClick={() => onStatusChange(quote.id, 'confirmed')} className="flex-1">
+              Confirmer
             </Button>
-          )}
-          {quote.status !== 'rejected' && quote.status !== 'confirmed' && (
             <Button variant="outline" onClick={() => onStatusChange(quote.id, 'rejected')} className="text-red-600 border-red-200 hover:bg-red-50">
               Rejeter
             </Button>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </Modal>
   );

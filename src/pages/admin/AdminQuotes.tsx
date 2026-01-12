@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { MessageSquare } from 'lucide-react';
 import { Card } from '../../components/ui/Card';
 import { QuoteRow } from '../../components/admin/QuoteRow';
 import { QuoteDetails } from '../../components/admin/QuoteDetails';
@@ -15,18 +16,29 @@ export function AdminQuotes() {
     updateStatus.mutate({ id, status });
   };
 
+  const pendingCount = quotes?.filter(q => q.status === 'new' || q.status === 'contacted' || q.status === 'quoted').length ?? 0;
+
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-2xl lg:text-3xl text-gray-900">Demandes de devis</h1>
-        <p className="text-gray-500 mt-1">Gerez les demandes de traiteur pour evenements</p>
+        <h1 className="text-xl font-semibold text-gray-900">Demandes de devis</h1>
+        <p className="text-sm text-gray-500 mt-0.5">
+          {quotes?.length ?? 0} devis{(quotes?.length ?? 0) > 1 ? '' : ''}
+          {pendingCount > 0 && ` dont ${pendingCount} en attente`}
+        </p>
       </div>
 
       <Card padding="none" hover={false}>
         {isLoading ? (
           <div className="flex justify-center py-12"><Spinner size="lg" /></div>
         ) : quotes?.length === 0 ? (
-          <div className="text-center py-12 text-gray-500">Aucune demande de devis</div>
+          <div className="flex flex-col items-center justify-center py-12 text-center">
+            <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-3">
+              <MessageSquare className="w-6 h-6 text-gray-400" />
+            </div>
+            <p className="text-sm font-medium text-gray-900">Aucune demande de devis</p>
+            <p className="text-sm text-gray-500 mt-1">Les demandes apparaitront ici</p>
+          </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">

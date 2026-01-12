@@ -26,8 +26,8 @@ const eventLabels: Record<string, string> = {
 
 const statusLabels: Record<QuoteStatus, string> = {
   new: 'nouveau',
-  contacted: 'contacte',
-  quoted: 'devis envoye',
+  contacted: 'en cours', // legacy
+  quoted: 'devis envoye', // legacy
   confirmed: 'confirme',
   rejected: 'rejete',
 };
@@ -74,15 +74,15 @@ export function QuoteRow({ quote, onStatusChange, onViewDetails }: QuoteRowProps
           >
             <Eye className="w-4 h-4" />
           </button>
-          {quote.status === 'new' && (
-            <Button size="sm" variant="outline" onClick={() => onStatusChange(quote.id, 'contacted')}>
-              Contacte
-            </Button>
-          )}
-          {quote.status === 'contacted' && (
-            <Button size="sm" variant="outline" onClick={() => onStatusChange(quote.id, 'quoted')}>
-              Devis envoye
-            </Button>
+          {(quote.status === 'new' || quote.status === 'contacted' || quote.status === 'quoted') && (
+            <>
+              <Button size="sm" onClick={() => onStatusChange(quote.id, 'confirmed')}>
+                Confirmer
+              </Button>
+              <Button size="sm" variant="outline" className="text-red-600 border-red-200 hover:bg-red-50" onClick={() => onStatusChange(quote.id, 'rejected')}>
+                Rejeter
+              </Button>
+            </>
           )}
         </div>
       </td>
