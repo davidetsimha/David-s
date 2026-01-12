@@ -133,6 +133,8 @@
     "orderCancelled": "ההזמנה בוטלה",
     "retry": "נסה שוב",
     "contactUs": "צור קשר",
+    "needHelp": "צריכים עזרה?",
+    "helpMessage": "אם נתקלתם בבעיה, אל תהססו לפנות אלינו.",
     "success": {
       "title": "ההזמנה אושרה!",
       "message": "תודה על הזמנתך. תקבל אימייל אישור בקרוב."
@@ -148,7 +150,8 @@
     "pageSubtitle": "יצירות קונדיטוריה מעולות מהמטבח שלנו",
     "all": "הכל",
     "receptions": "אירועים",
-    "products": "מוצרים"
+    "products": "מוצרים",
+    "openImage": "פתח תמונה: {{name}}"
   },
   "faq": {
     "title": "שאלות נפוצות",
@@ -198,6 +201,7 @@
       "nameLabel": "שם מלא",
       "namePlaceholder": "ישראל ישראלי",
       "email": "אימייל",
+      "emailPlaceholder": "exemple@email.com",
       "phoneLabel": "טלפון (אופציונלי)",
       "phonePlaceholder": "050-0000000",
       "message": "הודעה",

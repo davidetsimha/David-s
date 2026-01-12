@@ -133,6 +133,8 @@
     "orderCancelled": "Commande annulee",
     "retry": "Reessayer",
     "contactUs": "Nous contacter",
+    "needHelp": "Besoin d'aide?",
+    "helpMessage": "Si vous avez rencontré un problème, n'hésitez pas à nous contacter.",
     "success": {
       "title": "Commande confirmée!",
       "message": "Merci pour votre commande. Vous recevrez un email de confirmation."
@@ -148,7 +150,8 @@
     "pageSubtitle": "Créations de pâtisserie exquises de notre cuisine",
     "all": "Tout",
     "receptions": "Réceptions",
-    "products": "Produits"
+    "products": "Produits",
+    "openImage": "Ouvrir l'image: {{name}}"
   },
   "faq": {
     "title": "Questions Fréquentes",
@@ -198,6 +201,7 @@
       "nameLabel": "Nom complet",
       "namePlaceholder": "Jean Dupont",
       "email": "Email",
+      "emailPlaceholder": "exemple@email.com",
       "phoneLabel": "Téléphone (optionnel)",
       "phonePlaceholder": "050-0000000",
       "message": "Message",

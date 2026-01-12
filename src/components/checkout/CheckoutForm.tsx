@@ -52,7 +52,7 @@ export function CheckoutForm({ onSubmit, isSubmitting }: CheckoutFormProps) {
           {...register('email')}
           type="email"
           label={t('checkout.email')}
-          placeholder="exemple@email.com"
+          placeholder={t('contact.form.emailPlaceholder')}
           className="ps-11"
           error={errors.email?.message}
           disabled={isSubmitting}

@@ -33,10 +33,10 @@ export function CheckoutCancelPage() {
         {/* Message Box */}
         <div className="bg-white rounded-xl p-5 border border-cream-200 mb-8 text-start">
           <p className="text-sm text-stone-500 mb-2">
-            {t('checkout.needHelp', 'Besoin d\'aide?')}
+            {t('checkout.needHelp')}
           </p>
           <p className="text-stone-700">
-            {t('checkout.helpMessage', 'Si vous avez rencontre un probleme, n\'hesitez pas a nous contacter.')}
+            {t('checkout.helpMessage')}
           </p>
         </div>
 

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import type { GalleryImage as GalleryImageType } from '../../types';
 
 interface GalleryImageProps {
@@ -6,6 +7,9 @@ interface GalleryImageProps {
 }
 
 export function GalleryImage({ image, onClick }: GalleryImageProps) {
+  const { t, i18n } = useTranslation();
+  const alt = i18n.language === 'he' ? image.alt_he : image.alt_fr;
+
   return (
     <button
       onClick={onClick}
@@ -15,12 +19,12 @@ export function GalleryImage({ image, onClick }: GalleryImageProps) {
         focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-4
         transition-shadow duration-300
       "
-      aria-label={`פתח תמונה: ${image.alt_he}`}
+      aria-label={t('gallery.openImage', { name: alt })}
     >
       <div className="relative aspect-square overflow-hidden">
         <img
           src={image.image_url}
-          alt={image.alt_he}
+          alt={alt}
           loading="lazy"
           className="
             w-full h-full object-cover
@@ -35,7 +39,7 @@ export function GalleryImage({ image, onClick }: GalleryImageProps) {
           opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300
         ">
           <div className="absolute bottom-4 inset-x-4 text-white text-start">
-            <p className="text-sm font-medium truncate">{image.alt_he}</p>
+            <p className="text-sm font-medium truncate">{alt}</p>
           </div>
         </div>
 
