@@ -15,7 +15,7 @@ const schema = z.object({
   name: z.string().min(2),
   email: z.string().email(),
   phone: z.string().min(9),
-  event_type: z.string().min(1),
+  event_type: z.enum(['bar_mitzvah', 'bat_mitzvah', 'brit', 'private_party']),
   event_date: z.string().min(1),
   guest_count: z.coerce.number().min(1),
   message: z.string().optional(),
@@ -30,6 +30,7 @@ interface QuoteRequestFormProps {
 export function QuoteRequestForm({ preselectedType }: QuoteRequestFormProps) {
   const { t } = useTranslation();
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const { mutate, isPending } = useCreateQuote();
 
   const {
@@ -38,7 +39,7 @@ export function QuoteRequestForm({ preselectedType }: QuoteRequestFormProps) {
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema) as never,
-    defaultValues: { event_type: preselectedType || '' },
+    defaultValues: { event_type: preselectedType },
   });
 
   const eventOptions = [
@@ -49,8 +50,10 @@ export function QuoteRequestForm({ preselectedType }: QuoteRequestFormProps) {
   ];
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
+    setError(null);
     mutate(data as FormData & { event_type: EventType }, {
       onSuccess: () => setSubmitted(true),
+      onError: (err) => setError(err instanceof Error ? err.message : t('common.errorOccurred')),
     });
   };
 
@@ -69,7 +72,12 @@ export function QuoteRequestForm({ preselectedType }: QuoteRequestFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+    <form onSubmit={handleSubmit(onSubmit as SubmitHandler<FormData>)} className="space-y-5">
+      {error && (
+        <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm">
+          {error}
+        </div>
+      )}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <Input
           label={t('receptions.quoteForm.name')}

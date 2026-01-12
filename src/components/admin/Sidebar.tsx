@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Package, Tag, ShoppingBag, MessageSquare, LogOut, X, Image, HelpCircle } from 'lucide-react';
+import { LayoutDashboard, Package, ShoppingBag, MessageSquare, LogOut, X } from 'lucide-react';
 import { ROUTES } from '../../config/routes';
 import { supabase } from '../../services/supabase';
 import { ConfirmModal } from './ConfirmModal';

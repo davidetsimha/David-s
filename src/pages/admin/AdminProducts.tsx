@@ -19,6 +19,7 @@ export function AdminProducts() {
   const [editProduct, setEditProduct] = useState<Product | undefined>();
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [search, setSearch] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
   const filteredProducts = useMemo(() => {
     if (!products || !search.trim()) return products ?? [];
@@ -33,10 +34,17 @@ export function AdminProducts() {
   const closeModal = () => { setModalOpen(false); setEditProduct(undefined); };
 
   const handleSubmit = (data: CreateProductDTO) => {
+    setError(null);
     if (editProduct) {
-      updateMutation.mutate({ id: editProduct.id, data }, { onSuccess: closeModal });
+      updateMutation.mutate({ id: editProduct.id, data }, {
+        onSuccess: closeModal,
+        onError: (err) => setError(err instanceof Error ? err.message : 'Erreur lors de la mise a jour'),
+      });
     } else {
-      createMutation.mutate(data, { onSuccess: closeModal });
+      createMutation.mutate(data, {
+        onSuccess: closeModal,
+        onError: (err) => setError(err instanceof Error ? err.message : 'Erreur lors de la creation'),
+      });
     }
   };
 
@@ -53,6 +61,12 @@ export function AdminProducts() {
         </div>
         <Button onClick={openCreate}><Plus className="w-5 h-5" /> Ajouter un produit</Button>
       </div>
+
+      {error && (
+        <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm">
+          {error}
+        </div>
+      )}
 
       <div className="relative">
         <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />

@@ -11,15 +11,12 @@ export async function getQuotes(): Promise<QuoteRequest[]> {
   return data as QuoteRequest[];
 }
 
-export async function createQuote(quoteData: CreateQuoteDTO): Promise<QuoteRequest> {
-  const { data, error } = await supabase
+export async function createQuote(quoteData: CreateQuoteDTO): Promise<void> {
+  const { error } = await supabase
     .from('quote_requests')
-    .insert({ ...quoteData, status: 'new' })
-    .select('*')
-    .single();
+    .insert({ ...quoteData, status: 'new' });
 
   if (error) throw error;
-  return data as QuoteRequest;
 }
 
 export async function updateQuoteStatus(
