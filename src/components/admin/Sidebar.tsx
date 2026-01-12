@@ -8,11 +8,11 @@ import { ConfirmModal } from './ConfirmModal';
 const navItems = [
   { to: ROUTES.ADMIN, icon: LayoutDashboard, label: 'Tableau de bord', end: true },
   { to: ROUTES.ADMIN_PRODUCTS, icon: Package, label: 'Produits' },
-  { to: ROUTES.ADMIN_CATEGORIES, icon: Tag, label: 'Categories' },
+  // { to: ROUTES.ADMIN_CATEGORIES, icon: Tag, label: 'Categories' },
   { to: ROUTES.ADMIN_ORDERS, icon: ShoppingBag, label: 'Commandes' },
   { to: ROUTES.ADMIN_QUOTES, icon: MessageSquare, label: 'Devis' },
-  { to: ROUTES.ADMIN_MEDIA, icon: Image, label: 'Medias' },
-  { to: ROUTES.ADMIN_FAQ, icon: HelpCircle, label: 'FAQ' },
+  // { to: ROUTES.ADMIN_MEDIA, icon: Image, label: 'Medias' },
+  // { to: ROUTES.ADMIN_FAQ, icon: HelpCircle, label: 'FAQ' },
 ];
 
 interface SidebarProps {
