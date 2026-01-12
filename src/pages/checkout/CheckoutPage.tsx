@@ -7,7 +7,7 @@ import { CheckoutForm, DeliveryOptions, OrderSummary } from '../../components/ch
 import type { CheckoutFormData, DeliveryMethod, DeliveryAddress } from '../../components/checkout';
 import { ROUTES } from '../../config/routes';
 import { initiatePayment } from '../../services/payment.service';
-import { createOrder, updateOrderStatus } from '../../services/orders.service';
+import { createOrder } from '../../services/orders.service';
 import { useConfig } from '../../hooks/useConfig';
 import type { CreateOrderDTO } from '../../types';
 
@@ -94,14 +94,11 @@ export function CheckoutPage() {
       });
 
       if (response.success) {
-        // ETAPE 3: Mettre a jour le statut de la commande
-        await updateOrderStatus(orderId, 'confirmed');
-
         if (response.paymentUrl) {
-          // Redirect to PayPlus payment page
+          // Redirect to PayPlus payment page - le statut sera mis a jour via webhook
           window.location.href = response.paymentUrl;
         } else {
-          // Mock/dev mode - simulate success
+          // Mode dev/test - la commande reste en "pending" pour confirmation manuelle
           clearCart();
           navigate(`${ROUTES.CHECKOUT_SUCCESS}?order_id=${orderId}`);
         }

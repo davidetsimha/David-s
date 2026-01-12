@@ -4,7 +4,7 @@ import type { Order, OrderStatus, CreateOrderDTO } from '../types';
 export async function getOrders(status?: OrderStatus): Promise<Order[]> {
   let query = supabase
     .from('orders')
-    .select('*')
+    .select('*, items:order_items(*)')
     .order('created_at', { ascending: false });
 
   if (status) {
