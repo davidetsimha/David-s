@@ -5,6 +5,7 @@ import { Badge } from '../../components/ui/Badge';
 import { Card, CardHeader, CardTitle } from '../../components/ui/Card';
 import { useOrders } from '../../hooks/useOrders';
 import { useQuotes } from '../../hooks/useQuotes';
+import { RevenueChart, TopProductsChart, ConversionStats, EventTypeChart } from '../../components/admin/charts';
 import type { Order, QuoteRequest } from '../../types';
 
 export function AdminDashboard() {
@@ -57,6 +58,7 @@ export function AdminDashboard() {
         <p className="text-gray-500 mt-1">Bienvenue chez David's Patisserie</p>
       </div>
 
+      {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatsCard
           icon={<ShoppingBag className="w-5 h-5" />}
@@ -74,6 +76,18 @@ export function AdminDashboard() {
         <StatsCard icon={<TrendingUp className="w-5 h-5" />} label="Total commandes" value={orders?.length ?? 0} />
       </div>
 
+      {/* Analytics Charts */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <RevenueChart />
+        <TopProductsChart />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <ConversionStats />
+        <EventTypeChart />
+      </div>
+
+      {/* Recent Activity Tables */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card padding="none" hover={false}>
           <CardHeader className="p-6 pb-0">

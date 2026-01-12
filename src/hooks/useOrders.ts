@@ -5,6 +5,9 @@ import {
   getOrderById,
   createOrder,
   updateOrderStatus,
+  getRevenueByDateRange,
+  getTopSellingProducts,
+  getSalesByCategory,
 } from '../services/orders.service';
 import type { OrderStatus, CreateOrderDTO } from '../types';
 
@@ -42,5 +45,28 @@ export function useUpdateOrderStatus() {
       queryClient.invalidateQueries({ queryKey: queryKeys.orders.all });
       queryClient.invalidateQueries({ queryKey: queryKeys.orders.detail(id) });
     },
+  });
+}
+
+// Analytics hooks
+
+export function useRevenueAnalytics(days: number) {
+  return useQuery({
+    queryKey: ['analytics', 'revenue', days],
+    queryFn: () => getRevenueByDateRange(days),
+  });
+}
+
+export function useTopProducts(limit: number = 5) {
+  return useQuery({
+    queryKey: ['analytics', 'topProducts', limit],
+    queryFn: () => getTopSellingProducts(limit),
+  });
+}
+
+export function useCategorySales() {
+  return useQuery({
+    queryKey: ['analytics', 'categorySales'],
+    queryFn: getSalesByCategory,
   });
 }

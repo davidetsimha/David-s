@@ -24,6 +24,9 @@ import { AdminOrders } from './pages/admin/AdminOrders';
 import { AdminQuotes } from './pages/admin/AdminQuotes';
 import { AdminMedia } from './pages/admin/AdminMedia';
 import { AdminFAQ } from './pages/admin/AdminFAQ';
+import { AdminSettings } from './pages/admin/AdminSettings';
+import { AdminMessages } from './pages/admin/AdminMessages';
+import { AdminCustomers } from './pages/admin/AdminCustomers';
 
 export default function App() {
   return (
@@ -61,6 +64,9 @@ export default function App() {
           <Route path={ROUTES.ADMIN_QUOTES} element={<AdminQuotes />} />
           <Route path={ROUTES.ADMIN_MEDIA} element={<AdminMedia />} />
           <Route path={ROUTES.ADMIN_FAQ} element={<AdminFAQ />} />
+          <Route path={ROUTES.ADMIN_SETTINGS} element={<AdminSettings />} />
+          <Route path={ROUTES.ADMIN_MESSAGES} element={<AdminMessages />} />
+          <Route path={ROUTES.ADMIN_CUSTOMERS} element={<AdminCustomers />} />
         </Route>
 
         {/* 404 */}

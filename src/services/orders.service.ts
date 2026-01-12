@@ -57,3 +57,133 @@ export async function updateOrderStatus(id: string, status: OrderStatus): Promis
   if (error) throw error;
   return data as Order;
 }
+
+// Analytics functions
+
+export interface RevenueDataPoint {
+  date: string;
+  revenue: number;
+  orders: number;
+}
+
+export async function getRevenueByDateRange(days: number): Promise<RevenueDataPoint[]> {
+  const startDate = new Date();
+  startDate.setDate(startDate.getDate() - days);
+
+  const { data, error } = await supabase
+    .from('orders')
+    .select('created_at, total_amount')
+    .gte('created_at', startDate.toISOString())
+    .order('created_at', { ascending: true });
+
+  if (error) throw error;
+
+  // Group by date
+  const revenueByDate = new Map<string, RevenueDataPoint>();
+
+  // Initialize all days
+  for (let i = 0; i < days; i++) {
+    const date = new Date();
+    date.setDate(date.getDate() - (days - 1 - i));
+    const dateStr = date.toISOString().split('T')[0];
+    revenueByDate.set(dateStr, { date: dateStr, revenue: 0, orders: 0 });
+  }
+
+  // Fill with actual data
+  data?.forEach((order) => {
+    const dateStr = order.created_at.split('T')[0];
+    const existing = revenueByDate.get(dateStr);
+    if (existing) {
+      existing.revenue += order.total_amount;
+      existing.orders += 1;
+    }
+  });
+
+  return Array.from(revenueByDate.values());
+}
+
+export interface TopProduct {
+  product_name_fr: string;
+  product_name_he: string;
+  quantity: number;
+  revenue: number;
+}
+
+export async function getTopSellingProducts(limit: number = 5): Promise<TopProduct[]> {
+  const { data, error } = await supabase
+    .from('order_items')
+    .select('product_name_fr, product_name_he, quantity, unit_price');
+
+  if (error) throw error;
+
+  // Aggregate by product name
+  const productMap = new Map<string, TopProduct>();
+
+  data?.forEach((item) => {
+    const key = item.product_name_fr;
+    const existing = productMap.get(key);
+    if (existing) {
+      existing.quantity += item.quantity;
+      existing.revenue += item.quantity * item.unit_price;
+    } else {
+      productMap.set(key, {
+        product_name_fr: item.product_name_fr,
+        product_name_he: item.product_name_he,
+        quantity: item.quantity,
+        revenue: item.quantity * item.unit_price,
+      });
+    }
+  });
+
+  return Array.from(productMap.values())
+    .sort((a, b) => b.quantity - a.quantity)
+    .slice(0, limit);
+}
+
+export interface CategorySales {
+  category_name: string;
+  total: number;
+  count: number;
+}
+
+export async function getSalesByCategory(): Promise<CategorySales[]> {
+  const { data: items, error: itemsError } = await supabase
+    .from('order_items')
+    .select('product_id, quantity, unit_price');
+
+  if (itemsError) throw itemsError;
+
+  const { data: products, error: productsError } = await supabase
+    .from('products')
+    .select('id, category_id, categories(name_fr)');
+
+  if (productsError) throw productsError;
+
+  // Create product to category map
+  const productCategoryMap = new Map<string, string>();
+  products?.forEach((p: any) => {
+    productCategoryMap.set(p.id, p.categories?.name_fr || 'Autre');
+  });
+
+  // Aggregate by category
+  const categoryMap = new Map<string, CategorySales>();
+
+  items?.forEach((item) => {
+    const category = item.product_id ? productCategoryMap.get(item.product_id) || 'Autre' : 'Autre';
+    const existing = categoryMap.get(category);
+    const itemTotal = item.quantity * item.unit_price;
+
+    if (existing) {
+      existing.total += itemTotal;
+      existing.count += item.quantity;
+    } else {
+      categoryMap.set(category, {
+        category_name: category,
+        total: itemTotal,
+        count: item.quantity,
+      });
+    }
+  });
+
+  return Array.from(categoryMap.values()).sort((a, b) => b.total - a.total);
+}

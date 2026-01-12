@@ -5,6 +5,8 @@ import {
   createQuote,
   updateQuoteStatus,
   updateQuoteNotes,
+  getEventTypeDistribution,
+  getQuoteConversionRate,
 } from '../services/quotes.service';
 import type { QuoteStatus, CreateQuoteDTO } from '../types';
 
@@ -44,5 +46,21 @@ export function useUpdateQuoteNotes() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.quotes.all });
     },
+  });
+}
+
+// Analytics hooks
+
+export function useEventTypeDistribution() {
+  return useQuery({
+    queryKey: ['analytics', 'eventTypes'],
+    queryFn: getEventTypeDistribution,
+  });
+}
+
+export function useQuoteConversionRate() {
+  return useQuery({
+    queryKey: ['analytics', 'quoteConversion'],
+    queryFn: getQuoteConversionRate,
   });
 }
