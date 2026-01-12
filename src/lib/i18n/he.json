@@ -28,7 +28,10 @@
     "questions": "שאלות?",
     "thanksTitle": "תודה!",
     "thanksMessage": "ניצור איתך קשר בהקדם",
-    "choose": "בחר..."
+    "choose": "בחר...",
+    "next": "הבא",
+    "back": "חזרה",
+    "edit": "עריכה"
   },
   "home": {
     "heroTitle": "אומנות הקונדיטוריה הצרפתית",
@@ -152,7 +155,10 @@
     "all": "הכל",
     "receptions": "אירועים",
     "products": "מוצרים",
-    "openImage": "פתח תמונה: {{name}}"
+    "openImage": "פתח תמונה: {{name}}",
+    "noImages": "אין תמונות להצגה",
+    "previousImage": "תמונה קודמת",
+    "nextImage": "תמונה הבאה"
   },
   "faq": {
     "title": "שאלות נפוצות",

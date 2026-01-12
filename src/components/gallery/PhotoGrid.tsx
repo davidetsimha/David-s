@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import type { GalleryImage as GalleryImageType } from '../../types';
 import { GalleryImage } from './GalleryImage';
 
@@ -7,11 +8,13 @@ interface PhotoGridProps {
 }
 
 export function PhotoGrid({ images, onImageClick }: PhotoGridProps) {
+  const { t } = useTranslation();
+
   if (images.length === 0) {
     return (
       <div className="text-center py-20">
         <div className="text-6xl mb-4 opacity-30">🍰</div>
-        <p className="text-gold-600 text-lg">אין תמונות להצגה</p>
+        <p className="text-gold-600 text-lg">{t('gallery.noImages')}</p>
       </div>
     );
   }

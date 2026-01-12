@@ -28,7 +28,10 @@
     "questions": "Questions?",
     "thanksTitle": "Merci!",
     "thanksMessage": "Nous vous contacterons bientot",
-    "choose": "Choisir..."
+    "choose": "Choisir...",
+    "next": "Suivant",
+    "back": "Retour",
+    "edit": "Modifier"
   },
   "home": {
     "heroTitle": "L'Art de la Pâtisserie Française",
@@ -152,7 +155,10 @@
     "all": "Tout",
     "receptions": "Réceptions",
     "products": "Produits",
-    "openImage": "Ouvrir l'image: {{name}}"
+    "openImage": "Ouvrir l'image: {{name}}",
+    "noImages": "Aucune image à afficher",
+    "previousImage": "Image précédente",
+    "nextImage": "Image suivante"
   },
   "faq": {
     "title": "Questions Fréquentes",

@@ -1,16 +1,19 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Star, Sparkles, Baby } from 'lucide-react';
+import { Star, Sparkles, Baby, Heart } from 'lucide-react';
 import { ROUTES } from '../../config/routes';
 
 const eventTypes = [
   { key: 'bar_mitzvah', icon: Star, image: '/images/events/bar-mitzvah.jpg' },
+  { key: 'bat_mitzvah', icon: Heart, image: '/images/events/bat-mitzvah.jpg' },
   { key: 'brit', icon: Baby, image: '/images/events/brit.jpg' },
   { key: 'private_party', icon: Sparkles, image: '/images/events/private.jpg' },
 ];
 
 export function ReceptionsHighlight() {
   const { t } = useTranslation();
+  const [imgErrors, setImgErrors] = useState<Record<string, boolean>>({});
 
   return (
     <section className="py-24 bg-cream-50 relative overflow-hidden">
@@ -36,7 +39,7 @@ export function ReceptionsHighlight() {
         </div>
 
         {/* Event Cards */}
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-6xl mx-auto">
           {eventTypes.map(({ key, icon: Icon, image }, index) => (
             <Link
               key={key}
@@ -44,12 +47,27 @@ export function ReceptionsHighlight() {
               className="group relative aspect-[3/4] overflow-hidden animate-fade-in-up"
               style={{ animationDelay: `${0.2 + index * 0.1}s` }}
             >
-              {/* Image */}
+              {/* Image with fallback */}
               <div
-                className="absolute inset-0 bg-cover bg-center transition-transform duration-700
-                  group-hover:scale-110"
-                style={{ backgroundImage: `url(${image})` }}
-              />
+                className={`absolute inset-0 bg-cover bg-center transition-transform duration-700
+                  group-hover:scale-110 ${imgErrors[key] ? 'bg-gradient-to-br from-gold-200 via-cream-100 to-gold-300' : ''}`}
+                style={!imgErrors[key] ? { backgroundImage: `url(${image})` } : undefined}
+              >
+                {imgErrors[key] && (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <Icon className="w-20 h-20 text-gold-400/60" />
+                  </div>
+                )}
+              </div>
+              {/* Hidden img to detect load errors */}
+              {!imgErrors[key] && (
+                <img
+                  src={image}
+                  alt=""
+                  className="hidden"
+                  onError={() => setImgErrors(prev => ({ ...prev, [key]: true }))}
+                />
+              )}
 
               {/* Gradient Overlay */}
               <div

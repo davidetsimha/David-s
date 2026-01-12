@@ -5,6 +5,7 @@ import { Header } from './Header';
 import { Footer } from './Footer';
 import { MobileMenu } from './MobileMenu';
 import { WhatsAppButton } from './WhatsAppButton';
+import { CartDrawer } from '../cart/CartDrawer';
 
 export function PageLayout() {
   const { direction, language } = useLanguageStore();
@@ -25,6 +26,7 @@ export function PageLayout() {
 
       <Footer />
       <WhatsAppButton />
+      <CartDrawer />
     </div>
   );
 }

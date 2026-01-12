@@ -11,7 +11,7 @@ export function CartIcon() {
   return (
     <button
       onClick={openCart}
-      className="relative p-2.5 group transition-all duration-200 rounded-full focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 focus-visible:outline-none"
+      className="relative p-2.5 cursor-pointer group transition-all duration-200 rounded-full focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 focus-visible:outline-none"
       aria-label={t('cart.title')}
     >
       <ShoppingBag

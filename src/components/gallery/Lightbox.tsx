@@ -1,4 +1,5 @@
 import { useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { X, ChevronRight, ChevronLeft } from 'lucide-react';
 import type { GalleryImage } from '../../types';
 
@@ -11,6 +12,7 @@ interface LightboxProps {
 }
 
 export function Lightbox({ images, currentIndex, onClose, onPrevious, onNext }: LightboxProps) {
+  const { t } = useTranslation();
   const currentImage = images[currentIndex];
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
@@ -41,7 +43,7 @@ export function Lightbox({ images, currentIndex, onClose, onPrevious, onNext }: 
         onClick={onClose}
         className="absolute top-4 end-4 z-10 p-2 rounded-full bg-white/10 text-white
           hover:bg-white/20 transition-colors focus:outline-none focus:ring-2 focus:ring-white"
-        aria-label="סגור"
+        aria-label={t('common.close')}
       >
         <X size={24} />
       </button>
@@ -52,7 +54,7 @@ export function Lightbox({ images, currentIndex, onClose, onPrevious, onNext }: 
           onClick={onPrevious}
           className="absolute start-4 z-10 p-3 rounded-full bg-white/10 text-white
             hover:bg-white/20 transition-colors focus:outline-none focus:ring-2 focus:ring-white"
-          aria-label="תמונה קודמת"
+          aria-label={t('gallery.previousImage')}
         >
           <ChevronRight size={28} />
         </button>
@@ -65,7 +67,7 @@ export function Lightbox({ images, currentIndex, onClose, onPrevious, onNext }: 
           className="absolute end-4 z-10 p-3 rounded-full bg-white/10 text-white
             hover:bg-white/20 transition-colors focus:outline-none focus:ring-2 focus:ring-white
             me-16"
-          aria-label="תמונה הבאה"
+          aria-label={t('gallery.nextImage')}
         >
           <ChevronLeft size={28} />
         </button>
