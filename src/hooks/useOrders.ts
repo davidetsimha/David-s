@@ -15,6 +15,7 @@ export function useOrders(status?: OrderStatus) {
   return useQuery({
     queryKey: queryKeys.orders.list(status),
     queryFn: () => getOrders(status),
+    refetchInterval: 30000,
   });
 }
 
@@ -54,6 +55,7 @@ export function useRevenueAnalytics(days: number) {
   return useQuery({
     queryKey: ['analytics', 'revenue', days],
     queryFn: () => getRevenueByDateRange(days),
+    refetchInterval: 30000,
   });
 }
 
@@ -61,6 +63,7 @@ export function useTopProducts(limit: number = 5) {
   return useQuery({
     queryKey: ['analytics', 'topProducts', limit],
     queryFn: () => getTopSellingProducts(limit),
+    refetchInterval: 30000,
   });
 }
 
@@ -68,5 +71,6 @@ export function useCategorySales() {
   return useQuery({
     queryKey: ['analytics', 'categorySales'],
     queryFn: getSalesByCategory,
+    refetchInterval: 30000,
   });
 }

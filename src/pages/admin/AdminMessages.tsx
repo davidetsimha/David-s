@@ -223,12 +223,6 @@ export function AdminMessages() {
               <div className="flex gap-2">
                 <Button
                   variant="outline"
-                  onClick={() => window.location.href = `mailto:${selectedMessage.email}`}
-                >
-                  Repondre
-                </Button>
-                <Button
-                  variant="outline"
                   className="text-red-600 border-red-200 hover:bg-red-50"
                   onClick={() => {
                     setDeleteId(selectedMessage.id);

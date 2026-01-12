@@ -5,6 +5,7 @@ export function useCustomers() {
   return useQuery({
     queryKey: ['customers'],
     queryFn: getCustomers,
+    refetchInterval: 30000,
   });
 }
 

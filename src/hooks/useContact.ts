@@ -17,6 +17,7 @@ export function useContactMessages(read?: boolean) {
   return useQuery({
     queryKey: ['contactMessages', read],
     queryFn: () => getContactMessages(read),
+    refetchInterval: 30000,
   });
 }
 

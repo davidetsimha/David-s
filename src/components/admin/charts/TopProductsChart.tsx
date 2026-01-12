@@ -4,7 +4,7 @@ import { useTopProducts } from '../../../hooks/useOrders';
 export function TopProductsChart() {
   const { data: products, isLoading } = useTopProducts(5);
 
-  const maxQuantity = Math.max(...(products?.map((p) => p.quantity) ?? [1]));
+  const maxQuantity = Math.max(1, ...(products?.map((p) => p.quantity) ?? []));
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('he-IL', {

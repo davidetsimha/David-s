@@ -6,7 +6,7 @@ export function RevenueChart() {
   const [days, setDays] = useState(7);
   const { data, isLoading } = useRevenueAnalytics(days);
 
-  const maxRevenue = Math.max(...(data?.map((d) => d.revenue) ?? [1]));
+  const maxRevenue = Math.max(1, ...(data?.map((d) => d.revenue) ?? []));
   const totalRevenue = data?.reduce((sum, d) => sum + d.revenue, 0) ?? 0;
   const totalOrders = data?.reduce((sum, d) => sum + d.orders, 0) ?? 0;
 

@@ -14,6 +14,7 @@ export function useQuotes() {
   return useQuery({
     queryKey: queryKeys.quotes.list(),
     queryFn: getQuotes,
+    refetchInterval: 30000,
   });
 }
 
@@ -55,6 +56,7 @@ export function useEventTypeDistribution() {
   return useQuery({
     queryKey: ['analytics', 'eventTypes'],
     queryFn: getEventTypeDistribution,
+    refetchInterval: 30000,
   });
 }
 
@@ -62,5 +64,6 @@ export function useQuoteConversionRate() {
   return useQuery({
     queryKey: ['analytics', 'quoteConversion'],
     queryFn: getQuoteConversionRate,
+    refetchInterval: 30000,
   });
 }
