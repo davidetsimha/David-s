@@ -35,14 +35,13 @@ export function Header() {
       ${isScrolled ? 'bg-cream-50/95 backdrop-blur-md shadow-sm' : 'bg-transparent'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16 md:h-20">
-          <Link to={ROUTES.HOME} className="flex items-center gap-2 group">
-            <span className="font-display text-xl md:text-2xl text-gold-700 tracking-wide
-              group-hover:text-gold-800 transition-colors">
-              David's
-            </span>
-            <span className="hidden sm:block text-xs text-gold-500 tracking-widest uppercase">
-              Patisserie
-            </span>
+          <Link to={ROUTES.HOME} className="flex items-center group">
+            <img
+              src="/images/logo-ds.jpg"
+              alt="David's Patisserie"
+              className="h-12 md:h-14 w-auto object-contain rounded-full
+                group-hover:scale-105 transition-transform duration-200"
+            />
           </Link>
 
           <nav className="hidden lg:flex items-center gap-1" aria-label={t('nav.ariaMain')}>

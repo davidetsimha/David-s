@@ -3,11 +3,14 @@ import { useTranslation } from 'react-i18next';
 import { Sparkles } from 'lucide-react';
 import { EventTypeList } from '../components/receptions/EventTypeList';
 import { QuoteRequestForm } from '../components/receptions/QuoteRequestForm';
+import { useCreations } from '../hooks/useCreations';
 import type { EventType } from '../types';
 
 export function ReceptionsPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [selectedType, setSelectedType] = useState<EventType | undefined>();
+  const { data: creations = [] } = useCreations();
+  const isHebrew = i18n.language === 'he';
 
   return (
     <div className="min-h-screen bg-cream-50">
@@ -40,13 +43,22 @@ export function ReceptionsPage() {
           <h2 className="font-display text-2xl text-stone-900 mb-6">
             {t('receptions.ourCreations')}
           </h2>
-          <div className="grid grid-cols-3 gap-3">
-            {[1, 2, 3].map((i) => (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {creations.map((creation) => (
               <div
-                key={i}
-                className="aspect-square bg-cream-200 rounded-xl overflow-hidden"
+                key={creation.id}
+                className="group relative aspect-[3/4] bg-cream-200 rounded-xl overflow-hidden shadow-sm"
               >
-                <div className="w-full h-full bg-gradient-to-br from-cream-100 to-cream-300" />
+                <img
+                  src={creation.image_url}
+                  alt={isHebrew ? creation.title_he : creation.title_fr}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                  <h3 className="text-white font-medium text-sm">
+                    {isHebrew ? creation.title_he : creation.title_fr}
+                  </h3>
+                </div>
               </div>
             ))}
           </div>
