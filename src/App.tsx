@@ -1,18 +1,28 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HomeLayout } from './components/layout/HomeLayout';
+import { EventsLayout } from './components/layout/EventsLayout';
+import { ShopLayout } from './components/layout/ShopLayout';
 import { PageLayout } from './components/layout/PageLayout';
 import { AdminLayout } from './components/admin/AdminLayout';
 import { RequireAuth } from './components/admin/RequireAuth';
 import { ROUTES } from './config/routes';
 
-// Public pages
+// Home page
 import { HomePage } from './pages/HomePage';
+
+// Events space pages
+import { EventsHomePage } from './pages/EventsHomePage';
+import { EventsGalleryPage } from './pages/EventsGalleryPage';
+import { EventsQuotePage } from './pages/EventsQuotePage';
+
+// Shop space pages
+import { ShopHomePage } from './pages/ShopHomePage';
+import { CheckoutPage, CheckoutSuccessPage, CheckoutCancelPage } from './pages/checkout';
+
+// Shared pages
 import { AboutPage } from './pages/AboutPage';
-import { ReceptionsPage } from './pages/ReceptionsPage';
-import { ShabbatOrdersPage } from './pages/ShabbatOrdersPage';
-import { GalleryPage } from './pages/GalleryPage';
 import { FAQPage } from './pages/FAQPage';
 import { ContactPage } from './pages/ContactPage';
-import { CheckoutPage, CheckoutSuccessPage, CheckoutCancelPage } from './pages/checkout';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 // Admin pages
@@ -32,19 +42,45 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public routes with PageLayout */}
-        <Route element={<PageLayout />}>
+        {/* Home - Split Screen */}
+        <Route element={<HomeLayout />}>
           <Route path={ROUTES.HOME} element={<HomePage />} />
-          <Route path={ROUTES.ABOUT} element={<AboutPage />} />
-          <Route path={ROUTES.RECEPTIONS} element={<ReceptionsPage />} />
-          <Route path={ROUTES.SHABBAT} element={<ShabbatOrdersPage />} />
+        </Route>
+
+        {/* Events Space */}
+        <Route element={<EventsLayout />}>
+          <Route path={ROUTES.EVENTS} element={<EventsHomePage />} />
+          <Route path={ROUTES.EVENTS_GALLERY} element={<EventsGalleryPage />} />
+          <Route path={ROUTES.EVENTS_QUOTE} element={<EventsQuotePage />} />
+          {/* Shared pages in Events context */}
+          <Route path="/evenements/about" element={<AboutPage />} />
+          <Route path="/evenements/faq" element={<FAQPage />} />
+          <Route path="/evenements/contact" element={<ContactPage />} />
+        </Route>
+
+        {/* Shop Space */}
+        <Route element={<ShopLayout />}>
+          <Route path={ROUTES.SHOP} element={<ShopHomePage />} />
           <Route path={ROUTES.CHECKOUT} element={<CheckoutPage />} />
           <Route path={ROUTES.CHECKOUT_SUCCESS} element={<CheckoutSuccessPage />} />
           <Route path={ROUTES.CHECKOUT_CANCEL} element={<CheckoutCancelPage />} />
-          <Route path={ROUTES.GALLERY} element={<GalleryPage />} />
+          {/* Shared pages in Shop context */}
+          <Route path="/boutique/about" element={<AboutPage />} />
+          <Route path="/boutique/faq" element={<FAQPage />} />
+          <Route path="/boutique/contact" element={<ContactPage />} />
+        </Route>
+
+        {/* Standalone shared pages (for direct access) */}
+        <Route element={<PageLayout />}>
+          <Route path={ROUTES.ABOUT} element={<AboutPage />} />
           <Route path={ROUTES.FAQ} element={<FAQPage />} />
           <Route path={ROUTES.CONTACT} element={<ContactPage />} />
         </Route>
+
+        {/* Legacy redirects */}
+        <Route path={ROUTES.RECEPTIONS} element={<Navigate to={ROUTES.EVENTS} replace />} />
+        <Route path={ROUTES.SHABBAT} element={<Navigate to={ROUTES.SHOP} replace />} />
+        <Route path={ROUTES.GALLERY} element={<Navigate to={ROUTES.EVENTS_GALLERY} replace />} />
 
         {/* Admin login (no layout) */}
         <Route path={ROUTES.ADMIN_LOGIN} element={<AdminLoginPage />} />

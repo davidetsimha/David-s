@@ -1,14 +1,30 @@
 export const ROUTES = {
+  // Home (split-screen)
   HOME: '/',
+
+  // Events space
+  EVENTS: '/evenements',
+  EVENTS_GALLERY: '/evenements/galerie',
+  EVENTS_QUOTE: '/evenements/devis',
+
+  // Shop space
+  SHOP: '/boutique',
+  SHOP_CART: '/boutique/panier',
+  CHECKOUT: '/boutique/checkout',
+  CHECKOUT_SUCCESS: '/boutique/checkout/success',
+  CHECKOUT_CANCEL: '/boutique/checkout/cancel',
+
+  // Shared pages
   ABOUT: '/about',
-  RECEPTIONS: '/receptions',
-  SHABBAT: '/shabbat',
-  CHECKOUT: '/checkout',
-  CHECKOUT_SUCCESS: '/checkout/success',
-  CHECKOUT_CANCEL: '/checkout/cancel',
-  GALLERY: '/gallery',
   FAQ: '/faq',
   CONTACT: '/contact',
+
+  // Legacy routes (redirects)
+  RECEPTIONS: '/receptions',
+  SHABBAT: '/shabbat',
+  GALLERY: '/gallery',
+
+  // Admin
   ADMIN: '/admin',
   ADMIN_PRODUCTS: '/admin/products',
   ADMIN_CATEGORIES: '/admin/categories',

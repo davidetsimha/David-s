@@ -1,17 +1,9 @@
-import {
-  HeroSection,
-  ReceptionsHighlight,
-  ShabbatPreview,
-  CertificationBadge,
-} from '../components/home';
+import { SplitScreenHero } from '../components/home';
 
 export function HomePage() {
   return (
-    <main>
-      <HeroSection />
-      <ReceptionsHighlight />
-      <ShabbatPreview />
-      <CertificationBadge />
+    <main className="h-screen overflow-hidden">
+      <SplitScreenHero />
     </main>
   );
 }
