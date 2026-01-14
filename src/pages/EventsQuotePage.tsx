@@ -1,12 +1,9 @@
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FileText, Phone, Mail } from 'lucide-react';
 import { QuoteRequestForm } from '../components/receptions/QuoteRequestForm';
-import type { EventType } from '../types';
 
 export function EventsQuotePage() {
   const { t } = useTranslation();
-  const [selectedType, setSelectedType] = useState<EventType | undefined>();
 
   return (
     <div className="min-h-screen bg-cream-50">
@@ -43,7 +40,7 @@ export function EventsQuotePage() {
                 <p className="text-stone-500 mb-6">
                   {t('quote.formSubtitle', 'Remplissez le formulaire ci-dessous')}
                 </p>
-                <QuoteRequestForm preselectedType={selectedType} />
+                <QuoteRequestForm />
               </div>
             </div>
 

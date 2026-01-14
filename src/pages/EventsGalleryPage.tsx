@@ -20,9 +20,8 @@ export function EventsGalleryPage() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
-  const filteredCreations = selectedCategory === 'all'
-    ? creations
-    : creations.filter(c => c.event_type === selectedCategory);
+  // For now, show all creations (event_type filtering can be added when the field exists)
+  const filteredCreations = creations;
 
   return (
     <div className="min-h-screen bg-cream-50">
@@ -103,11 +102,6 @@ export function EventsGalleryPage() {
                     <h3 className="text-white font-medium">
                       {isHebrew ? creation.title_he : creation.title_fr}
                     </h3>
-                    {creation.event_type && (
-                      <span className="text-sm text-cream-200/80">
-                        {t(`eventTypes.${creation.event_type}`, creation.event_type)}
-                      </span>
-                    )}
                   </div>
                 </button>
               ))}

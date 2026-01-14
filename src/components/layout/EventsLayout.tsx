@@ -19,7 +19,7 @@ const eventsNavItems = [
 
 export function EventsLayout() {
   const { direction, language } = useLanguageStore();
-  const { t } = useTranslation();
+  useTranslation(); // Initialize i18n
 
   useEffect(() => {
     document.documentElement.dir = direction;

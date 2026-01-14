@@ -71,7 +71,7 @@ export function ShopHomePage() {
         <div className="bg-bronze-500 text-white py-3 px-4">
           <div className="max-w-6xl mx-auto flex items-center justify-between">
             <span className="text-sm">
-              {t('shop.cartItems', { count: cartCount }, `${cartCount} article(s) dans votre panier`)}
+              {t('shop.cartItems', `${cartCount} article(s) dans votre panier`)}
             </span>
             <button
               onClick={() => useCartStore.getState().openCart()}
