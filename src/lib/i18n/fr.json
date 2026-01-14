@@ -234,7 +234,7 @@
     "noResults": "Aucune création dans cette catégorie",
     "filter": {
       "all": "Toutes",
-      "wedding": "Mariages",
+      "wedding": "Buffet désert",
       "bar_mitzvah": "Bar Mitzvah",
       "bat_mitzvah": "Bat Mitzvah",
       "brit": "Brit Mila",
@@ -260,17 +260,17 @@
         "question": "Combien de temps à l'avance faut-il commander ?",
         "answer": "Pour les commandes régulières - au moins 48 heures à l'avance. Pour les gâteaux spéciaux et réceptions - au moins une semaine à l'avance. Pendant les périodes chargées comme les fêtes, il est recommandé de commander plus tôt."
       },
-      "custom": {
-        "question": "Est-il possible de commander des gâteaux personnalisés ?",
-        "answer": "Absolument ! Nous nous spécialisons dans les gâteaux décorés pour événements - anniversaires, bar/bat mitzvah, brit mila et plus. Contactez-nous pour organiser une consultation et présenter des designs."
-      },
       "hours": {
         "question": "Quelles sont les heures d'ouverture de la boutique ?",
-        "answer": "La boutique est ouverte du dimanche au jeudi sur rendez-vous uniquement, le vendredi de 09h00 à 14h00. Veilles de fêtes et jours fériés - merci de nous contacter pour prendre rendez-vous."
+        "answer": "La boutique est ouverte le jeudi de 14h à 20h, le vendredi et veilles de fête de 8h30 à 13h30. Sur commande en semaine."
       },
-      "dietary": {
-        "question": "Y a-t-il des options sans gluten ou véganes ?",
-        "answer": "Nous avons une sélection de produits sans gluten et plusieurs options véganes. Il est recommandé de nous contacter à l'avance pour vérifier la disponibilité ou commander des produits spécifiques."
+      "shabbatDeadline": {
+        "question": "Jusqu'à quand puis-je commander pour Shabbat ?",
+        "answer": "Le mieux est de commander jusqu'à mercredi. Nous avons une boutique, donc les gâteaux sont disponibles selon la disponibilité."
+      },
+      "eventAdvance": {
+        "question": "Combien de temps à l'avance faut-il commander pour un événement ?",
+        "answer": "1 semaine à l'avance, c'est le top !"
       }
     }
   },
@@ -310,7 +310,7 @@
       "email": "Email",
       "emailValue": "info@davids-patisserie.co.il",
       "hours": "Horaires d'ouverture",
-      "hoursValue": "Dim-Jeu sur RDV | Ven 09h00-14h00"
+      "hoursValue": "Jeudi 14h-20h | Vendredi & veilles de fête 8h30-13h30 | Sur commande en semaine"
     }
   },
   "footer": {

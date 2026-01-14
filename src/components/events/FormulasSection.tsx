@@ -23,7 +23,7 @@ const morningFormulas: Formula[] = [
     nameFr: 'La Matinale',
     nameHe: 'ארוחת הבוקר',
     price: 150,
-    minGuests: 30,
+    minGuests: 80,
     taglineFr: 'Petit-déjeuner sucré-salé complet',
     taglineHe: 'ארוחת בוקר מלאה מתוקה-מלוחה',
     includesFr: [
@@ -49,7 +49,7 @@ const morningFormulas: Formula[] = [
     nameFr: 'La Prestige',
     nameHe: 'הפרסטיז׳',
     price: 200,
-    minGuests: 50,
+    minGuests: 80,
     taglineFr: 'Formule haut de gamme avec animations',
     taglineHe: 'פורמולה יוקרתית עם הנפשות',
     includesFr: [
@@ -78,7 +78,7 @@ const afternoonFormulas: Formula[] = [
     nameFr: "L'Après-Midi",
     nameHe: 'אחר הצהריים',
     price: 180,
-    minGuests: 30,
+    minGuests: 80,
     taglineFr: 'Buffet festif sucré-salé',
     taglineHe: 'בופה חגיגי מתוק-מלוח',
     includesFr: [
@@ -104,7 +104,7 @@ const afternoonFormulas: Formula[] = [
     nameFr: "L'Exception",
     nameHe: 'היוצא מן הכלל',
     price: 250,
-    minGuests: 50,
+    minGuests: 80,
     taglineFr: 'Notre formule la plus complète',
     taglineHe: 'הפורמולה המקיפה ביותר שלנו',
     includesFr: [
@@ -134,7 +134,7 @@ export function FormulasSection() {
 
   const formulas = activeSlot === 'morning' ? morningFormulas : afternoonFormulas;
 
-  const whatsappNumber = '972587819457';
+  const whatsappNumber = '972587495876';
   const getWhatsappLink = (formula: Formula) => {
     const formulaName = isHebrew ? formula.nameHe : formula.nameFr;
     const message = encodeURIComponent(

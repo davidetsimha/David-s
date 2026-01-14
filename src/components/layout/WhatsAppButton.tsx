@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-const WHATSAPP_NUMBER = '972587819457'; // David's WhatsApp
+const WHATSAPP_NUMBER = '972587495876'; // Tal's WhatsApp
 
 export function WhatsAppButton() {
   const { t, i18n } = useTranslation();

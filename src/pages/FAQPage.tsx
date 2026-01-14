@@ -34,18 +34,18 @@ export function FAQPage() {
         },
         {
           id: '4',
-          question: t('faq.items.custom.question'),
-          answer: t('faq.items.custom.answer'),
-        },
-        {
-          id: '5',
           question: t('faq.items.hours.question'),
           answer: t('faq.items.hours.answer'),
         },
         {
+          id: '5',
+          question: t('faq.items.shabbatDeadline.question'),
+          answer: t('faq.items.shabbatDeadline.answer'),
+        },
+        {
           id: '6',
-          question: t('faq.items.dietary.question'),
-          answer: t('faq.items.dietary.answer'),
+          question: t('faq.items.eventAdvance.question'),
+          answer: t('faq.items.eventAdvance.answer'),
         },
       ];
 
