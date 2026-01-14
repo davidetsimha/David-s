@@ -40,27 +40,27 @@ export function ShopHomePage() {
             border border-bronze-400/30 rounded-full mb-6">
             <Calendar className="w-4 h-4 text-bronze-300" />
             <span className="text-sm font-medium text-bronze-200">
-              {t('shop.orderBefore', 'Commandez avant jeudi minuit')}
+              {t('shop.orderBefore')}
             </span>
           </div>
 
           <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-white mb-4">
-            {t('shop.title', 'Boutique Shabbat')}
+            {t('shop.title')}
           </h1>
 
           <p className="text-lg text-cream-100/90 max-w-xl mx-auto mb-8">
-            {t('shop.subtitle', 'Challot, pâtisseries et délices artisanaux livrés chez vous à Jérusalem')}
+            {t('shop.subtitle')}
           </p>
 
           {/* Features */}
           <div className="flex flex-wrap items-center justify-center gap-6 text-cream-200/80">
             <div className="flex items-center gap-2">
               <Truck className="w-5 h-5" />
-              <span className="text-sm">{t('shop.freeDelivery', 'Livraison Jérusalem')}</span>
+              <span className="text-sm">{t('shop.freeDelivery')}</span>
             </div>
             <div className="flex items-center gap-2">
               <ShoppingBag className="w-5 h-5" />
-              <span className="text-sm">{t('shop.freshProducts', 'Produits frais')}</span>
+              <span className="text-sm">{t('shop.freshProducts')}</span>
             </div>
           </div>
         </div>
@@ -71,13 +71,13 @@ export function ShopHomePage() {
         <div className="bg-bronze-500 text-white py-3 px-4">
           <div className="max-w-6xl mx-auto flex items-center justify-between">
             <span className="text-sm">
-              {t('shop.cartItems', `${cartCount} article(s) dans votre panier`)}
+              {cartCount} {t('shop.cartItems')}
             </span>
             <button
               onClick={() => useCartStore.getState().openCart()}
               className="text-sm font-medium underline underline-offset-2 hover:no-underline"
             >
-              {t('shop.viewCart', 'Voir le panier')}
+              {t('shop.viewCart')}
             </button>
           </div>
         </div>
@@ -88,10 +88,10 @@ export function ShopHomePage() {
         <div className="max-w-6xl mx-auto">
           <div className="mb-8">
             <h2 className="font-display text-2xl md:text-3xl text-stone-900 mb-2">
-              {t('shop.productsTitle', 'Nos Produits')}
+              {t('shop.productsTitle')}
             </h2>
             <p className="text-stone-500">
-              {t('shop.productsSubtitle', 'Sélectionnez vos favoris pour ce Shabbat')}
+              {t('shop.productsSubtitle')}
             </p>
           </div>
 
@@ -116,10 +116,10 @@ export function ShopHomePage() {
                 <Calendar className="w-6 h-6 text-bronze-600" />
               </div>
               <h3 className="font-medium text-stone-900 mb-2">
-                {t('shop.howTo.orderTitle', 'Commandez')}
+                {t('shop.howTo.orderTitle')}
               </h3>
               <p className="text-sm text-stone-500">
-                {t('shop.howTo.orderDesc', 'Passez votre commande avant jeudi minuit pour une livraison vendredi')}
+                {t('shop.howTo.orderDesc')}
               </p>
             </div>
 
@@ -128,10 +128,10 @@ export function ShopHomePage() {
                 <ShoppingBag className="w-6 h-6 text-bronze-600" />
               </div>
               <h3 className="font-medium text-stone-900 mb-2">
-                {t('shop.howTo.prepareTitle', 'Préparation')}
+                {t('shop.howTo.prepareTitle')}
               </h3>
               <p className="text-sm text-stone-500">
-                {t('shop.howTo.prepareDesc', 'Nous préparons vos produits frais le jour de la livraison')}
+                {t('shop.howTo.prepareDesc')}
               </p>
             </div>
 
@@ -140,10 +140,10 @@ export function ShopHomePage() {
                 <Truck className="w-6 h-6 text-bronze-600" />
               </div>
               <h3 className="font-medium text-stone-900 mb-2">
-                {t('shop.howTo.deliverTitle', 'Livraison')}
+                {t('shop.howTo.deliverTitle')}
               </h3>
               <p className="text-sm text-stone-500">
-                {t('shop.howTo.deliverDesc', 'Livraison le vendredi à Jérusalem, à temps pour Shabbat')}
+                {t('shop.howTo.deliverDesc')}
               </p>
             </div>
           </div>

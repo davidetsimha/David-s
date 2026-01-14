@@ -142,10 +142,10 @@ export function EventsHomePage() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
             <p className="text-gold-600 text-sm tracking-[0.2em] uppercase mb-3">
-              {isHebrew ? 'סוגי אירועים' : 'Vos Célébrations'}
+              {t('events.typesBadge')}
             </p>
             <h2 className="font-display text-3xl md:text-4xl text-stone-800">
-              {t('events.typesTitle', 'Nous accompagnons tous vos événements')}
+              {t('events.typesTitle')}
             </h2>
           </div>
 

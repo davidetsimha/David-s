@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface PageLoaderProps {
   onComplete?: () => void;
@@ -6,6 +7,7 @@ interface PageLoaderProps {
 }
 
 export function PageLoader({ onComplete, minDuration = 1800 }: PageLoaderProps) {
+  const { t } = useTranslation();
   const [isExiting, setIsExiting] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
 
@@ -110,7 +112,7 @@ export function PageLoader({ onComplete, minDuration = 1800 }: PageLoaderProps) 
           <div className="mt-3 flex items-center justify-center gap-3">
             <span className="w-8 h-px bg-gradient-to-r from-transparent to-bronze-400" />
             <span className="text-sm text-bronze-600 font-light tracking-widest uppercase">
-              Excellence Artisanale
+              {t('ui.excellenceArtisanale')}
             </span>
             <span className="w-8 h-px bg-gradient-to-l from-transparent to-bronze-400" />
           </div>

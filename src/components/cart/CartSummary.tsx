@@ -26,7 +26,7 @@ export function CartSummary({ showItems = false }: CartSummaryProps) {
                 <span className="text-stone-400 ms-1">x{quantity}</span>
               </span>
               <span className="font-medium text-stone-700">
-                {(product.price * quantity).toFixed(2)} ₪
+                {(product.price * quantity).toFixed(2)} {t('common.currency')}
               </span>
             </div>
           ))}
@@ -36,7 +36,7 @@ export function CartSummary({ showItems = false }: CartSummaryProps) {
       <div className="space-y-2">
         <div className="flex justify-between text-sm">
           <span className="text-stone-500">{t('cart.subtotal')}</span>
-          <span className="text-stone-700">{total.toFixed(2)} ₪</span>
+          <span className="text-stone-700">{total.toFixed(2)} {t('common.currency')}</span>
         </div>
         <div className="flex justify-between text-sm">
           <span className="text-stone-500">{t('cart.delivery')}</span>
@@ -49,7 +49,7 @@ export function CartSummary({ showItems = false }: CartSummaryProps) {
       <div className="flex justify-between mt-4 pt-4 border-t border-cream-200">
         <span className="font-medium text-stone-800">{t('cart.total')}</span>
         <span className="font-display text-xl text-gold-700">
-          {total.toFixed(2)} ₪
+          {total.toFixed(2)} {t('common.currency')}
         </span>
       </div>
     </div>

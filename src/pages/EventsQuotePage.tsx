@@ -13,16 +13,16 @@ export function EventsQuotePage() {
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-gold-100 rounded-full mb-6">
             <FileText className="w-4 h-4 text-gold-600" />
             <span className="text-sm font-medium text-gold-700">
-              {t('quote.badge', 'Devis gratuit')}
+              {t('quote.badge')}
             </span>
           </div>
 
           <h1 className="font-display text-4xl md:text-5xl text-stone-900 mb-4">
-            {t('quote.title', 'Demander un devis')}
+            {t('quote.title')}
           </h1>
 
           <p className="text-lg text-stone-600 max-w-2xl mx-auto">
-            {t('quote.subtitle', 'Décrivez-nous votre événement et recevez une proposition personnalisée sous 48h')}
+            {t('quote.subtitle')}
           </p>
         </div>
       </section>
@@ -35,10 +35,10 @@ export function EventsQuotePage() {
             <div className="lg:col-span-2">
               <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-cream-200">
                 <h2 className="font-display text-2xl text-stone-900 mb-2">
-                  {t('quote.formTitle', 'Parlez-nous de votre projet')}
+                  {t('quote.formTitle')}
                 </h2>
                 <p className="text-stone-500 mb-6">
-                  {t('quote.formSubtitle', 'Remplissez le formulaire ci-dessous')}
+                  {t('quote.formSubtitle')}
                 </p>
                 <QuoteRequestForm />
               </div>
@@ -49,10 +49,10 @@ export function EventsQuotePage() {
               {/* Contact Info */}
               <div className="bg-gold-50 rounded-2xl p-6 border border-gold-100">
                 <h3 className="font-display text-lg text-stone-900 mb-4">
-                  {t('quote.contactTitle', 'Besoin d\'aide ?')}
+                  {t('quote.contactTitle')}
                 </h3>
                 <p className="text-sm text-stone-600 mb-4">
-                  {t('quote.contactDesc', 'Notre équipe est disponible pour répondre à vos questions')}
+                  {t('quote.contactDesc')}
                 </p>
 
                 <div className="space-y-3">
@@ -76,7 +76,7 @@ export function EventsQuotePage() {
               {/* What to expect */}
               <div className="bg-white rounded-2xl p-6 border border-cream-200">
                 <h3 className="font-display text-lg text-stone-900 mb-4">
-                  {t('quote.processTitle', 'Comment ça marche ?')}
+                  {t('quote.processTitle')}
                 </h3>
 
                 <div className="space-y-4">
@@ -86,10 +86,10 @@ export function EventsQuotePage() {
                     </div>
                     <div>
                       <p className="font-medium text-stone-900 text-sm">
-                        {t('quote.step1Title', 'Envoyez votre demande')}
+                        {t('quote.step1Title')}
                       </p>
                       <p className="text-sm text-stone-500">
-                        {t('quote.step1Desc', 'Remplissez le formulaire avec les détails de votre événement')}
+                        {t('quote.step1Desc')}
                       </p>
                     </div>
                   </div>
@@ -100,10 +100,10 @@ export function EventsQuotePage() {
                     </div>
                     <div>
                       <p className="font-medium text-stone-900 text-sm">
-                        {t('quote.step2Title', 'Nous vous contactons')}
+                        {t('quote.step2Title')}
                       </p>
                       <p className="text-sm text-stone-500">
-                        {t('quote.step2Desc', 'Notre équipe vous recontacte sous 48h pour discuter des détails')}
+                        {t('quote.step2Desc')}
                       </p>
                     </div>
                   </div>
@@ -114,10 +114,10 @@ export function EventsQuotePage() {
                     </div>
                     <div>
                       <p className="font-medium text-stone-900 text-sm">
-                        {t('quote.step3Title', 'Recevez votre devis')}
+                        {t('quote.step3Title')}
                       </p>
                       <p className="text-sm text-stone-500">
-                        {t('quote.step3Desc', 'Une proposition détaillée adaptée à vos besoins')}
+                        {t('quote.step3Desc')}
                       </p>
                     </div>
                   </div>

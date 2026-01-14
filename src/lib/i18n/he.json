@@ -9,7 +9,20 @@
     "contact": "צור קשר",
     "ariaMain": "ניווט ראשי",
     "ariaMobile": "ניווט נייד",
-    "ariaFooter": "ניווט תחתון"
+    "ariaFooter": "ניווט תחתון",
+    "products": "מוצרים",
+    "requestQuote": "בקשת הצעת מחיר",
+    "myCart": "העגלה שלי",
+    "boutique": "חנות",
+    "events": "אירועים",
+    "ariaShopNav": "ניווט חנות",
+    "ariaEventsNav": "ניווט אירועים",
+    "switchToHebrew": "עברית",
+    "switchToFrench": "Français"
+  },
+  "ui": {
+    "excellenceArtisanale": "מצוינות אומנותית",
+    "certification": "הכשרות"
   },
   "common": {
     "loading": "טוען...",
@@ -55,6 +68,25 @@
     "orderBefore": "הזמנה עד יום חמישי",
     "subtitle": "מאפים טריים מוכנים לשבת שלכם"
   },
+  "shop": {
+    "title": "חנות שבת",
+    "subtitle": "חלות, מאפים ופינוקים אומנותיים עד הבית בירושלים",
+    "orderBefore": "הזמינו עד חמישי בחצות",
+    "freeDelivery": "משלוח בירושלים",
+    "freshProducts": "מוצרים טריים",
+    "cartItems": "פריט(ים) בעגלה",
+    "viewCart": "צפה בעגלה",
+    "productsTitle": "המוצרים שלנו",
+    "productsSubtitle": "בחרו את המועדפים שלכם לשבת זו",
+    "howTo": {
+      "orderTitle": "הזמינו",
+      "orderDesc": "בצעו הזמנה עד חמישי בחצות למשלוח ביום שישי",
+      "prepareTitle": "הכנה",
+      "prepareDesc": "אנו מכינים את המוצרים שלכם טריים ביום המשלוח",
+      "deliverTitle": "משלוח",
+      "deliverDesc": "משלוח ביום שישי בירושלים, בזמן לשבת"
+    }
+  },
   "receptions": {
     "title": "קבלות פנים ואירועים",
     "subtitle": "תנו לנו לארגן את האירוע שלכם",
@@ -87,6 +119,38 @@
       "submit": "שלח בקשה",
       "success": "הבקשה נשלחה בהצלחה!"
     }
+  },
+  "events": {
+    "typesTitle": "אנחנו מלווים את כל האירועים שלכם",
+    "typesBadge": "החגיגות שלכם"
+  },
+  "quote": {
+    "badge": "הצעת מחיר חינם",
+    "title": "בקשת הצעת מחיר",
+    "subtitle": "ספרו לנו על האירוע שלכם וקבלו הצעה מותאמת תוך 48 שעות",
+    "formTitle": "ספרו לנו על הפרויקט שלכם",
+    "formSubtitle": "מלאו את הטופס להלן",
+    "contactTitle": "צריכים עזרה?",
+    "contactDesc": "הצוות שלנו זמין לענות על שאלותיכם",
+    "processTitle": "איך זה עובד?",
+    "step1Title": "שלחו את הבקשה",
+    "step1Desc": "מלאו את הטופס עם פרטי האירוע שלכם",
+    "step2Title": "אנחנו יוצרים קשר",
+    "step2Desc": "הצוות שלנו יחזור אליכם תוך 48 שעות לדיון בפרטים",
+    "step3Title": "קבלו את ההצעה",
+    "step3Desc": "הצעה מפורטת המותאמת לצרכים שלכם"
+  },
+  "formulas": {
+    "title": "הפורמולות שלנו",
+    "subtitle": "בחרו את הרגע",
+    "description": "שתי פורמולות לכל סוג אירוע",
+    "morning": "בוקר",
+    "afternoon": "אחר הצהריים",
+    "minGuests": "מינימום {{count}} אורחים",
+    "includes": "כולל",
+    "cta": "מידע נוסף",
+    "note": "הקמה, שירות, כלים, מפות ומשקאות כלולים. +900₪ מחוץ לירושלים.",
+    "whatsappMessage": "שלום, אני מעוניין/ת בפורמולה \"{{formula}}\" לאירוע שלי."
   },
   "products": {
     "title": "המוצרים שלנו",
@@ -164,7 +228,18 @@
     "openImage": "פתח תמונה: {{name}}",
     "noImages": "אין תמונות להצגה",
     "previousImage": "תמונה קודמת",
-    "nextImage": "תמונה הבאה"
+    "nextImage": "תמונה הבאה",
+    "badge": "הפורטפוליו שלנו",
+    "subtitle": "גלו את היצירות שלנו לאירועים בלתי נשכחים",
+    "noResults": "אין יצירות בקטגוריה זו",
+    "filter": {
+      "all": "הכל",
+      "wedding": "חתונות",
+      "bar_mitzvah": "בר מצווה",
+      "bat_mitzvah": "בת מצווה",
+      "brit": "ברית מילה",
+      "event": "אירועים"
+    }
   },
   "faq": {
     "title": "שאלות נפוצות",

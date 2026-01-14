@@ -75,7 +75,7 @@ function ShopHeader() {
           </Link>
 
           {/* Shop Navigation */}
-          <nav className="hidden lg:flex items-center gap-1" aria-label="Navigation Boutique">
+          <nav className="hidden lg:flex items-center gap-1" aria-label={t('nav.ariaShopNav')}>
             {shopNavItems.map(({ key, route, label }) => (
               <Link
                 key={key}
@@ -141,7 +141,7 @@ function ShopMobileMenu() {
 
         <div className="p-6">
           <div className="flex items-center justify-between mb-8">
-            <span className="text-lg font-display text-bronze-700">Boutique</span>
+            <span className="text-lg font-display text-bronze-700">{t('nav.boutique')}</span>
             <button
               onClick={closeMobileMenu}
               className="p-2 text-stone-500 hover:text-stone-700"
@@ -166,7 +166,7 @@ function ShopMobileMenu() {
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
               </svg>
-              <span>Mon Panier</span>
+              <span>{t('nav.myCart')}</span>
             </span>
             {itemCount > 0 && (
               <span className="px-2 py-0.5 bg-bronze-500 text-white text-sm rounded-full">

@@ -9,7 +9,20 @@
     "contact": "Contact",
     "ariaMain": "Navigation principale",
     "ariaMobile": "Navigation mobile",
-    "ariaFooter": "Navigation pied de page"
+    "ariaFooter": "Navigation pied de page",
+    "products": "Produits",
+    "requestQuote": "Demander un devis",
+    "myCart": "Mon Panier",
+    "boutique": "Boutique",
+    "events": "Événements",
+    "ariaShopNav": "Navigation Boutique",
+    "ariaEventsNav": "Navigation Événements",
+    "switchToHebrew": "עברית",
+    "switchToFrench": "Français"
+  },
+  "ui": {
+    "excellenceArtisanale": "Excellence Artisanale",
+    "certification": "Certification"
   },
   "common": {
     "loading": "Chargement...",
@@ -55,6 +68,25 @@
     "orderBefore": "Commande avant jeudi",
     "subtitle": "Pâtisseries fraîches préparées pour votre Shabbat"
   },
+  "shop": {
+    "title": "Boutique Shabbat",
+    "subtitle": "Challot, pâtisseries et délices artisanaux livrés chez vous à Jérusalem",
+    "orderBefore": "Commandez avant jeudi minuit",
+    "freeDelivery": "Livraison Jérusalem",
+    "freshProducts": "Produits frais",
+    "cartItems": "article(s) dans votre panier",
+    "viewCart": "Voir le panier",
+    "productsTitle": "Nos Produits",
+    "productsSubtitle": "Sélectionnez vos favoris pour ce Shabbat",
+    "howTo": {
+      "orderTitle": "Commandez",
+      "orderDesc": "Passez votre commande avant jeudi minuit pour une livraison vendredi",
+      "prepareTitle": "Préparation",
+      "prepareDesc": "Nous préparons vos produits frais le jour de la livraison",
+      "deliverTitle": "Livraison",
+      "deliverDesc": "Livraison le vendredi à Jérusalem, à temps pour Shabbat"
+    }
+  },
   "receptions": {
     "title": "Réceptions & Événements",
     "subtitle": "Confiez-nous la réalisation de vos événements",
@@ -67,13 +99,13 @@
       "bar_mitzvah": "Bar Mitzvah",
       "bat_mitzvah": "Bat Mitzvah",
       "brit": "Brit Mila",
-      "private_party": "Fete privee"
+      "private_party": "Fête privée"
     },
     "eventDesc": {
-      "bar_mitzvah": "Celebrer ce moment",
-      "bat_mitzvah": "Un jour special",
+      "bar_mitzvah": "Célébrer ce moment",
+      "bat_mitzvah": "Un jour spécial",
       "brit": "Accueillir la vie",
-      "private_party": "Vos evenements"
+      "private_party": "Vos événements"
     },
     "quoteForm": {
       "title": "Demander un devis",
@@ -87,6 +119,38 @@
       "submit": "Envoyer la demande",
       "success": "Votre demande a été envoyée avec succès!"
     }
+  },
+  "events": {
+    "typesTitle": "Nous accompagnons tous vos événements",
+    "typesBadge": "Vos Célébrations"
+  },
+  "quote": {
+    "badge": "Devis gratuit",
+    "title": "Demander un devis",
+    "subtitle": "Décrivez-nous votre événement et recevez une proposition personnalisée sous 48h",
+    "formTitle": "Parlez-nous de votre projet",
+    "formSubtitle": "Remplissez le formulaire ci-dessous",
+    "contactTitle": "Besoin d'aide ?",
+    "contactDesc": "Notre équipe est disponible pour répondre à vos questions",
+    "processTitle": "Comment ça marche ?",
+    "step1Title": "Envoyez votre demande",
+    "step1Desc": "Remplissez le formulaire avec les détails de votre événement",
+    "step2Title": "Nous vous contactons",
+    "step2Desc": "Notre équipe vous recontacte sous 48h pour discuter des détails",
+    "step3Title": "Recevez votre devis",
+    "step3Desc": "Une proposition détaillée adaptée à vos besoins"
+  },
+  "formulas": {
+    "title": "Nos Formules",
+    "subtitle": "Choisissez votre moment",
+    "description": "Deux formules adaptées à chaque célébration",
+    "morning": "Matin",
+    "afternoon": "Après-midi",
+    "minGuests": "Min. {{count}} personnes",
+    "includes": "Inclus",
+    "cta": "Plus d'infos",
+    "note": "Mise en place, service, vaisselle, nappes et boissons inclus. +900₪ hors Jérusalem.",
+    "whatsappMessage": "Bonjour, je suis intéressé(e) par la formule \"{{formula}}\" pour mon événement."
   },
   "products": {
     "title": "Nos Produits",
@@ -164,7 +228,18 @@
     "openImage": "Ouvrir l'image: {{name}}",
     "noImages": "Aucune image à afficher",
     "previousImage": "Image précédente",
-    "nextImage": "Image suivante"
+    "nextImage": "Image suivante",
+    "badge": "Notre Portfolio",
+    "subtitle": "Découvrez nos créations pour des événements inoubliables",
+    "noResults": "Aucune création dans cette catégorie",
+    "filter": {
+      "all": "Toutes",
+      "wedding": "Mariages",
+      "bar_mitzvah": "Bar Mitzvah",
+      "bat_mitzvah": "Bat Mitzvah",
+      "brit": "Brit Mila",
+      "event": "Événements"
+    }
   },
   "faq": {
     "title": "Questions Fréquentes",

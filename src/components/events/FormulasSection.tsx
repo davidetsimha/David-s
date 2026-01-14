@@ -128,7 +128,7 @@ const afternoonFormulas: Formula[] = [
 ];
 
 export function FormulasSection() {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const isHebrew = i18n.language === 'he';
   const [activeSlot, setActiveSlot] = useState<TimeSlot>('morning');
 
@@ -136,8 +136,9 @@ export function FormulasSection() {
 
   const whatsappNumber = '972587819457';
   const getWhatsappLink = (formula: Formula) => {
+    const formulaName = isHebrew ? formula.nameHe : formula.nameFr;
     const message = encodeURIComponent(
-      `Bonjour, je suis intéressé(e) par la formule "${formula.nameFr}" pour mon événement.`
+      t('formulas.whatsappMessage', { formula: formulaName })
     );
     return `https://wa.me/${whatsappNumber}?text=${message}`;
   };
@@ -147,15 +148,13 @@ export function FormulasSection() {
       {/* Header */}
       <div className="max-w-5xl mx-auto px-4 text-center mb-12">
         <p className="text-gold-600 text-sm tracking-[0.3em] uppercase mb-3">
-          {isHebrew ? 'הפורמולות שלנו' : 'Nos Formules'}
+          {t('formulas.title')}
         </p>
         <h2 className="font-display text-4xl md:text-5xl text-stone-800 mb-4">
-          {isHebrew ? 'בחרו את הרגע' : 'Choisissez votre moment'}
+          {t('formulas.subtitle')}
         </h2>
         <p className="text-stone-500 max-w-lg mx-auto">
-          {isHebrew
-            ? 'שתי פורמולות לכל סוג אירוע'
-            : 'Deux formules adaptées à chaque célébration'}
+          {t('formulas.description')}
         </p>
       </div>
 
@@ -169,7 +168,7 @@ export function FormulasSection() {
                 ? 'text-gold-600'
                 : 'text-stone-400 hover:text-stone-600'}`}
           >
-            {isHebrew ? 'בוקר' : 'Matin'}
+            {t('formulas.morning')}
             {activeSlot === 'morning' && (
               <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gold-500" />
             )}
@@ -181,7 +180,7 @@ export function FormulasSection() {
                 ? 'text-gold-600'
                 : 'text-stone-400 hover:text-stone-600'}`}
           >
-            {isHebrew ? 'אחר הצהריים' : 'Après-midi'}
+            {t('formulas.afternoon')}
             {activeSlot === 'afternoon' && (
               <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gold-500" />
             )}
@@ -234,9 +233,7 @@ export function FormulasSection() {
                 </div>
 
                 <p className="text-stone-400 text-xs uppercase tracking-wider mb-3">
-                  {isHebrew
-                    ? `מינימום ${formula.minGuests} אורחים`
-                    : `Min. ${formula.minGuests} personnes`}
+                  {t('formulas.minGuests', { count: formula.minGuests })}
                 </p>
 
                 {/* Includes list */}
@@ -258,7 +255,7 @@ export function FormulasSection() {
                     text-sm tracking-wide transition-colors group/link"
                 >
                   <MessageCircle className="w-4 h-4" />
-                  <span>{isHebrew ? 'לפרטים נוספים' : 'Plus d\'informations'}</span>
+                  <span>{t('formulas.cta')}</span>
                   <span className="transition-transform group-hover/link:translate-x-1">→</span>
                 </a>
               </div>
@@ -268,9 +265,7 @@ export function FormulasSection() {
 
         {/* Footer note */}
         <p className="text-center text-stone-400 text-sm mt-12">
-          {isHebrew
-            ? '* כל הפורמולות כוללות הקמה, מלצרים, כלים, מפות ומשקאות. 900₪ תוספת מחוץ לירושלים.'
-            : '* Mise en place, service, vaisselle, nappes et boissons inclus. +900₪ hors Jérusalem.'}
+          * {t('formulas.note')}
         </p>
       </div>
     </section>

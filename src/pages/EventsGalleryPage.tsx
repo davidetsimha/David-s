@@ -3,14 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Camera, X } from 'lucide-react';
 import { useCreations } from '../hooks/useCreations';
 
-const categories = [
-  { id: 'all', label: 'Toutes' },
-  { id: 'wedding', label: 'Mariages' },
-  { id: 'bar_mitzvah', label: 'Bar Mitzvah' },
-  { id: 'bat_mitzvah', label: 'Bat Mitzvah' },
-  { id: 'brit', label: 'Brit Mila' },
-  { id: 'event', label: 'Événements' },
-];
+const categoryIds = ['all', 'wedding', 'bar_mitzvah', 'bat_mitzvah', 'brit', 'event'] as const;
 
 export function EventsGalleryPage() {
   const { t, i18n } = useTranslation();
@@ -31,16 +24,16 @@ export function EventsGalleryPage() {
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-gold-100 rounded-full mb-6">
             <Camera className="w-4 h-4 text-gold-600" />
             <span className="text-sm font-medium text-gold-700">
-              {t('gallery.badge', 'Notre Portfolio')}
+              {t('gallery.badge')}
             </span>
           </div>
 
           <h1 className="font-display text-4xl md:text-5xl text-stone-900 mb-4">
-            {t('gallery.title', 'Galerie Événements')}
+            {t('gallery.title')}
           </h1>
 
           <p className="text-lg text-stone-600 max-w-2xl mx-auto">
-            {t('gallery.subtitle', 'Découvrez nos créations pour des événements inoubliables')}
+            {t('gallery.subtitle')}
           </p>
         </div>
       </section>
@@ -49,7 +42,7 @@ export function EventsGalleryPage() {
       <section className="px-4 py-6 border-b border-cream-200 sticky top-16 md:top-20 bg-cream-50/95 backdrop-blur-sm z-10">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-wrap gap-2 justify-center">
-            {categories.map(({ id, label }) => (
+            {categoryIds.map((id) => (
               <button
                 key={id}
                 onClick={() => setSelectedCategory(id)}
@@ -58,7 +51,7 @@ export function EventsGalleryPage() {
                     ? 'bg-gold-500 text-white'
                     : 'bg-cream-100 text-stone-600 hover:bg-gold-100 hover:text-gold-700'}`}
               >
-                {t(`gallery.filter.${id}`, label)}
+                {t(`gallery.filter.${id}`)}
               </button>
             ))}
           </div>
@@ -78,7 +71,7 @@ export function EventsGalleryPage() {
             <div className="text-center py-16">
               <Camera className="w-12 h-12 mx-auto text-stone-300 mb-4" />
               <p className="text-stone-500">
-                {t('gallery.noResults', 'Aucune création dans cette catégorie')}
+                {t('gallery.noResults')}
               </p>
             </div>
           ) : (

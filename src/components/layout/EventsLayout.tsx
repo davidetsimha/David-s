@@ -74,7 +74,7 @@ function EventsHeader() {
           </Link>
 
           {/* Events Navigation */}
-          <nav className="hidden lg:flex items-center gap-1" aria-label="Navigation Événements">
+          <nav className="hidden lg:flex items-center gap-1" aria-label={t('nav.ariaEventsNav')}>
             {eventsNavItems.map(({ key, route, label }) => (
               <Link
                 key={key}
@@ -136,7 +136,7 @@ function EventsMobileMenu() {
 
         <div className="p-6">
           <div className="flex items-center justify-between mb-8">
-            <span className="text-lg font-display text-gold-700">Événements</span>
+            <span className="text-lg font-display text-gold-700">{t('nav.events')}</span>
             <button
               onClick={closeMobileMenu}
               className="p-2 text-stone-500 hover:text-stone-700"
