@@ -30,3 +30,6 @@ dist-ssr
 photos-extracted/
 1cdc7aa8-94de-42e5-96ff-5f36746a1d6d.jpg
 .playwright-mcp/
+
+# PDF files
+*.pdf
