@@ -1,3 +1,5 @@
+export type ProductType = 'individual' | 'plateau';
+
 export interface Product {
   id: string;
   name_fr: string;
@@ -12,6 +14,10 @@ export interface Product {
   created_at: string;
   updated_at: string;
   category?: Category;
+  // New fields for order system v2
+  product_type: ProductType;
+  requires_confirmation: boolean;
+  min_days_advance: number;
 }
 
 export interface Category {
@@ -39,6 +45,10 @@ export interface CreateProductDTO {
   category_id: string;
   available?: boolean;
   sort_order?: number;
+  // New fields for order system v2
+  product_type?: ProductType;
+  requires_confirmation?: boolean;
+  min_days_advance?: number;
 }
 
 export interface CreateCategoryDTO {

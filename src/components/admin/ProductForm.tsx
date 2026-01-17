@@ -11,6 +11,11 @@ import { ImageUpload } from './ImageUpload';
 import { useCategories } from '../../hooks/useCategories';
 import type { Product } from '../../types';
 
+const productTypeOptions = [
+  { value: 'individual', label: 'Gateau individuel (retrait vendredi)' },
+  { value: 'plateau', label: 'Plateau / Grand gateau (sur commande)' },
+];
+
 const schema = z.object({
   name_fr: z.string().min(1, 'Le nom en francais est requis'),
   name_he: z.string().min(1, 'Le nom en hebreu est requis'),
@@ -20,6 +25,9 @@ const schema = z.object({
   category_id: z.string().min(1, 'La categorie est requise'),
   image_url: z.string().optional(),
   available: z.boolean(),
+  product_type: z.enum(['individual', 'plateau']),
+  requires_confirmation: z.boolean(),
+  min_days_advance: z.coerce.number().min(0, 'Le delai doit etre positif'),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -35,7 +43,7 @@ export function ProductForm({ product, onSubmit, onCancel, loading }: ProductFor
   const { data: categories } = useCategories();
   const [imageUrl, setImageUrl] = useState(product?.image_url ?? '');
 
-  const { register, handleSubmit, control, setValue, formState: { errors } } = useForm<FormData>({
+  const { register, handleSubmit, control, setValue, watch, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema) as never,
     defaultValues: {
       name_fr: product?.name_fr ?? '',
@@ -46,8 +54,13 @@ export function ProductForm({ product, onSubmit, onCancel, loading }: ProductFor
       category_id: product?.category_id ?? '',
       image_url: product?.image_url ?? '',
       available: product?.available ?? true,
+      product_type: product?.product_type ?? 'individual',
+      requires_confirmation: product?.requires_confirmation ?? false,
+      min_days_advance: product?.min_days_advance ?? 0,
     },
   });
+
+  const productType = watch('product_type');
 
   const categoryOptions = categories?.map((c) => ({ value: c.id, label: c.name_fr })) ?? [];
 
@@ -138,6 +151,62 @@ export function ProductForm({ product, onSubmit, onCancel, loading }: ProductFor
             error={errors.category_id?.message}
             placeholder="Selectionner une categorie"
           />
+        </div>
+      </div>
+
+      {/* Product Type Section */}
+      <div className="pb-6 border-b border-gray-100">
+        <h3 className="text-sm font-medium text-gray-900 mb-4">Type de produit</h3>
+        <Select
+          label="Type"
+          options={productTypeOptions}
+          {...register('product_type')}
+          error={errors.product_type?.message}
+        />
+        {productType === 'individual' && (
+          <p className="mt-2 text-sm text-blue-600">
+            Les gateaux individuels sont retires le vendredi uniquement (8h30-13h30)
+          </p>
+        )}
+        {productType === 'plateau' && (
+          <p className="mt-2 text-sm text-amber-600">
+            Les plateaux necessitent une confirmation avant paiement
+          </p>
+        )}
+      </div>
+
+      {/* Order Settings Section */}
+      <div className="pb-6 border-b border-gray-100">
+        <h3 className="text-sm font-medium text-gray-900 mb-4">Parametres de commande</h3>
+        <div className="space-y-4">
+          <Input
+            label="Delai minimum (jours)"
+            type="number"
+            min="0"
+            {...register('min_days_advance')}
+            error={errors.min_days_advance?.message}
+            placeholder="0"
+          />
+          <p className="text-xs text-gray-500">
+            Nombre de jours a l'avance necessaires pour commander ce produit (0 = meme jour)
+          </p>
+
+          <div className="flex items-center justify-between py-4 px-4 bg-amber-50 rounded-lg">
+            <div>
+              <p className="font-medium text-gray-900">Confirmation requise</p>
+              <p className="text-sm text-gray-500">L'admin doit confirmer avant le paiement</p>
+            </div>
+            <Controller
+              name="requires_confirmation"
+              control={control}
+              render={({ field }) => (
+                <Switch
+                  checked={field.value}
+                  onChange={field.onChange}
+                />
+              )}
+            />
+          </div>
         </div>
       </div>
 

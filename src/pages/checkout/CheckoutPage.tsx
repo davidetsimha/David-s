@@ -1,38 +1,137 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ArrowLeft, ArrowRight, ShieldCheck, Loader2, Check, CreditCard } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ShieldCheck, Loader2, Check, CreditCard, Calendar, Clock, Send, AlertTriangle, MapPin } from 'lucide-react';
 import { useCartStore } from '../../stores';
 import { CheckoutForm, DeliveryOptions, OrderSummary } from '../../components/checkout';
 import type { CheckoutFormData, DeliveryMethod, DeliveryAddress } from '../../components/checkout';
 import { ROUTES } from '../../config/routes';
 import { initiatePayment } from '../../services/payment.service';
 import { createOrder } from '../../services/orders.service';
-import { useConfig } from '../../hooks/useConfig';
-import type { CreateOrderDTO } from '../../types';
+import { useDeliveryZones } from '../../hooks/useDeliveryZones';
+import type { CreateOrderDTO, DeliveryZone } from '../../types';
 
-const DEFAULT_DELIVERY_FEE = 15;
+type CheckoutStep = 'info' | 'delivery' | 'pickup_date' | 'review';
 
-type CheckoutStep = 'info' | 'delivery' | 'review';
+// Helper to get next Friday
+function getNextFriday(fromDate: Date = new Date()): Date {
+  const date = new Date(fromDate);
+  const day = date.getDay();
+  const daysUntilFriday = (5 - day + 7) % 7 || 7;
+  date.setDate(date.getDate() + daysUntilFriday);
+  return date;
+}
 
-const steps: CheckoutStep[] = ['info', 'delivery', 'review'];
+// Helper to get available pickup dates
+function getAvailablePickupDates(isIndividual: boolean, minDaysAdvance: number = 0): Date[] {
+  const dates: Date[] = [];
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  if (isIndividual) {
+    // Individual: only Fridays, next 4 weeks
+    let lastFriday = today;
+    for (let i = 0; i < 4; i++) {
+      const friday = getNextFriday(lastFriday);
+      // Check if this Friday respects the minimum days advance
+      const diffDays = Math.floor((friday.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+      if (diffDays >= minDaysAdvance) {
+        dates.push(friday);
+      }
+      lastFriday = new Date(friday);
+      lastFriday.setDate(lastFriday.getDate() + 1);
+    }
+  } else {
+    // Plateau: any day, min X days advance, next 3 weeks
+    const minDate = new Date(today);
+    minDate.setDate(minDate.getDate() + Math.max(minDaysAdvance, 2));
+
+    for (let i = 0; i < 21; i++) {
+      const date = new Date(minDate);
+      date.setDate(date.getDate() + i);
+      // Skip Saturdays (Shabbat) for pickup
+      if (date.getDay() !== 6) {
+        dates.push(date);
+      }
+    }
+  }
+
+  return dates;
+}
+
+// Time slots
+const TIME_SLOTS = {
+  friday: ['8h30 - 10h00', '10h00 - 11h30', '11h30 - 13h30'],
+  weekday: ['10h00 - 12h00', '12h00 - 14h00', '14h00 - 16h00', '16h00 - 18h00', '18h00 - 20h00'],
+};
+
+// Format date for display
+function formatDate(date: Date, locale: string): string {
+  return date.toLocaleDateString(locale === 'he' ? 'he-IL' : 'fr-FR', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+  });
+}
 
 export function CheckoutPage() {
   const navigate = useNavigate();
-  const { items, clearCart, subtotal } = useCartStore();
+  const { items, clearCart, subtotal, getCartType } = useCartStore();
   const { t, i18n } = useTranslation();
-  const { data: deliveryFeeConfig } = useConfig('delivery_fee');
+  const { data: deliveryZones = [] } = useDeliveryZones();
   const [currentStep, setCurrentStep] = useState<CheckoutStep>('info');
   const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>('pickup');
   const [deliveryAddress, setDeliveryAddress] = useState<DeliveryAddress>({ street: '', city: '', postalCode: '' });
+  const [selectedZone, setSelectedZone] = useState<DeliveryZone | null>(null);
   const [customerData, setCustomerData] = useState<CheckoutFormData | null>(null);
+  const [pickupDate, setPickupDate] = useState<Date | null>(null);
+  const [pickupTimeSlot, setPickupTimeSlot] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isRTL = i18n.dir() === 'rtl';
   const direction = i18n.dir();
   const BackArrow = isRTL ? ArrowRight : ArrowLeft;
   const ForwardArrow = isRTL ? ArrowLeft : ArrowRight;
 
-  const deliveryFeeAmount = deliveryFeeConfig ? parseFloat(deliveryFeeConfig) : DEFAULT_DELIVERY_FEE;
+  // Determine cart type
+  const cartType = getCartType();
+  const isIndividualOrder = cartType === 'individual' || cartType === null;
+  const isPlateauOrder = cartType === 'plateau';
+
+  // Calculate min days advance from cart items
+  const minDaysAdvance = useMemo(() => {
+    return Math.max(...items.map(item => item.product.min_days_advance || 0), 0);
+  }, [items]);
+
+  // Get available pickup dates based on order type
+  const availableDates = useMemo(() => {
+    return getAvailablePickupDates(isIndividualOrder, minDaysAdvance);
+  }, [isIndividualOrder, minDaysAdvance]);
+
+  // Get time slots based on selected date
+  const availableTimeSlots = useMemo(() => {
+    if (!pickupDate) return [];
+    return pickupDate.getDay() === 5 ? TIME_SLOTS.friday : TIME_SLOTS.weekday;
+  }, [pickupDate]);
+
+  // Check if this is a late order (for plateau: less than min days, for individual: after Thursday)
+  const isLateOrder = useMemo(() => {
+    if (!pickupDate) return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const diffDays = Math.floor((pickupDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+
+    if (isIndividualOrder) {
+      // Late if ordering after Thursday for this Friday
+      const dayOfWeek = today.getDay();
+      return dayOfWeek >= 4 && diffDays <= 1;
+    } else {
+      // Late if less than min days
+      return diffDays < minDaysAdvance;
+    }
+  }, [pickupDate, isIndividualOrder, minDaysAdvance]);
+
+  // Steps vary based on order type
+  const steps: CheckoutStep[] = ['info', 'delivery', 'pickup_date', 'review'];
   const currentStepIndex = steps.indexOf(currentStep);
 
   const handleFormSubmit = (data: CheckoutFormData) => {
@@ -44,19 +143,29 @@ export function CheckoutPage() {
     if (deliveryMethod === 'delivery' && (!deliveryAddress.street || !deliveryAddress.city)) {
       return; // Don't proceed without address
     }
+    if (deliveryMethod === 'delivery' && !selectedZone) {
+      return; // Don't proceed without zone selection
+    }
+    setCurrentStep('pickup_date');
+  };
+
+  const handlePickupDateNext = () => {
+    if (!pickupDate || !pickupTimeSlot) {
+      return; // Don't proceed without date and time
+    }
     setCurrentStep('review');
   };
 
   const handleFinalSubmit = async () => {
-    if (!customerData) return;
+    if (!customerData || !pickupDate || !pickupTimeSlot) return;
 
     setIsSubmitting(true);
 
     try {
-      const deliveryFee = deliveryMethod === 'delivery' ? deliveryFeeAmount : 0;
+      const deliveryFee = deliveryMethod === 'delivery' && selectedZone ? selectedZone.price : 0;
       const total = subtotal() + deliveryFee;
 
-      // ETAPE 1: Creer la commande en base AVANT le paiement
+      // Create order with all new fields
       const orderData: CreateOrderDTO = {
         customer_name: customerData.name,
         customer_email: customerData.email,
@@ -65,6 +174,12 @@ export function CheckoutPage() {
         delivery_address: deliveryMethod === 'delivery'
           ? `${deliveryAddress.street}, ${deliveryAddress.city}${deliveryAddress.postalCode ? ' ' + deliveryAddress.postalCode : ''}`
           : undefined,
+        delivery_zone_id: deliveryMethod === 'delivery' && selectedZone ? selectedZone.id : undefined,
+        pickup_date: pickupDate.toISOString().split('T')[0],
+        pickup_time_slot: pickupTimeSlot,
+        order_type: isPlateauOrder ? 'plateau' : 'individual',
+        confirmation_status: isPlateauOrder ? 'pending_confirmation' : 'not_required',
+        is_late_order: isLateOrder,
         items: items.map(item => ({
           product_id: item.product.id,
           quantity: item.quantity,
@@ -76,7 +191,14 @@ export function CheckoutPage() {
 
       const orderId = await createOrder(orderData);
 
-      // ETAPE 2: Tenter le paiement
+      // For plateau orders: no payment, just redirect to confirmation
+      if (isPlateauOrder) {
+        clearCart();
+        navigate(`${ROUTES.CHECKOUT_SUCCESS}?order_id=${orderId}&type=plateau`);
+        return;
+      }
+
+      // For individual orders: proceed to payment
       const response = await initiatePayment({
         amount: total,
         currency: 'ILS',
@@ -95,18 +217,13 @@ export function CheckoutPage() {
 
       if (response.success) {
         if (response.paymentUrl) {
-          // Redirect to PayPlus payment page - le statut sera mis a jour via webhook
           window.location.href = response.paymentUrl;
         } else {
-          // Mode dev/test - la commande reste en "pending" pour confirmation manuelle
           clearCart();
           navigate(`${ROUTES.CHECKOUT_SUCCESS}?order_id=${orderId}`);
         }
       } else {
-        // Le paiement a echoue mais la commande est sauvegardee (status: pending)
         console.error('Payment failed:', response.error);
-        // On peut quand meme vider le panier et rediriger vers la page de succes
-        // car la commande est enregistree
         clearCart();
         navigate(`${ROUTES.CHECKOUT_SUCCESS}?order_id=${orderId}&payment_pending=true`);
       }
@@ -181,6 +298,7 @@ export function CheckoutPage() {
                   `}>
                     {step === 'info' && t('checkout.customerInfo')}
                     {step === 'delivery' && t('checkout.deliveryMethod')}
+                    {step === 'pickup_date' && (i18n.language === 'fr' ? 'Date de retrait' : 'תאריך איסוף')}
                     {step === 'review' && t('checkout.orderSummary')}
                   </span>
 
@@ -228,6 +346,52 @@ export function CheckoutPage() {
                   address={deliveryAddress}
                   onAddressChange={setDeliveryAddress}
                 />
+
+                {/* Zone Selection for delivery */}
+                {deliveryMethod === 'delivery' && deliveryZones.length > 0 && (
+                  <div className="mt-6 pt-6 border-t border-cream-200">
+                    <h4 className="font-display text-base text-stone-800 mb-3 flex items-center gap-2">
+                      <MapPin className="w-4 h-4 text-gold-500" />
+                      {i18n.language === 'fr' ? 'Sélectionnez votre quartier' : 'בחר את השכונה שלך'}
+                    </h4>
+                    <div className="grid gap-2">
+                      {deliveryZones.map((zone) => (
+                        <label
+                          key={zone.id}
+                          className={`
+                            flex items-center justify-between p-3 rounded-xl border-2 cursor-pointer transition-all
+                            ${selectedZone?.id === zone.id
+                              ? 'border-gold-500 bg-gold-50/50'
+                              : 'border-stone-200 hover:border-gold-300'
+                            }
+                          `}
+                        >
+                          <div className="flex items-center gap-3">
+                            <input
+                              type="radio"
+                              name="delivery_zone"
+                              value={zone.id}
+                              checked={selectedZone?.id === zone.id}
+                              onChange={() => setSelectedZone(zone)}
+                              className="sr-only"
+                            />
+                            <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center
+                              ${selectedZone?.id === zone.id ? 'border-gold-500' : 'border-stone-300'}`}>
+                              {selectedZone?.id === zone.id && (
+                                <div className="w-2 h-2 rounded-full bg-gold-500" />
+                              )}
+                            </div>
+                            <span className="font-medium text-stone-700">
+                              {i18n.language === 'fr' ? zone.name_fr : zone.name_he}
+                            </span>
+                          </div>
+                          <span className="font-semibold text-gold-600">{zone.price} ₪</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 <div className="mt-6 flex justify-between">
                   <button
                     onClick={() => setCurrentStep('info')}
@@ -239,7 +403,7 @@ export function CheckoutPage() {
                   </button>
                   <button
                     onClick={handleDeliveryNext}
-                    disabled={deliveryMethod === 'delivery' && (!deliveryAddress.street || !deliveryAddress.city)}
+                    disabled={deliveryMethod === 'delivery' && (!deliveryAddress.street || !deliveryAddress.city || !selectedZone)}
                     className="flex items-center gap-2 px-6 py-3 bg-gold-500 text-white font-medium rounded-xl
                       hover:bg-gold-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
@@ -250,7 +414,130 @@ export function CheckoutPage() {
               </div>
             )}
 
-            {/* Step 3: Review & Pay */}
+            {/* Step 3: Pickup Date & Time */}
+            {currentStep === 'pickup_date' && (
+              <div className="bg-white rounded-2xl p-6 shadow-sm border border-cream-200 animate-fade-in-up">
+                <h3 className="font-display text-lg text-stone-800 mb-2 flex items-center gap-2">
+                  <Calendar className="w-5 h-5 text-gold-500" />
+                  {i18n.language === 'fr' ? 'Date de retrait' : 'תאריך איסוף'}
+                </h3>
+                <p className="text-sm text-stone-500 mb-4">
+                  {isIndividualOrder
+                    ? i18n.language === 'fr'
+                      ? 'Les gâteaux individuels sont disponibles uniquement le vendredi'
+                      : 'עוגות אישיות זמינות רק ביום שישי'
+                    : i18n.language === 'fr'
+                      ? `Minimum ${minDaysAdvance} jours à l'avance pour les plateaux`
+                      : `מינימום ${minDaysAdvance} ימים מראש לפלטות`
+                  }
+                </p>
+
+                {/* Date Selection */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-6">
+                  {availableDates.map((date) => {
+                    const isSelected = pickupDate?.toDateString() === date.toDateString();
+                    const isFriday = date.getDay() === 5;
+                    return (
+                      <button
+                        key={date.toISOString()}
+                        type="button"
+                        onClick={() => {
+                          setPickupDate(date);
+                          setPickupTimeSlot(''); // Reset time when date changes
+                        }}
+                        className={`
+                          p-3 rounded-xl border-2 text-center transition-all
+                          ${isSelected
+                            ? 'border-gold-500 bg-gold-50 text-gold-700'
+                            : 'border-stone-200 hover:border-gold-300'
+                          }
+                        `}
+                      >
+                        <p className="text-xs text-stone-500">
+                          {date.toLocaleDateString(i18n.language === 'he' ? 'he-IL' : 'fr-FR', { weekday: 'short' })}
+                        </p>
+                        <p className="font-semibold">
+                          {date.toLocaleDateString(i18n.language === 'he' ? 'he-IL' : 'fr-FR', { day: 'numeric', month: 'short' })}
+                        </p>
+                        {isFriday && (
+                          <span className="text-xs text-blue-600">
+                            {i18n.language === 'fr' ? 'Shabbat' : 'שבת'}
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Time Slot Selection */}
+                {pickupDate && (
+                  <div className="animate-fade-in">
+                    <h4 className="font-display text-base text-stone-800 mb-3 flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-gold-500" />
+                      {i18n.language === 'fr' ? 'Créneau horaire' : 'שעת איסוף'}
+                    </h4>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                      {availableTimeSlots.map((slot) => (
+                        <button
+                          key={slot}
+                          type="button"
+                          onClick={() => setPickupTimeSlot(slot)}
+                          className={`
+                            p-3 rounded-xl border-2 text-sm font-medium transition-all
+                            ${pickupTimeSlot === slot
+                              ? 'border-gold-500 bg-gold-50 text-gold-700'
+                              : 'border-stone-200 hover:border-gold-300'
+                            }
+                          `}
+                        >
+                          {slot}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Late Order Warning */}
+                {isLateOrder && (
+                  <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-xl flex items-start gap-2">
+                    <AlertTriangle className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-sm font-medium text-amber-800">
+                        {i18n.language === 'fr' ? 'Commande tardive' : 'הזמנה מאוחרת'}
+                      </p>
+                      <p className="text-xs text-amber-700">
+                        {i18n.language === 'fr'
+                          ? 'Cette commande est sous réserve de disponibilité'
+                          : 'הזמנה זו כפופה לזמינות'
+                        }
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                <div className="mt-6 flex justify-between">
+                  <button
+                    onClick={() => setCurrentStep('delivery')}
+                    className="flex items-center gap-2 px-6 py-3 text-stone-600 font-medium rounded-xl
+                      hover:bg-cream-100 transition-colors"
+                  >
+                    <BackArrow className="w-4 h-4" />
+                    {t('common.back') || 'Retour'}
+                  </button>
+                  <button
+                    onClick={handlePickupDateNext}
+                    disabled={!pickupDate || !pickupTimeSlot}
+                    className="flex items-center gap-2 px-6 py-3 bg-gold-500 text-white font-medium rounded-xl
+                      hover:bg-gold-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    {t('common.next') || 'Suivant'}
+                    <ForwardArrow className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Step 4: Review & Pay */}
             {currentStep === 'review' && (
               <div className="space-y-6 animate-fade-in-up">
                 {/* Customer Summary */}
@@ -298,13 +585,68 @@ export function CheckoutPage() {
                         {deliveryAddress.postalCode && ` ${deliveryAddress.postalCode}`}
                       </p>
                     )}
+                    {deliveryMethod === 'delivery' && selectedZone && (
+                      <p className="mt-1 text-sm text-gold-600 font-medium">
+                        {i18n.language === 'fr' ? selectedZone.name_fr : selectedZone.name_he} - {selectedZone.price} ₪
+                      </p>
+                    )}
                   </div>
                 </div>
 
-                {/* Payment Button */}
-                <div className="flex justify-between items-center">
+                {/* Pickup Date Summary */}
+                <div className="bg-white rounded-2xl p-6 shadow-sm border border-cream-200">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-display text-lg text-stone-800">
+                      {i18n.language === 'fr' ? 'Date de retrait' : 'תאריך איסוף'}
+                    </h3>
+                    <button
+                      onClick={() => setCurrentStep('pickup_date')}
+                      className="text-sm text-gold-600 hover:text-gold-700"
+                    >
+                      {t('common.edit') || 'Modifier'}
+                    </button>
+                  </div>
+                  <div className="text-stone-600">
+                    {pickupDate && (
+                      <p className="font-medium flex items-center gap-2">
+                        <Calendar className="w-4 h-4 text-gold-500" />
+                        {formatDate(pickupDate, i18n.language)}
+                      </p>
+                    )}
+                    {pickupTimeSlot && (
+                      <p className="mt-1 text-sm flex items-center gap-2">
+                        <Clock className="w-4 h-4 text-gold-500" />
+                        {pickupTimeSlot}
+                      </p>
+                    )}
+                    {isLateOrder && (
+                      <p className="mt-2 text-xs text-amber-600 flex items-center gap-1">
+                        <AlertTriangle className="w-3 h-3" />
+                        {i18n.language === 'fr' ? 'Commande tardive - sous réserve' : 'הזמנה מאוחרת - כפופה לזמינות'}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Plateau Order Notice */}
+                {isPlateauOrder && (
+                  <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl">
+                    <p className="text-sm font-medium text-amber-800 mb-1">
+                      {i18n.language === 'fr' ? 'Commande de plateau' : 'הזמנת פלטה'}
+                    </p>
+                    <p className="text-xs text-amber-700">
+                      {i18n.language === 'fr'
+                        ? 'Votre demande sera envoyée à notre équipe. Nous vous contacterons sous quelques heures pour confirmer la disponibilité et vous envoyer un lien de paiement.'
+                        : 'בקשתך תישלח לצוות שלנו. ניצור איתך קשר תוך מספר שעות לאישור הזמינות ונשלח לך קישור לתשלום.'
+                      }
+                    </p>
+                  </div>
+                )}
+
+                {/* Back Button */}
+                <div className="flex justify-start">
                   <button
-                    onClick={() => setCurrentStep('delivery')}
+                    onClick={() => setCurrentStep('pickup_date')}
                     className="flex items-center gap-2 px-6 py-3 text-stone-600 font-medium rounded-xl
                       hover:bg-cream-100 transition-colors"
                   >
@@ -321,17 +663,26 @@ export function CheckoutPage() {
             <div className="lg:sticky lg:top-24 space-y-6">
               <OrderSummary deliveryMethod={deliveryMethod} />
 
-              {/* Payment Button (on review step) */}
+              {/* Action Button (on review step) */}
               {currentStep === 'review' && (
                 <button
                   onClick={handleFinalSubmit}
                   disabled={isSubmitting}
-                  className="w-full flex items-center justify-center gap-3 py-4 bg-gold-500 text-white
-                    font-medium text-lg rounded-xl shadow-lg shadow-gold-500/20
-                    hover:bg-gold-600 disabled:opacity-50 transition-all"
+                  className={`w-full flex items-center justify-center gap-3 py-4 text-white
+                    font-medium text-lg rounded-xl shadow-lg transition-all
+                    ${isPlateauOrder
+                      ? 'bg-amber-500 hover:bg-amber-600 shadow-amber-500/20'
+                      : 'bg-gold-500 hover:bg-gold-600 shadow-gold-500/20'
+                    }
+                    disabled:opacity-50`}
                 >
                   {isSubmitting ? (
                     <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : isPlateauOrder ? (
+                    <>
+                      <Send className="w-5 h-5" />
+                      {i18n.language === 'fr' ? 'Envoyer la demande' : 'שלח בקשה'}
+                    </>
                   ) : (
                     <>
                       <CreditCard className="w-5 h-5" />

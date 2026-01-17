@@ -1,5 +1,5 @@
 import { supabase } from './supabase';
-import type { Order, OrderStatus, CreateOrderDTO } from '../types';
+import type { Order, OrderStatus, CreateOrderDTO, ConfirmationStatus } from '../types';
 
 export async function getOrders(status?: OrderStatus): Promise<Order[]> {
   let query = supabase
@@ -31,10 +31,23 @@ export async function createOrder(orderData: CreateOrderDTO): Promise<string> {
   const { items, ...orderInfo } = orderData;
   const totalAmount = items.reduce((sum, item) => sum + item.unit_price * item.quantity, 0);
 
+  // Add delivery zone price if applicable
+  let finalTotal = totalAmount;
+  if (orderData.delivery_zone_id) {
+    const { data: zone } = await supabase
+      .from('delivery_zones')
+      .select('price')
+      .eq('id', orderData.delivery_zone_id)
+      .single();
+    if (zone) {
+      finalTotal += Number(zone.price);
+    }
+  }
+
   const { data: order, error: orderError } = await supabase
     .from('orders')
-    .insert({ ...orderInfo, total_amount: totalAmount, status: 'pending' })
-    .select('id')
+    .insert({ ...orderInfo, total_amount: finalTotal, status: 'pending' })
+    .select('id, customer_name, total_amount, order_type, pickup_date')
     .single();
 
   if (orderError) throw orderError;
@@ -43,13 +56,112 @@ export async function createOrder(orderData: CreateOrderDTO): Promise<string> {
   const { error: itemsError } = await supabase.from('order_items').insert(orderItems);
 
   if (itemsError) throw itemsError;
+
+  // Send push notification for plateau orders
+  if (orderInfo.order_type === 'plateau') {
+    sendPushNotification({
+      orderId: order.id,
+      customerName: order.customer_name,
+      totalAmount: order.total_amount,
+      orderType: order.order_type,
+      pickupDate: order.pickup_date,
+    }).catch(console.error); // Don't block order creation if push fails
+  }
+
   return order.id;
+}
+
+// Send push notification via Edge Function
+async function sendPushNotification(payload: {
+  orderId: string;
+  customerName: string;
+  totalAmount: number;
+  orderType: string;
+  pickupDate?: string;
+}): Promise<void> {
+  try {
+    const { data, error } = await supabase.functions.invoke('send-push', {
+      body: payload,
+    });
+    if (error) {
+      console.error('Push notification error:', error);
+    } else {
+      console.log('Push notification sent:', data);
+    }
+  } catch (err) {
+    console.error('Failed to send push notification:', err);
+  }
 }
 
 export async function updateOrderStatus(id: string, status: OrderStatus): Promise<Order> {
   const { data, error } = await supabase
     .from('orders')
     .update({ status })
+    .eq('id', id)
+    .select('*')
+    .single();
+
+  if (error) throw error;
+  return data as Order;
+}
+
+// ============================================
+// Order confirmation functions (for plateau orders)
+// ============================================
+
+export async function getOrdersByConfirmationStatus(
+  confirmationStatus: ConfirmationStatus
+): Promise<Order[]> {
+  const { data, error } = await supabase
+    .from('orders')
+    .select('*, items:order_items(*), delivery_zone:delivery_zones(*)')
+    .eq('confirmation_status', confirmationStatus)
+    .order('created_at', { ascending: false });
+
+  if (error) throw error;
+  return data as Order[];
+}
+
+export async function confirmPlateauOrder(
+  id: string,
+  paymentLink: string,
+  adminNotes?: string
+): Promise<Order> {
+  const { data, error } = await supabase
+    .from('orders')
+    .update({
+      confirmation_status: 'confirmed',
+      payment_link: paymentLink,
+      admin_notes: adminNotes || null,
+    })
+    .eq('id', id)
+    .select('*, items:order_items(*)')
+    .single();
+
+  if (error) throw error;
+  return data as Order;
+}
+
+export async function rejectPlateauOrder(id: string, reason: string): Promise<Order> {
+  const { data, error } = await supabase
+    .from('orders')
+    .update({
+      confirmation_status: 'rejected',
+      status: 'cancelled',
+      admin_notes: reason,
+    })
+    .eq('id', id)
+    .select('*, items:order_items(*)')
+    .single();
+
+  if (error) throw error;
+  return data as Order;
+}
+
+export async function updateOrderAdminNotes(id: string, notes: string): Promise<Order> {
+  const { data, error } = await supabase
+    .from('orders')
+    .update({ admin_notes: notes })
     .eq('id', id)
     .select('*')
     .single();

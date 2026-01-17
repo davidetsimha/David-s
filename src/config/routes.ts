@@ -35,5 +35,6 @@ export const ROUTES = {
   ADMIN_SETTINGS: '/admin/settings',
   ADMIN_MESSAGES: '/admin/messages',
   ADMIN_CUSTOMERS: '/admin/customers',
+  ADMIN_DELIVERY_ZONES: '/admin/delivery-zones',
   ADMIN_LOGIN: '/admin/login',
 } as const;

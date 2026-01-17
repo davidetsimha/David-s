@@ -47,4 +47,12 @@ export const queryKeys = {
     all: ['eventTypes'] as const,
     list: () => [...queryKeys.eventTypes.all, 'list'] as const,
   },
+  deliveryZones: {
+    all: ['deliveryZones'] as const,
+    list: (activeOnly?: boolean) => [...queryKeys.deliveryZones.all, 'list', activeOnly] as const,
+    detail: (id: string) => [...queryKeys.deliveryZones.all, 'detail', id] as const,
+  },
+  pushSubscriptions: {
+    all: ['pushSubscriptions'] as const,
+  },
 } as const;

@@ -8,8 +8,12 @@ import {
   getRevenueByDateRange,
   getTopSellingProducts,
   getSalesByCategory,
+  getOrdersByConfirmationStatus,
+  confirmPlateauOrder,
+  rejectPlateauOrder,
+  updateOrderAdminNotes,
 } from '../services/orders.service';
-import type { OrderStatus, CreateOrderDTO } from '../types';
+import type { OrderStatus, CreateOrderDTO, ConfirmationStatus } from '../types';
 
 export function useOrders(status?: OrderStatus) {
   return useQuery({
@@ -44,6 +48,54 @@ export function useUpdateOrderStatus() {
       updateOrderStatus(id, status),
     onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.orders.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.orders.detail(id) });
+    },
+  });
+}
+
+// Plateau order confirmation hooks
+
+export function useOrdersByConfirmationStatus(confirmationStatus: ConfirmationStatus) {
+  return useQuery({
+    queryKey: ['orders', 'confirmation', confirmationStatus],
+    queryFn: () => getOrdersByConfirmationStatus(confirmationStatus),
+    refetchInterval: 30000,
+  });
+}
+
+export function useConfirmPlateauOrder() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      id,
+      paymentLink,
+      adminNotes,
+    }: {
+      id: string;
+      paymentLink: string;
+      adminNotes?: string;
+    }) => confirmPlateauOrder(id, paymentLink, adminNotes),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.orders.all });
+    },
+  });
+}
+
+export function useRejectPlateauOrder() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, reason }: { id: string; reason: string }) => rejectPlateauOrder(id, reason),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.orders.all });
+    },
+  });
+}
+
+export function useUpdateOrderAdminNotes() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, notes }: { id: string; notes: string }) => updateOrderAdminNotes(id, notes),
+    onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.orders.detail(id) });
     },
   });

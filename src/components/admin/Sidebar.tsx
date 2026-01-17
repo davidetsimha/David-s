@@ -10,6 +10,7 @@ import {
   Settings,
   Mail,
   Users,
+  MapPin,
   type LucideIcon
 } from 'lucide-react';
 import { ROUTES } from '../../config/routes';
@@ -58,6 +59,7 @@ const navGroups: NavGroup[] = [
   {
     label: 'Configuration',
     items: [
+      { to: ROUTES.ADMIN_DELIVERY_ZONES, icon: MapPin, label: 'Zones livraison' },
       { to: ROUTES.ADMIN_SETTINGS, icon: Settings, label: 'Parametres' },
     ],
   },

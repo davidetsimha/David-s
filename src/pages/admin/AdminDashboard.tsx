@@ -4,6 +4,7 @@ import { StatsCard } from '../../components/admin/StatsCard';
 import { Badge } from '../../components/ui/Badge';
 import { Card, CardTitle } from '../../components/ui/Card';
 import { Spinner } from '../../components/ui/Spinner';
+import { PushNotificationToggle } from '../../components/admin/PushNotificationToggle';
 import { useOrders } from '../../hooks/useOrders';
 import { useQuotes } from '../../hooks/useQuotes';
 import { RevenueChart, TopProductsChart, ConversionStats, EventTypeChart } from '../../components/admin/charts';
@@ -59,6 +60,9 @@ export function AdminDashboard() {
           </p>
         </div>
       </div>
+
+      {/* Push Notifications Toggle */}
+      <PushNotificationToggle />
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

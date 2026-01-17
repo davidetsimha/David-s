@@ -1,23 +1,47 @@
 import { Badge } from '../ui/Badge';
-import { Eye } from 'lucide-react';
+import { Eye, Calendar, Clock } from 'lucide-react';
 import type { Order } from '../../types';
 
 interface OrderRowProps {
   order: Order;
   onView: (order: Order) => void;
+  showPickupDate?: boolean;
 }
 
-export function OrderRow({ order, onView }: OrderRowProps) {
+export function OrderRow({ order, onView, showPickupDate }: OrderRowProps) {
   const date = new Date(order.created_at).toLocaleDateString('fr-FR', {
     day: 'numeric',
     month: 'short',
     year: 'numeric',
   });
 
+  const pickupDate = order.pickup_date
+    ? new Date(order.pickup_date).toLocaleDateString('fr-FR', {
+        weekday: 'short',
+        day: 'numeric',
+        month: 'short',
+      })
+    : null;
+
+  const isPlateau = order.order_type === 'plateau';
+  const isPendingConfirmation = order.confirmation_status === 'pending_confirmation';
+
   return (
-    <tr className="hover:bg-gray-50/50 transition-colors">
+    <tr className={`hover:bg-gray-50/50 transition-colors ${isPendingConfirmation ? 'bg-amber-50/30' : ''}`}>
       <td className="px-4 py-4">
-        <span className="font-mono text-sm text-gray-500">#{order.id.slice(0, 8)}</span>
+        <div className="flex items-center gap-2">
+          <span className="font-mono text-sm text-gray-500">#{order.id.slice(0, 8)}</span>
+          {isPlateau && (
+            <span className="text-xs px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded font-medium">
+              Plateau
+            </span>
+          )}
+          {order.is_late_order && (
+            <span className="text-xs px-1.5 py-0.5 bg-red-100 text-red-700 rounded font-medium">
+              Tardive
+            </span>
+          )}
+        </div>
       </td>
       <td className="px-4 py-4">
         <div>
@@ -26,6 +50,23 @@ export function OrderRow({ order, onView }: OrderRowProps) {
         </div>
       </td>
       <td className="px-4 py-4 text-sm text-gray-600">{date}</td>
+      {showPickupDate && (
+        <td className="px-4 py-4">
+          {pickupDate ? (
+            <div className="flex items-center gap-2 text-sm">
+              <Calendar className="w-4 h-4 text-gray-400" />
+              <span className="font-medium text-gray-900">{pickupDate}</span>
+              {order.pickup_time_slot && (
+                <span className="text-gray-500 flex items-center gap-1">
+                  <Clock className="w-3 h-3" /> {order.pickup_time_slot}
+                </span>
+              )}
+            </div>
+          ) : (
+            <span className="text-gray-400 text-sm">Non definie</span>
+          )}
+        </td>
+      )}
       <td className="px-4 py-4">
         <Badge status={order.status}>{order.status}</Badge>
       </td>
