@@ -4,8 +4,29 @@ import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import { Textarea } from '../ui/Textarea';
-import { MapPin, Phone, Mail, Package, Calendar, Clock, AlertTriangle, Check, X } from 'lucide-react';
+import { MapPin, Phone, Mail, Package, Calendar, Clock, AlertTriangle, Check, X, MessageCircle } from 'lucide-react';
 import type { Order, OrderStatus, ConfirmationStatus } from '../../types';
+
+// Format phone number for WhatsApp (Israeli format)
+function formatPhoneForWhatsApp(phone: string): string {
+  // Clean the number (remove spaces, dashes, parentheses)
+  let cleaned = phone.replace(/[\s\-\(\)]/g, '');
+
+  // If starts with +, remove the +
+  if (cleaned.startsWith('+')) {
+    cleaned = cleaned.substring(1);
+  }
+
+  // If starts with 0 (local Israeli format), replace with 972
+  if (cleaned.startsWith('0')) {
+    cleaned = '972' + cleaned.substring(1);
+  }
+
+  return cleaned;
+}
+
+type WhatsAppLanguage = 'fr' | 'he';
+type LastAction = 'confirmed' | 'rejected' | null;
 
 interface OrderDetailsProps {
   order: Order | null;
@@ -55,6 +76,12 @@ export function OrderDetails({
   const [adminNotes, setAdminNotes] = useState('');
   const [rejectReason, setRejectReason] = useState('');
 
+  // WhatsApp contact states
+  const [lastAction, setLastAction] = useState<LastAction>(null);
+  const [whatsAppLanguage, setWhatsAppLanguage] = useState<WhatsAppLanguage | null>(null);
+  const [savedPaymentLink, setSavedPaymentLink] = useState('');
+  const [savedRejectReason, setSavedRejectReason] = useState('');
+
   if (!order) return null;
 
   const nextStatus = statusActions[order.status];
@@ -79,6 +106,9 @@ export function OrderDetails({
   const handleConfirm = () => {
     if (paymentLink && onConfirmPlateau) {
       onConfirmPlateau(order.id, paymentLink, adminNotes || undefined);
+      // Save payment link and set last action for WhatsApp
+      setSavedPaymentLink(paymentLink);
+      setLastAction('confirmed');
       setShowConfirmForm(false);
       setPaymentLink('');
       setAdminNotes('');
@@ -88,9 +118,76 @@ export function OrderDetails({
   const handleReject = () => {
     if (rejectReason && onRejectPlateau) {
       onRejectPlateau(order.id, rejectReason);
+      // Save reject reason and set last action for WhatsApp
+      setSavedRejectReason(rejectReason);
+      setLastAction('rejected');
       setShowRejectForm(false);
       setRejectReason('');
     }
+  };
+
+  // Generate WhatsApp message based on action and language
+  const getWhatsAppMessage = (lang: WhatsAppLanguage): string => {
+    const customerName = order.customer_name;
+    const pickupDateFormatted = pickupDate || '';
+    const totalAmount = order.total_amount.toFixed(2);
+
+    if (lastAction === 'confirmed') {
+      if (lang === 'fr') {
+        return `Bonjour ${customerName},
+
+Votre commande de plateau pour le ${pickupDateFormatted} a été confirmée ! 🎉
+
+Voici le lien de paiement :
+${savedPaymentLink}
+
+Montant : ${totalAmount} ₪
+
+À bientôt !
+David's Patisserie`;
+      } else {
+        return `שלום ${customerName},
+
+ההזמנה שלך ל-${pickupDateFormatted} אושרה! 🎉
+
+קישור לתשלום:
+${savedPaymentLink}
+
+סכום: ₪${totalAmount}
+
+להתראות!
+David's Patisserie`;
+      }
+    } else if (lastAction === 'rejected') {
+      if (lang === 'fr') {
+        return `Bonjour ${customerName},
+
+Nous sommes désolés, mais nous ne pouvons pas honorer votre commande pour le ${pickupDateFormatted}.
+
+Raison : ${savedRejectReason}
+
+N'hésitez pas à nous contacter pour discuter d'autres options.
+
+David's Patisserie`;
+      } else {
+        return `שלום ${customerName},
+
+אנו מצטערים, אבל לא נוכל לבצע את ההזמנה שלך ל-${pickupDateFormatted}.
+
+סיבה: ${savedRejectReason}
+
+אתם מוזמנים ליצור קשר לדון באפשרויות אחרות.
+
+David's Patisserie`;
+      }
+    }
+    return '';
+  };
+
+  const getWhatsAppUrl = (lang: WhatsAppLanguage): string => {
+    const phone = formatPhoneForWhatsApp(order.customer_phone);
+    const message = encodeURIComponent(getWhatsAppMessage(lang));
+    return `https://wa.me/${phone}?text=${message}`;
   };
 
   const handleClose = () => {
@@ -99,6 +196,11 @@ export function OrderDetails({
     setPaymentLink('');
     setAdminNotes('');
     setRejectReason('');
+    // Reset WhatsApp states
+    setLastAction(null);
+    setWhatsAppLanguage(null);
+    setSavedPaymentLink('');
+    setSavedRejectReason('');
     onClose();
   };
 
@@ -303,6 +405,69 @@ export function OrderDetails({
                 <X className="w-4 h-4" /> Refuser
               </Button>
             </div>
+          </div>
+        )}
+
+        {/* WhatsApp Contact Section - shown after confirmation/rejection */}
+        {lastAction && (
+          <div
+            className={`p-4 rounded-lg ${
+              lastAction === 'confirmed' ? 'bg-green-50' : 'bg-red-50'
+            }`}
+          >
+            <div className="flex items-center gap-2 mb-3">
+              {lastAction === 'confirmed' ? (
+                <Check className="w-5 h-5 text-green-600" />
+              ) : (
+                <X className="w-5 h-5 text-red-600" />
+              )}
+              <h4
+                className={`font-medium ${
+                  lastAction === 'confirmed' ? 'text-green-900' : 'text-red-900'
+                }`}
+              >
+                {lastAction === 'confirmed' ? 'Commande confirmée' : 'Commande refusée'}
+              </h4>
+            </div>
+
+            <p className="text-sm text-gray-600 mb-3">Contacter le client via WhatsApp:</p>
+
+            {/* Language selection */}
+            <div className="flex gap-2 mb-3">
+              <button
+                onClick={() => setWhatsAppLanguage('fr')}
+                className={`flex-1 py-2 px-3 rounded-lg border text-sm font-medium transition-colors ${
+                  whatsAppLanguage === 'fr'
+                    ? 'bg-blue-100 border-blue-300 text-blue-800'
+                    : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                }`}
+              >
+                🇫🇷 Français
+              </button>
+              <button
+                onClick={() => setWhatsAppLanguage('he')}
+                className={`flex-1 py-2 px-3 rounded-lg border text-sm font-medium transition-colors ${
+                  whatsAppLanguage === 'he'
+                    ? 'bg-blue-100 border-blue-300 text-blue-800'
+                    : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                }`}
+              >
+                🇮🇱 עברית
+              </button>
+            </div>
+
+            {/* WhatsApp button */}
+            {whatsAppLanguage && (
+              <a
+                href={getWhatsAppUrl(whatsAppLanguage)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-green-500 hover:bg-green-600 text-white font-medium rounded-lg transition-colors"
+              >
+                <MessageCircle className="w-5 h-5" />
+                Envoyer via WhatsApp
+              </a>
+            )}
           </div>
         )}
 

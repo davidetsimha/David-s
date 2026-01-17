@@ -341,5 +341,15 @@
       "paragraph4": "Son approche mélange les traditions de la pâtisserie française avec une perspective moderne, généreuse et pleine d'âme. Il est reconnu pour ses éclairs au café et sa crème pâtissière riche et veloutée. La fraîcheur est le vrai secret de ses créations."
     },
     "signature": "— David Azoulai, Chef Pâtissier"
+  },
+  "admin": {
+    "whatsapp": {
+      "orderConfirmed": "Commande confirmée",
+      "orderRejected": "Commande refusée",
+      "contactViaWhatsApp": "Contacter le client via WhatsApp:",
+      "sendViaWhatsApp": "Envoyer via WhatsApp",
+      "french": "Français",
+      "hebrew": "עברית"
+    }
   }
 }
