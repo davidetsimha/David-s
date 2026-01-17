@@ -75,7 +75,7 @@ export function FormulasSection() {
           </div>
         ) : formulas.length === 0 ? (
           <div className="text-center py-12 text-stone-400">
-            {t('formulas.noFormulas', 'Aucune formule disponible')}
+            {t('formulas.noFormulas')}
           </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">

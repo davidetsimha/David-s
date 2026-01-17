@@ -150,14 +150,19 @@
     "includes": "Inclus",
     "cta": "Plus d'infos",
     "note": "Mise en place, service, vaisselle, nappes et boissons inclus. +900₪ hors Jérusalem.",
-    "whatsappMessage": "Bonjour, je suis intéressé(e) par la formule \"{{formula}}\" pour mon événement."
+    "whatsappMessage": "Bonjour, je suis intéressé(e) par la formule \"{{formula}}\" pour mon événement.",
+    "noFormulas": "Aucune formule disponible"
   },
   "products": {
     "title": "Nos Produits",
     "addToCart": "Ajouter au panier",
     "outOfStock": "Indisponible",
     "allCategories": "Toutes les catégories",
-    "price": "Prix"
+    "price": "Prix",
+    "fridayPickup": "Retrait vendredi",
+    "minDays": "{{days}}j min.",
+    "onOrder": "Sur commande",
+    "confirmationRequired": "Confirmation requise"
   },
   "cart": {
     "title": "Votre Panier",
@@ -216,7 +221,19 @@
     "cancel": {
       "title": "Commande annulée",
       "message": "Votre commande a été annulée. Votre panier a été conservé."
-    }
+    },
+    "pickupDate": "Date de retrait",
+    "selectNeighborhood": "Sélectionnez votre quartier",
+    "timeSlot": "Créneau horaire",
+    "individualNote": "Les gâteaux individuels sont disponibles uniquement le vendredi",
+    "plateauMinDays": "Minimum {{days}} jours à l'avance pour les plateaux",
+    "shabbat": "Shabbat",
+    "lateOrder": "Commande tardive",
+    "lateOrderNote": "Cette commande est sous réserve de disponibilité",
+    "lateOrderShort": "Commande tardive - sous réserve",
+    "plateauOrder": "Commande de plateau",
+    "plateauOrderNote": "Votre demande sera envoyée à notre équipe. Nous vous contacterons sous quelques heures pour confirmer la disponibilité et vous envoyer un lien de paiement.",
+    "sendRequest": "Envoyer la demande"
   },
   "gallery": {
     "title": "Galerie",

@@ -298,7 +298,7 @@ export function CheckoutPage() {
                   `}>
                     {step === 'info' && t('checkout.customerInfo')}
                     {step === 'delivery' && t('checkout.deliveryMethod')}
-                    {step === 'pickup_date' && (i18n.language === 'fr' ? 'Date de retrait' : 'תאריך איסוף')}
+                    {step === 'pickup_date' && t('checkout.pickupDate')}
                     {step === 'review' && t('checkout.orderSummary')}
                   </span>
 
@@ -352,7 +352,7 @@ export function CheckoutPage() {
                   <div className="mt-6 pt-6 border-t border-cream-200">
                     <h4 className="font-display text-base text-stone-800 mb-3 flex items-center gap-2">
                       <MapPin className="w-4 h-4 text-gold-500" />
-                      {i18n.language === 'fr' ? 'Sélectionnez votre quartier' : 'בחר את השכונה שלך'}
+                      {t('checkout.selectNeighborhood')}
                     </h4>
                     <div className="grid gap-2">
                       {deliveryZones.map((zone) => (
@@ -419,16 +419,12 @@ export function CheckoutPage() {
               <div className="bg-white rounded-2xl p-6 shadow-sm border border-cream-200 animate-fade-in-up">
                 <h3 className="font-display text-lg text-stone-800 mb-2 flex items-center gap-2">
                   <Calendar className="w-5 h-5 text-gold-500" />
-                  {i18n.language === 'fr' ? 'Date de retrait' : 'תאריך איסוף'}
+                  {t('checkout.pickupDate')}
                 </h3>
                 <p className="text-sm text-stone-500 mb-4">
                   {isIndividualOrder
-                    ? i18n.language === 'fr'
-                      ? 'Les gâteaux individuels sont disponibles uniquement le vendredi'
-                      : 'עוגות אישיות זמינות רק ביום שישי'
-                    : i18n.language === 'fr'
-                      ? `Minimum ${minDaysAdvance} jours à l'avance pour les plateaux`
-                      : `מינימום ${minDaysAdvance} ימים מראש לפלטות`
+                    ? t('checkout.individualNote')
+                    : t('checkout.plateauMinDays', { days: minDaysAdvance })
                   }
                 </p>
 
@@ -461,7 +457,7 @@ export function CheckoutPage() {
                         </p>
                         {isFriday && (
                           <span className="text-xs text-blue-600">
-                            {i18n.language === 'fr' ? 'Shabbat' : 'שבת'}
+                            {t('checkout.shabbat')}
                           </span>
                         )}
                       </button>
@@ -474,7 +470,7 @@ export function CheckoutPage() {
                   <div className="animate-fade-in">
                     <h4 className="font-display text-base text-stone-800 mb-3 flex items-center gap-2">
                       <Clock className="w-4 h-4 text-gold-500" />
-                      {i18n.language === 'fr' ? 'Créneau horaire' : 'שעת איסוף'}
+                      {t('checkout.timeSlot')}
                     </h4>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                       {availableTimeSlots.map((slot) => (
@@ -503,13 +499,10 @@ export function CheckoutPage() {
                     <AlertTriangle className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
                     <div>
                       <p className="text-sm font-medium text-amber-800">
-                        {i18n.language === 'fr' ? 'Commande tardive' : 'הזמנה מאוחרת'}
+                        {t('checkout.lateOrder')}
                       </p>
                       <p className="text-xs text-amber-700">
-                        {i18n.language === 'fr'
-                          ? 'Cette commande est sous réserve de disponibilité'
-                          : 'הזמנה זו כפופה לזמינות'
-                        }
+                        {t('checkout.lateOrderNote')}
                       </p>
                     </div>
                   </div>
@@ -597,7 +590,7 @@ export function CheckoutPage() {
                 <div className="bg-white rounded-2xl p-6 shadow-sm border border-cream-200">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-display text-lg text-stone-800">
-                      {i18n.language === 'fr' ? 'Date de retrait' : 'תאריך איסוף'}
+                      {t('checkout.pickupDate')}
                     </h3>
                     <button
                       onClick={() => setCurrentStep('pickup_date')}
@@ -622,7 +615,7 @@ export function CheckoutPage() {
                     {isLateOrder && (
                       <p className="mt-2 text-xs text-amber-600 flex items-center gap-1">
                         <AlertTriangle className="w-3 h-3" />
-                        {i18n.language === 'fr' ? 'Commande tardive - sous réserve' : 'הזמנה מאוחרת - כפופה לזמינות'}
+                        {t('checkout.lateOrderShort')}
                       </p>
                     )}
                   </div>
@@ -632,13 +625,10 @@ export function CheckoutPage() {
                 {isPlateauOrder && (
                   <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl">
                     <p className="text-sm font-medium text-amber-800 mb-1">
-                      {i18n.language === 'fr' ? 'Commande de plateau' : 'הזמנת פלטה'}
+                      {t('checkout.plateauOrder')}
                     </p>
                     <p className="text-xs text-amber-700">
-                      {i18n.language === 'fr'
-                        ? 'Votre demande sera envoyée à notre équipe. Nous vous contacterons sous quelques heures pour confirmer la disponibilité et vous envoyer un lien de paiement.'
-                        : 'בקשתך תישלח לצוות שלנו. ניצור איתך קשר תוך מספר שעות לאישור הזמינות ונשלח לך קישור לתשלום.'
-                      }
+                      {t('checkout.plateauOrderNote')}
                     </p>
                   </div>
                 )}
@@ -681,7 +671,7 @@ export function CheckoutPage() {
                   ) : isPlateauOrder ? (
                     <>
                       <Send className="w-5 h-5" />
-                      {i18n.language === 'fr' ? 'Envoyer la demande' : 'שלח בקשה'}
+                      {t('checkout.sendRequest')}
                     </>
                   ) : (
                     <>

@@ -150,14 +150,19 @@
     "includes": "כולל",
     "cta": "מידע נוסף",
     "note": "הקמה, שירות, כלים, מפות ומשקאות כלולים. +900₪ מחוץ לירושלים.",
-    "whatsappMessage": "שלום, אני מעוניין/ת בפורמולה \"{{formula}}\" לאירוע שלי."
+    "whatsappMessage": "שלום, אני מעוניין/ת בפורמולה \"{{formula}}\" לאירוע שלי.",
+    "noFormulas": "אין פורמולות זמינות"
   },
   "products": {
     "title": "המוצרים שלנו",
     "addToCart": "הוסף לסל",
     "outOfStock": "אזל מהמלאי",
     "allCategories": "כל הקטגוריות",
-    "price": "מחיר"
+    "price": "מחיר",
+    "fridayPickup": "איסוף יום שישי",
+    "minDays": "{{days}} ימים מינ.",
+    "onOrder": "בהזמנה",
+    "confirmationRequired": "דורש אישור"
   },
   "cart": {
     "title": "סל הקניות",
@@ -216,7 +221,19 @@
     "cancel": {
       "title": "ההזמנה בוטלה",
       "message": "ההזמנה בוטלה. הסל שלך נשמר."
-    }
+    },
+    "pickupDate": "תאריך איסוף",
+    "selectNeighborhood": "בחר את השכונה שלך",
+    "timeSlot": "שעת איסוף",
+    "individualNote": "עוגות אישיות זמינות רק ביום שישי",
+    "plateauMinDays": "מינימום {{days}} ימים מראש לפלטות",
+    "shabbat": "שבת",
+    "lateOrder": "הזמנה מאוחרת",
+    "lateOrderNote": "הזמנה זו כפופה לזמינות",
+    "lateOrderShort": "הזמנה מאוחרת - כפופה לזמינות",
+    "plateauOrder": "הזמנת פלטה",
+    "plateauOrderNote": "בקשתך תישלח לצוות שלנו. ניצור איתך קשר תוך מספר שעות לאישור הזמינות ונשלח לך קישור לתשלום.",
+    "sendRequest": "שלח בקשה"
   },
   "gallery": {
     "title": "גלריה",

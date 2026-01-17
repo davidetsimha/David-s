@@ -72,24 +72,18 @@ export function ProductCard({ product }: ProductCardProps) {
           {isIndividual && (
             <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-500/90 text-white text-xs font-medium rounded-full backdrop-blur-sm">
               <Calendar className="w-3 h-3" />
-              {i18n.language === 'fr' ? 'Retrait vendredi' : 'איסוף יום שישי'}
+              {t('products.fridayPickup')}
             </span>
           )}
           {isPlateau && (
             <span className="inline-flex items-center gap-1 px-2 py-1 bg-amber-500/90 text-white text-xs font-medium rounded-full backdrop-blur-sm">
               <Clock className="w-3 h-3" />
-              {minDays > 0
-                ? i18n.language === 'fr'
-                  ? `${minDays}j min.`
-                  : `${minDays} ימים מינ.`
-                : i18n.language === 'fr'
-                  ? 'Sur commande'
-                  : 'בהזמנה'}
+              {minDays > 0 ? t('products.minDays', { days: minDays }) : t('products.onOrder')}
             </span>
           )}
           {requiresConfirmation && (
             <span className="inline-flex items-center gap-1 px-2 py-1 bg-purple-500/90 text-white text-xs font-medium rounded-full backdrop-blur-sm">
-              {i18n.language === 'fr' ? 'Confirmation requise' : 'דורש אישור'}
+              {t('products.confirmationRequired')}
             </span>
           )}
         </div>
