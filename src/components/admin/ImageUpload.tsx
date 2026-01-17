@@ -7,7 +7,7 @@ interface ImageUploadProps extends HTMLAttributes<HTMLDivElement> {
   onUpload?: (url: string) => void;
   onRemove?: () => void;
   label?: string;
-  folder?: 'products' | 'gallery' | 'events' | 'creations';
+  folder?: 'products' | 'gallery' | 'events' | 'creations' | 'formulas';
 }
 
 export const ImageUpload = forwardRef<HTMLDivElement, ImageUploadProps>(

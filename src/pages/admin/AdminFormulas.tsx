@@ -4,7 +4,8 @@ import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 import { Modal } from '../../components/ui/Modal';
 import { Input } from '../../components/ui/Input';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { ImageUpload } from '../../components/admin/ImageUpload';
+import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useEventFormulas, useUpdateEventFormula } from '../../hooks/useFormulas';
@@ -260,11 +261,19 @@ export function AdminFormulas() {
             />
           </div>
 
-          {/* Image URL */}
-          <Input
-            label="URL de l'image"
-            {...register('image_url')}
-            placeholder="/images/gallery/..."
+          {/* Image */}
+          <Controller
+            name="image_url"
+            control={control}
+            render={({ field }) => (
+              <ImageUpload
+                label="Image de la formule"
+                folder="formulas"
+                value={field.value || undefined}
+                onUpload={(url) => field.onChange(url)}
+                onRemove={() => field.onChange(null)}
+              />
+            )}
           />
 
           {/* Includes FR */}

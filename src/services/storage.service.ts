@@ -25,7 +25,7 @@ export interface UploadResult {
  */
 export async function uploadImage(
   file: File,
-  folder: 'products' | 'gallery' | 'events' | 'creations' = 'products'
+  folder: 'products' | 'gallery' | 'events' | 'creations' | 'formulas' = 'products'
 ): Promise<UploadResult> {
   try {
     // Générer un nom unique pour éviter les collisions
