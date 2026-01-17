@@ -11,6 +11,7 @@ import {
   Mail,
   Users,
   MapPin,
+  UtensilsCrossed,
   type LucideIcon
 } from 'lucide-react';
 import { ROUTES } from '../../config/routes';
@@ -40,6 +41,7 @@ const navGroups: NavGroup[] = [
     label: 'Catalogue',
     items: [
       { to: ROUTES.ADMIN_PRODUCTS, icon: Package, label: 'Produits' },
+      { to: ROUTES.ADMIN_FORMULAS, icon: UtensilsCrossed, label: 'Formules' },
     ],
   },
   {

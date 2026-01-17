@@ -4,3 +4,4 @@ export * from './quote.types';
 export * from './gallery.types';
 export * from './contact.types';
 export * from './customer.types';
+export * from './formula.types';

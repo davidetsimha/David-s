@@ -38,6 +38,7 @@ import { AdminSettings } from './pages/admin/AdminSettings';
 import { AdminMessages } from './pages/admin/AdminMessages';
 import { AdminCustomers } from './pages/admin/AdminCustomers';
 import { AdminDeliveryZones } from './pages/admin/AdminDeliveryZones';
+import { AdminFormulas } from './pages/admin/AdminFormulas';
 
 export default function App() {
   return (
@@ -105,6 +106,7 @@ export default function App() {
           <Route path={ROUTES.ADMIN_MESSAGES} element={<AdminMessages />} />
           <Route path={ROUTES.ADMIN_CUSTOMERS} element={<AdminCustomers />} />
           <Route path={ROUTES.ADMIN_DELIVERY_ZONES} element={<AdminDeliveryZones />} />
+          <Route path={ROUTES.ADMIN_FORMULAS} element={<AdminFormulas />} />
         </Route>
 
         {/* 404 */}

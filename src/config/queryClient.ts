@@ -55,4 +55,8 @@ export const queryKeys = {
   pushSubscriptions: {
     all: ['pushSubscriptions'] as const,
   },
+  eventFormulas: {
+    all: ['eventFormulas'] as const,
+    list: () => [...queryKeys.eventFormulas.all, 'list'] as const,
+  },
 } as const;
