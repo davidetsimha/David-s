@@ -55,19 +55,19 @@ export function SplitScreenHero() {
           <img
             src="/images/logo-ds.jpg"
             alt="David's Pâtisserie"
-            className="w-24 h-24 md:w-32 md:h-32 lg:w-36 lg:h-36 rounded-full object-cover
+            className="w-32 h-32 md:w-48 md:h-48 lg:w-56 lg:h-56 rounded-full object-cover
               shadow-2xl ring-4 ring-cream-50/90 animate-float-logo"
           />
         </div>
       </div>
 
       {/* Vertical divider line (desktop only) */}
-      <div className="hidden md:block absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-px
-        bg-gradient-to-b from-transparent via-gold-400/30 to-transparent z-10" />
+      <div className="hidden md:block absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-1
+        bg-gradient-to-b from-transparent via-gold-400/80 to-transparent z-10 shadow-lg shadow-gold-400/50" />
 
       {/* Horizontal divider line (mobile only) */}
-      <div className="md:hidden absolute left-0 right-0 top-1/2 -translate-y-1/2 h-px
-        bg-gradient-to-r from-transparent via-gold-400/30 to-transparent z-10" />
+      <div className="md:hidden absolute left-0 right-0 top-1/2 -translate-y-1/2 h-1
+        bg-gradient-to-r from-transparent via-gold-400/80 to-transparent z-10 shadow-lg shadow-gold-400/50" />
 
       {/* Scroll indicator */}
       <div className="absolute bottom-6 inset-x-0 flex justify-center z-20

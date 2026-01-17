@@ -19,109 +19,153 @@ interface Formula {
 
 const morningFormulas: Formula[] = [
   {
-    id: 'matinale',
-    nameFr: 'La Matinale',
-    nameHe: 'ארוחת הבוקר',
+    id: 'formule-1-matin',
+    nameFr: 'Formule 1',
+    nameHe: 'פורמולה 1',
     price: 150,
     minGuests: 80,
     taglineFr: 'Petit-déjeuner sucré-salé complet',
     taglineHe: 'ארוחת בוקר מלאה מתוקה-מלוחה',
     includesFr: [
-      'Petits fours sucrés variés',
-      'Viennoiseries fraîches',
-      'Bouchées salées',
-      'Plateaux fromages & saumon',
+      'Petit four sucré',
+      'Bouchée salée',
+      'Fromage/baguette',
+      'Salade',
+      'Viennoiserie',
       'Stand crêpes',
-      'Boissons'
+      'Stand omelette',
+      'Saumon fumé',
+      'Décoration florale'
     ],
     includesHe: [
-      'מבחר מאפים מתוקים',
-      'מאפי בוקר טריים',
+      'מאפה מתוק',
       'ביס מלוח',
-      'מגשי גבינות וסלמון',
+      'גבינות/באגט',
+      'סלט',
+      'מאפי בוקר',
       'עמדת קרפים',
-      'משקאות'
+      'עמדת חביתות',
+      'סלמון מעושן',
+      'עיצוב פרחוני'
     ],
     image: '/images/gallery/petits-fours-1.jpg'
   },
   {
-    id: 'prestige',
-    nameFr: 'La Prestige',
-    nameHe: 'הפרסטיז׳',
-    price: 200,
+    id: 'formule-2-matin',
+    nameFr: 'Formule 2',
+    nameHe: 'פורמולה 2',
+    price: 180,
     minGuests: 80,
-    taglineFr: 'Formule haut de gamme avec animations',
-    taglineHe: 'פורמולה יוקרתית עם הנפשות',
+    taglineFr: 'Formule complète avec stands chauds',
+    taglineHe: 'פורמולה מלאה עם עמדות חמות',
     includesFr: [
-      'Tout de La Matinale',
-      'Stand pizza artisanale',
-      'Grands gâteaux',
-      'Stand sfenj/moufletta',
-      'Décoration florale',
-      'Service premium'
+      'Tout de Formule 1',
+      '2 salades fraîches en plus',
+      'Stand pâtes',
+      'Stand pizza'
     ],
     includesHe: [
-      'הכל מארוחת הבוקר',
-      'עמדת פיצה',
-      'עוגות גדולות',
-      'עמדת ספינג׳/מופלטה',
-      'עיצוב פרחוני',
-      'שירות פרימיום'
+      'הכל מפורמולה 1',
+      '2 סלטים טריים נוספים',
+      'עמדת פסטה',
+      'עמדת פיצה'
     ],
     image: '/images/creations/buffet-traiteur.jpg'
+  },
+  {
+    id: 'formule-3-matin',
+    nameFr: 'Formule 3',
+    nameHe: 'פורמולה 3',
+    price: 200,
+    minGuests: 80,
+    taglineFr: 'Formule prestige avec vaisselle en verre',
+    taglineHe: 'פורמולה יוקרתית עם כלי זכוכית',
+    includesFr: [
+      'Tout de Formule 2',
+      'Stand moufletta/sfenj',
+      'Grands gâteaux (Mille feuille/fraisier selon saison)',
+      'Vaisselle en verre'
+    ],
+    includesHe: [
+      'הכל מפורמולה 2',
+      'עמדת מופלטה/ספינג׳',
+      'עוגות גדולות (מילפיי/תות לפי עונה)',
+      'כלי זכוכית'
+    ],
+    image: '/images/creations/pieces-montees-event.jpg'
   }
 ];
 
 const afternoonFormulas: Formula[] = [
   {
-    id: 'apres-midi',
-    nameFr: "L'Après-Midi",
-    nameHe: 'אחר הצהריים',
+    id: 'formule-1-aprem',
+    nameFr: 'Formule 1',
+    nameHe: 'פורמולה 1',
     price: 180,
     minGuests: 80,
     taglineFr: 'Buffet festif sucré-salé',
     taglineHe: 'בופה חגיגי מתוק-מלוח',
     includesFr: [
-      'Petits fours premium',
-      'Bouchées salées variées',
-      'Plateaux fromages & saumon',
-      'Stand crêpes',
-      'Stand panini & pâtes',
-      'Boissons'
+      'Bouchée salée',
+      'Salade fraîche',
+      'Poisson fumé',
+      'Stand pâtes',
+      'Gratin/lasagne',
+      'Fromage/baguette',
+      'Buffet dessert (petit four/stand crêpe)',
+      'Décoration florale'
     ],
     includesHe: [
-      'מאפים מתוקים פרימיום',
-      'מבחר ביס מלוח',
-      'מגשי גבינות וסלמון',
-      'עמדת קרפים',
-      'עמדת פניני ופסטה',
-      'משקאות'
+      'ביס מלוח',
+      'סלט טרי',
+      'דג מעושן',
+      'עמדת פסטה',
+      'גרטן/לזניה',
+      'גבינות/באגט',
+      'בופה קינוחים (מאפים/עמדת קרפים)',
+      'עיצוב פרחוני'
     ],
     image: '/images/creations/eclairs-creme.jpg'
   },
   {
-    id: 'exception',
-    nameFr: "L'Exception",
-    nameHe: 'היוצא מן הכלל',
-    price: 250,
+    id: 'formule-2-aprem',
+    nameFr: 'Formule 2',
+    nameHe: 'פורמולה 2',
+    price: 220,
     minGuests: 80,
-    taglineFr: 'Notre formule la plus complète',
-    taglineHe: 'הפורמולה המקיפה ביותר שלנו',
+    taglineFr: 'Formule enrichie avec desserts premium',
+    taglineHe: 'פורמולה מורחבת עם קינוחי פרימיום',
     includesFr: [
-      "Tout de L'Après-Midi",
-      'Stand pizza artisanale',
-      'Sushi mix premium',
-      'Pièce montée',
-      'Verrines & crèmes brûlées',
-      'Stand sfenj/moufletta'
+      'Tout de Formule 1',
+      'Stand panini',
+      '2 salades fraîches en plus',
+      'Dessert crème brûlée / mousse chocolat'
     ],
     includesHe: [
-      'הכל מאחר הצהריים',
+      'הכל מפורמולה 1',
+      'עמדת פניני',
+      '2 סלטים טריים נוספים',
+      'קינוח קרם ברולה / מוס שוקולד'
+    ],
+    image: '/images/creations/buffet-traiteur.jpg'
+  },
+  {
+    id: 'formule-3-aprem',
+    nameFr: 'Formule 3',
+    nameHe: 'פורמולה 3',
+    price: 250,
+    minGuests: 80,
+    taglineFr: 'Notre formule la plus complète avec vaisselle en verre',
+    taglineHe: 'הפורמולה המקיפה ביותר שלנו עם כלי זכוכית',
+    includesFr: [
+      'Tout de Formule 2',
+      'Stand pizza',
+      'Vaisselle en verre'
+    ],
+    includesHe: [
+      'הכל מפורמולה 2',
       'עמדת פיצה',
-      'סושי מיקס פרימיום',
-      'מגדל קרופמבוש',
-      'ורינים וקרם ברולה',
-      'עמדת ספינג׳/מופלטה'
+      'כלי זכוכית'
     ],
     image: '/images/creations/pieces-montees-event.jpg'
   }
@@ -190,7 +234,7 @@ export function FormulasSection() {
 
       {/* Formulas Grid */}
       <div className="max-w-6xl mx-auto px-4">
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {formulas.map((formula, index) => (
             <article
               key={formula.id}
