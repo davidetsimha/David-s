@@ -10,6 +10,7 @@ import { CartDrawer } from '../cart/CartDrawer';
 
 const shopNavItems = [
   { key: 'shopHome', route: ROUTES.SHOP, label: 'Produits' },
+  { key: 'myOrders', route: ROUTES.ORDER_HISTORY, label: 'Mes commandes' },
   { key: 'about', route: '/boutique/about', label: 'Notre Histoire' },
   { key: 'faq', route: '/boutique/faq', label: 'FAQ' },
   { key: 'contact', route: '/boutique/contact', label: 'Contact' },

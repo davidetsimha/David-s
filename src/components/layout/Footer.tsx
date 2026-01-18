@@ -7,6 +7,7 @@ const quickLinks = [
   { key: 'about', route: ROUTES.ABOUT },
   { key: 'receptions', route: ROUTES.RECEPTIONS },
   { key: 'shabbat', route: ROUTES.SHABBAT },
+  { key: 'myOrders', route: ROUTES.ORDER_HISTORY },
   { key: 'gallery', route: ROUTES.GALLERY },
   { key: 'contact', route: ROUTES.CONTACT },
 ];

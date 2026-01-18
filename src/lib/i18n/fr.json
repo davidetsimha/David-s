@@ -11,8 +11,10 @@
     "ariaMobile": "Navigation mobile",
     "ariaFooter": "Navigation pied de page",
     "products": "Produits",
+    "shopHome": "Produits",
     "requestQuote": "Demander un devis",
     "myCart": "Mon Panier",
+    "myOrders": "Mes commandes",
     "boutique": "Boutique",
     "events": "Événements",
     "ariaShopNav": "Navigation Boutique",
@@ -350,14 +352,14 @@
     "title": "Notre Histoire",
     "pageTitle": "Notre Histoire",
     "pageSubtitle": "La passion de la pâtisserie française depuis les origines",
-    "chefName": "David Azoulai",
+    "chefName": "David Azoulay",
     "story": {
-      "paragraph1": "David Azoulai a découvert sa passion pour la pâtisserie très jeune. Il a commencé sa formation auprès de Mme. Wizman à \"Etz HaChayim\", apprenant d'une professionnelle ayant travaillé avec des chefs renommés chez Le Nôtre et dans des hôtels de luxe.",
-      "paragraph2": "Après cette période fondamentale, David a rejoint la Boulangerie Moruziano à São Paulo, où il a perfectionné ses compétences, apprenant la précision et développant une profonde appréciation pour l'artisanat de qualité.",
+      "paragraph1": "David Azoulay a découvert sa passion pour la pâtisserie très jeune. Il a commencé sa formation auprès du traiteur l'arbre de vie : Mme Wizman une professionnelle travaillant aussi avec des chefs renommés de chez Le Nôtre et autre grande Maison de Pâtisserie à Paris ainsi que dans des hôtels de luxe.",
+      "paragraph2": "Après cette période fondamentale, David a rejoint la Boulangerie Murciano à Saint Paul où il a perfectionné ses compétences, apprenant la précision et développant une profonde appréciation pour l'artisanat de qualité.",
       "paragraph3": "À son arrivée en Israël, David et sa famille ont réalisé leur rêve d'ouvrir David's Patisserie - un espace où il peut exprimer sa créativité et offrir aux gens une expérience authentique.",
       "paragraph4": "Son approche mélange les traditions de la pâtisserie française avec une perspective moderne, généreuse et pleine d'âme. Il est reconnu pour ses éclairs au café et sa crème pâtissière riche et veloutée. La fraîcheur est le vrai secret de ses créations."
     },
-    "signature": "— David Azoulai, Chef Pâtissier"
+    "signature": "— David Azoulay, Chef Pâtissier"
   },
   "admin": {
     "whatsapp": {
@@ -367,6 +369,30 @@
       "sendViaWhatsApp": "Envoyer via WhatsApp",
       "french": "Français",
       "hebrew": "עברית"
+    }
+  },
+  "orderHistory": {
+    "title": "Mes commandes",
+    "enterEmail": "Entrez votre email pour voir vos commandes",
+    "search": "Rechercher",
+    "noOrders": "Aucune commande trouvée",
+    "orderDate": "Date de commande",
+    "pickupDate": "Date de retrait",
+    "items": "Articles",
+    "total": "Total",
+    "status": "Statut",
+    "reorder": "Commander à nouveau",
+    "reorderSuccess": "Articles ajoutés au panier",
+    "reorderUnavailable": "Certains articles ne sont plus disponibles",
+    "itemsCount": "{{count}} article(s)",
+    "reorderConfirm": {
+      "title": "Panier non vide",
+      "message": "Votre panier contient déjà des articles. Que souhaitez-vous faire?",
+      "replace": "Remplacer le panier",
+      "replaceDesc": "Vider le panier et ajouter ces articles",
+      "merge": "Fusionner",
+      "mergeDesc": "Ajouter ces articles au panier existant",
+      "cancel": "Annuler"
     }
   }
 }

@@ -26,7 +26,7 @@ function formatPhoneForWhatsApp(phone: string): string {
 }
 
 type WhatsAppLanguage = 'fr' | 'he';
-type LastAction = 'confirmed' | 'rejected' | null;
+type LastAction = 'confirmed' | 'rejected' | 'individual_confirmed' | null;
 
 interface OrderDetailsProps {
   order: Order | null;
@@ -131,6 +131,7 @@ export function OrderDetails({
     const customerName = order.customer_name;
     const pickupDateFormatted = pickupDate || '';
     const totalAmount = order.total_amount.toFixed(2);
+    const timeSlot = order.pickup_time_slot || '';
 
     if (lastAction === 'confirmed') {
       if (lang === 'fr') {
@@ -178,6 +179,26 @@ David's Patisserie`;
 
 אתם מוזמנים ליצור קשר לדון באפשרויות אחרות.
 
+David's Patisserie`;
+      }
+    } else if (lastAction === 'individual_confirmed') {
+      if (lang === 'fr') {
+        return `Bonjour ${customerName},
+
+Votre commande pour le ${pickupDateFormatted}${timeSlot ? ` (${timeSlot})` : ''} est confirmée ! 🎉
+
+Montant : ${totalAmount} ₪
+
+Merci pour votre commande !
+David's Patisserie`;
+      } else {
+        return `שלום ${customerName},
+
+ההזמנה שלך ל-${pickupDateFormatted}${timeSlot ? ` (${timeSlot})` : ''} אושרה! 🎉
+
+סכום: ₪${totalAmount}
+
+תודה על ההזמנה!
 David's Patisserie`;
       }
     }
@@ -412,21 +433,21 @@ David's Patisserie`;
         {lastAction && (
           <div
             className={`p-4 rounded-lg ${
-              lastAction === 'confirmed' ? 'bg-green-50' : 'bg-red-50'
+              lastAction === 'rejected' ? 'bg-red-50' : 'bg-green-50'
             }`}
           >
             <div className="flex items-center gap-2 mb-3">
-              {lastAction === 'confirmed' ? (
-                <Check className="w-5 h-5 text-green-600" />
-              ) : (
+              {lastAction === 'rejected' ? (
                 <X className="w-5 h-5 text-red-600" />
+              ) : (
+                <Check className="w-5 h-5 text-green-600" />
               )}
               <h4
                 className={`font-medium ${
-                  lastAction === 'confirmed' ? 'text-green-900' : 'text-red-900'
+                  lastAction === 'rejected' ? 'text-red-900' : 'text-green-900'
                 }`}
               >
-                {lastAction === 'confirmed' ? 'Commande confirmée' : 'Commande refusée'}
+                {lastAction === 'rejected' ? 'Commande refusée' : 'Commande confirmée'}
               </h4>
             </div>
 
@@ -489,7 +510,16 @@ David's Patisserie`;
           nextStatus &&
           !showConfirmForm &&
           !showRejectForm && (
-            <Button onClick={() => onStatusChange(order.id, nextStatus)} className="w-full">
+            <Button
+              onClick={() => {
+                onStatusChange(order.id, nextStatus);
+                // Show WhatsApp section for individual orders when confirming
+                if (!isPlateau && nextStatus === 'confirmed') {
+                  setLastAction('individual_confirmed');
+                }
+              }}
+              className="w-full"
+            >
               Marquer comme {statusLabels[nextStatus]}
             </Button>
           )

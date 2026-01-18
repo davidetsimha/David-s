@@ -16,14 +16,16 @@ export type CheckoutFormData = z.infer<typeof checkoutSchema>;
 interface CheckoutFormProps {
   onSubmit: (data: CheckoutFormData) => void;
   isSubmitting?: boolean;
+  defaultValues?: Partial<CheckoutFormData>;
 }
 
-export function CheckoutForm({ onSubmit, isSubmitting }: CheckoutFormProps) {
+export function CheckoutForm({ onSubmit, isSubmitting, defaultValues }: CheckoutFormProps) {
   const { t, i18n } = useTranslation();
   const direction = i18n.dir();
 
   const { register, handleSubmit, formState: { errors } } = useForm<CheckoutFormData>({
     resolver: zodResolver(checkoutSchema),
+    defaultValues,
   });
 
   return (

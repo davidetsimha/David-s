@@ -13,6 +13,7 @@ export const ROUTES = {
   CHECKOUT: '/boutique/checkout',
   CHECKOUT_SUCCESS: '/boutique/checkout/success',
   CHECKOUT_CANCEL: '/boutique/checkout/cancel',
+  ORDER_HISTORY: '/boutique/mes-commandes',
 
   // Shared pages
   ABOUT: '/about',

@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, ArrowRight, ShieldCheck, Loader2, Check, CreditCard, Calendar, Clock, Send, AlertTriangle, MapPin } from 'lucide-react';
-import { useCartStore } from '../../stores';
+import { useCartStore, useCustomerStore } from '../../stores';
 import { CheckoutForm, DeliveryOptions, OrderSummary } from '../../components/checkout';
 import type { CheckoutFormData, DeliveryMethod, DeliveryAddress } from '../../components/checkout';
 import { ROUTES } from '../../config/routes';
@@ -77,6 +77,7 @@ function formatDate(date: Date, locale: string): string {
 export function CheckoutPage() {
   const navigate = useNavigate();
   const { items, clearCart, subtotal, getCartType } = useCartStore();
+  const { customer, setCustomerInfo } = useCustomerStore();
   const { t, i18n } = useTranslation();
   const { data: deliveryZones = [] } = useDeliveryZones();
   const [currentStep, setCurrentStep] = useState<CheckoutStep>('info');
@@ -136,6 +137,12 @@ export function CheckoutPage() {
 
   const handleFormSubmit = (data: CheckoutFormData) => {
     setCustomerData(data);
+    // Save customer info for future orders
+    setCustomerInfo({
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+    });
     setCurrentStep('delivery');
   };
 
@@ -322,7 +329,11 @@ export function CheckoutPage() {
             {/* Step 1: Customer Info */}
             {currentStep === 'info' && (
               <div className="bg-white rounded-2xl p-6 shadow-sm border border-cream-200 animate-fade-in-up">
-                <CheckoutForm onSubmit={handleFormSubmit} isSubmitting={isSubmitting} />
+                <CheckoutForm
+                  onSubmit={handleFormSubmit}
+                  isSubmitting={isSubmitting}
+                  defaultValues={customer || undefined}
+                />
                 <div className="mt-6 flex justify-end">
                   <button
                     type="submit"

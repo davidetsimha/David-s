@@ -17,7 +17,7 @@ import { EventsQuotePage } from './pages/EventsQuotePage';
 
 // Shop space pages
 import { ShopHomePage } from './pages/ShopHomePage';
-import { CheckoutPage, CheckoutSuccessPage, CheckoutCancelPage } from './pages/checkout';
+import { CheckoutPage, CheckoutSuccessPage, CheckoutCancelPage, OrderHistoryPage } from './pages/checkout';
 
 // Shared pages
 import { AboutPage } from './pages/AboutPage';
@@ -66,6 +66,7 @@ export default function App() {
           <Route path={ROUTES.CHECKOUT} element={<CheckoutPage />} />
           <Route path={ROUTES.CHECKOUT_SUCCESS} element={<CheckoutSuccessPage />} />
           <Route path={ROUTES.CHECKOUT_CANCEL} element={<CheckoutCancelPage />} />
+          <Route path={ROUTES.ORDER_HISTORY} element={<OrderHistoryPage />} />
           {/* Shared pages in Shop context */}
           <Route path="/boutique/about" element={<AboutPage />} />
           <Route path="/boutique/faq" element={<FAQPage />} />
