@@ -1,10 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+// Re-export supabase client from lib for backward compatibility with services
+import { createClient } from '@/src/lib/supabase/client';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables');
-}
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase = createClient();

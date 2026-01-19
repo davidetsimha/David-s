@@ -1,5 +1,7 @@
+'use client';
+
 import { useRef, useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 import { Play, Pause, Volume2, VolumeX, Maximize } from 'lucide-react';
 
 interface EventVideoSectionProps {
@@ -8,7 +10,7 @@ interface EventVideoSectionProps {
 }
 
 export function EventVideoSection({ src, poster }: EventVideoSectionProps) {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -101,13 +103,13 @@ export function EventVideoSection({ src, poster }: EventVideoSectionProps) {
       <div className="max-w-5xl mx-auto px-4">
         <div className="text-center mb-10">
           <p className="text-gold-400 text-sm tracking-[0.3em] uppercase mb-3">
-            {t('events.videoSection.badge', 'Découvrez')}
+            {t.raw('events.videoSection.badge') || 'Decouvrez'}
           </p>
           <h2 className="font-display text-3xl md:text-4xl text-white mb-4">
-            {t('events.videoSection.title', 'Notre Univers')}
+            {t.raw('events.videoSection.title') || 'Notre Univers'}
           </h2>
           <p className="text-stone-400 max-w-lg mx-auto">
-            {t('events.videoSection.subtitle', 'Plongez dans l\'ambiance de nos événements')}
+            {t.raw('events.videoSection.subtitle') || "Plongez dans l'ambiance de nos evenements"}
           </p>
         </div>
 

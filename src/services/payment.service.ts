@@ -52,8 +52,8 @@ export interface PaymentResponse {
  */
 export async function initiatePayment(request: PaymentRequest): Promise<PaymentResponse> {
   // Mode test: si pas d'API configurée ou en développement, simuler le succès
-  if (!import.meta.env.VITE_PAYMENT_API_URL || import.meta.env.DEV) {
-    console.info('Mode test activé: paiement simulé');
+  if (!process.env.NEXT_PUBLIC_PAYMENT_API_URL || process.env.NODE_ENV === 'development') {
+    console.info('Mode test active: paiement simule');
     return {
       success: true,
       paymentUrl: undefined,
@@ -61,7 +61,7 @@ export async function initiatePayment(request: PaymentRequest): Promise<PaymentR
     };
   }
 
-  const backendUrl = import.meta.env.VITE_PAYMENT_API_URL;
+  const backendUrl = process.env.NEXT_PUBLIC_PAYMENT_API_URL;
 
   try {
     const response = await fetch(backendUrl, {
@@ -70,7 +70,7 @@ export async function initiatePayment(request: PaymentRequest): Promise<PaymentR
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        payment_page_uid: import.meta.env.VITE_PAYPLUS_PAGE_UID,
+        payment_page_uid: process.env.NEXT_PUBLIC_PAYPLUS_PAGE_UID,
         charge_method: 1, // 1 = Charge
         amount: request.amount,
         currency_code: request.currency,

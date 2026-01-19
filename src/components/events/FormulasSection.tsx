@@ -1,12 +1,15 @@
+'use client';
+
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslations, useLocale } from 'next-intl';
 import { MessageCircle, Loader2 } from 'lucide-react';
 import { useEventFormulas } from '../../hooks/useFormulas';
 import type { TimeSlot, EventFormula } from '../../types';
 
 export function FormulasSection() {
-  const { t, i18n } = useTranslation();
-  const isHebrew = i18n.language === 'he';
+  const t = useTranslations();
+  const locale = useLocale();
+  const isHebrew = locale === 'he';
   const [activeSlot, setActiveSlot] = useState<TimeSlot>('morning');
 
   const { data: allFormulas, isLoading } = useEventFormulas();

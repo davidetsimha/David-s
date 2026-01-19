@@ -1,0 +1,420 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "about": "Notre Histoire",
+    "receptions": "Réceptions",
+    "shabbat": "Commandes Shabbat",
+    "gallery": "Galerie",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "ariaMain": "Navigation principale",
+    "ariaMobile": "Navigation mobile",
+    "ariaFooter": "Navigation pied de page",
+    "products": "Produits",
+    "shopHome": "Produits",
+    "requestQuote": "Demander un devis",
+    "myCart": "Mon Panier",
+    "myOrders": "Mes commandes",
+    "boutique": "Boutique",
+    "events": "Événements",
+    "ariaShopNav": "Navigation Boutique",
+    "ariaEventsNav": "Navigation Événements",
+    "switchToHebrew": "עברית",
+    "switchToFrench": "Français"
+  },
+  "ui": {
+    "excellenceArtisanale": "Excellence Artisanale",
+    "certification": "Certification"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur s'est produite",
+    "required": "Obligatoire",
+    "optional": "Optionnel",
+    "close": "Fermer",
+    "decrease": "Diminuer",
+    "increase": "Augmenter",
+    "delete": "Supprimer",
+    "currency": "₪",
+    "free": "Gratuit",
+    "quantity": "Qte",
+    "all": "Tout",
+    "unavailable": "Indisponible",
+    "add": "Ajouter",
+    "undo": "Annuler",
+    "noProductsFound": "Aucun produit trouve",
+    "questions": "Questions?",
+    "thanksTitle": "Merci!",
+    "thanksMessage": "Nous vous contacterons bientot",
+    "choose": "Choisir...",
+    "next": "Suivant",
+    "back": "Retour",
+    "edit": "Modifier",
+    "menu": "Menu",
+    "closeModal": "Fermer la fenêtre",
+    "contactWhatsApp": "Contacter par WhatsApp"
+  },
+  "home": {
+    "heroTitle": "L'Art de la Pâtisserie Française",
+    "heroSubtitle": "Créations artisanales sous supervision Badatz Beit Yossef",
+    "discoverBtn": "Découvrir nos créations",
+    "orderBtn": "Commander pour Shabbat",
+    "receptionsTitle": "Réceptions & Événements",
+    "receptionsSubtitle": "Faites de votre événement un moment inoubliable",
+    "shabbatTitle": "Commandes Shabbat",
+    "shabbatSubtitle": "Commandez vos gâteaux et pâtisseries pour Shabbat",
+    "viewProducts": "Voir tous les produits",
+    "splitEvents": "Événements",
+    "splitEventsSubtitle": "Traiteur & Réceptions",
+    "splitEventsDesc": "Mariages, Bar Mitzvah & célébrations sur mesure",
+    "splitShop": "Boutique",
+    "splitShopSubtitle": "Commandez pour Shabbat",
+    "splitShopDesc": "Challot, pâtisseries & délices livrés chez vous",
+    "scrollDown": "Défiler"
+  },
+  "shabbat": {
+    "title": "Commandes Shabbat",
+    "orderBefore": "Commande avant jeudi",
+    "subtitle": "Pâtisseries fraîches préparées pour votre Shabbat"
+  },
+  "shop": {
+    "title": "Boutique Shabbat",
+    "subtitle": "Challot, pâtisseries et délices artisanaux livrés chez vous à Jérusalem",
+    "orderBefore": "Commandez avant jeudi minuit",
+    "freeDelivery": "Livraison Jérusalem",
+    "freshProducts": "Produits frais",
+    "cartItems": "article(s) dans votre panier",
+    "viewCart": "Voir le panier",
+    "productsTitle": "Nos Produits",
+    "productsSubtitle": "Sélectionnez vos favoris pour ce Shabbat",
+    "howTo": {
+      "orderTitle": "Commandez",
+      "orderDesc": "Passez votre commande avant jeudi minuit pour une livraison vendredi",
+      "prepareTitle": "Préparation",
+      "prepareDesc": "Nous préparons vos produits frais le jour de la livraison",
+      "deliverTitle": "Livraison",
+      "deliverDesc": "Livraison le vendredi à Jérusalem, à temps pour Shabbat"
+    }
+  },
+  "receptions": {
+    "title": "Réceptions & Événements",
+    "subtitle": "Confiez-nous la réalisation de vos événements",
+    "customEvents": "Événements sur mesure",
+    "heroSubtitle": "Créations pâtissières d'exception pour vos moments précieux",
+    "ourCreations": "Nos créations",
+    "quoteTitle": "Demande de devis",
+    "quoteSubtitle": "Décrivez votre événement, nous vous répondrons rapidement",
+    "eventTypes": {
+      "bar_mitzvah": "Bar Mitzvah",
+      "bat_mitzvah": "Bat Mitzvah",
+      "brit": "Brit Mila",
+      "private_party": "Fête privée"
+    },
+    "eventDesc": {
+      "bar_mitzvah": "Célébrer ce moment",
+      "bat_mitzvah": "Un jour spécial",
+      "brit": "Accueillir la vie",
+      "private_party": "Vos événements"
+    },
+    "quoteForm": {
+      "title": "Demander un devis",
+      "name": "Nom complet",
+      "email": "Email",
+      "phone": "Téléphone",
+      "eventType": "Type d'événement",
+      "eventDate": "Date de l'événement",
+      "guestCount": "Nombre d'invités",
+      "message": "Message (optionnel)",
+      "submit": "Envoyer la demande",
+      "success": "Votre demande a été envoyée avec succès!"
+    }
+  },
+  "events": {
+    "badge": "Traiteur & Receptions",
+    "title": "Creons ensemble votre evenement",
+    "subtitle": "Mariages, Bar/Bat Mitzvah, Brit Mila et celebrations sur mesure avec une patisserie d'exception",
+    "requestQuote": "Demander un devis",
+    "viewGallery": "Voir la galerie",
+    "typesTitle": "Nous accompagnons tous vos evenements",
+    "typesBadge": "Vos Celebrations",
+    "ctaTitle": "Pret a creer votre evenement ?",
+    "ctaSubtitle": "Contactez-nous pour discuter de votre projet et recevoir un devis personnalise",
+    "creationsTitle": "Nos Creations",
+    "creationsSubtitle": "Un apercu de notre savoir-faire",
+    "videoSection": {
+      "badge": "Decouvrez",
+      "title": "Notre Univers",
+      "subtitle": "Plongez dans l'ambiance de nos evenements"
+    }
+  },
+  "quote": {
+    "badge": "Devis gratuit",
+    "title": "Demander un devis",
+    "subtitle": "Décrivez-nous votre événement et recevez une proposition personnalisée sous 48h",
+    "formTitle": "Parlez-nous de votre projet",
+    "formSubtitle": "Remplissez le formulaire ci-dessous",
+    "contactTitle": "Besoin d'aide ?",
+    "contactDesc": "Notre équipe est disponible pour répondre à vos questions",
+    "processTitle": "Comment ça marche ?",
+    "step1Title": "Envoyez votre demande",
+    "step1Desc": "Remplissez le formulaire avec les détails de votre événement",
+    "step2Title": "Nous vous contactons",
+    "step2Desc": "Notre équipe vous recontacte sous 48h pour discuter des détails",
+    "step3Title": "Recevez votre devis",
+    "step3Desc": "Une proposition détaillée adaptée à vos besoins"
+  },
+  "formulas": {
+    "title": "Nos Formules",
+    "subtitle": "Choisissez votre moment",
+    "description": "Deux formules adaptées à chaque célébration",
+    "morning": "Matin",
+    "afternoon": "Après-midi",
+    "minGuests": "Min. {{count}} personnes",
+    "includes": "Inclus",
+    "cta": "Plus d'infos",
+    "note": "Mise en place, service, vaisselle, nappes et boissons inclus. +900₪ hors Jérusalem.",
+    "whatsappMessage": "Bonjour, je suis intéressé(e) par la formule \"{{formula}}\" pour mon événement.",
+    "noFormulas": "Aucune formule disponible"
+  },
+  "products": {
+    "title": "Nos Produits",
+    "addToCart": "Ajouter au panier",
+    "outOfStock": "Indisponible",
+    "allCategories": "Toutes les catégories",
+    "price": "Prix",
+    "fridayPickup": "Retrait vendredi",
+    "minDays": "{{days}}j min.",
+    "onOrder": "Sur commande",
+    "confirmationRequired": "Confirmation requise"
+  },
+  "cart": {
+    "title": "Votre Panier",
+    "yourCart": "Votre Panier",
+    "empty": "Votre panier est vide",
+    "emptyMessage": "Explorez nos delicieuses patisseries et ajoutez vos favoris",
+    "subtotal": "Sous-total",
+    "checkout": "Passer la commande",
+    "continueShopping": "Continuer mes achats",
+    "remove": "Retirer",
+    "quantity": "Quantite",
+    "discoverProducts": "Decouvrir nos produits",
+    "orderSummary": "Resume de la commande",
+    "delivery": "Livraison",
+    "deliveryCalculated": "Calcule a la caisse",
+    "total": "Total",
+    "itemRemoved": "Article supprime",
+    "viewMoreProducts": "Voir plus de produits"
+  },
+  "checkout": {
+    "title": "Finaliser la commande",
+    "customerInfo": "Vos informations",
+    "name": "Nom complet",
+    "email": "Adresse email",
+    "phone": "Numéro de téléphone",
+    "deliveryMethod": "Mode de livraison",
+    "pickup": "Retrait en boutique",
+    "pickupSubtitle": "Gratuit - Prêt sous 24h",
+    "delivery": "Livraison à domicile",
+    "deliverySubtitle": "À partir de 15 ₪",
+    "address": "Adresse de livraison",
+    "deliveryNotes": "Instructions de livraison (optionnel)",
+    "notes": "Notes / Instructions spéciales",
+    "orderSummary": "Votre commande",
+    "subtotal": "Sous-total",
+    "deliveryFee": "Livraison",
+    "total": "Total",
+    "payNow": "Payer maintenant",
+    "confirmOrder": "Confirmer la commande",
+    "securePayment": "Paiement securise et donnees protegees",
+    "backToProducts": "Retour aux produits",
+    "emptyCart": "Votre panier est vide",
+    "paymentAccepted": "Paiement accepte",
+    "postalCode": "Code postal",
+    "city": "Ville",
+    "orderNumber": "Numero de commande",
+    "orderCancelled": "Commande annulee",
+    "retry": "Reessayer",
+    "contactUs": "Nous contacter",
+    "needHelp": "Besoin d'aide?",
+    "helpMessage": "Si vous avez rencontré un problème, n'hésitez pas à nous contacter.",
+    "success": {
+      "title": "Commande confirmée!",
+      "message": "Merci pour votre commande. Vous recevrez un email de confirmation."
+    },
+    "cancel": {
+      "title": "Commande annulée",
+      "message": "Votre commande a été annulée. Votre panier a été conservé."
+    },
+    "pickupDate": "Date de retrait",
+    "deliveryDate": "Date de livraison",
+    "selectNeighborhood": "Sélectionnez votre quartier",
+    "timeSlot": "Créneau horaire",
+    "individualNote": "Les gâteaux individuels sont disponibles uniquement le vendredi",
+    "plateauMinDays": "Minimum {{days}} jours à l'avance pour les plateaux",
+    "shabbat": "Shabbat",
+    "lateOrder": "Commande tardive",
+    "lateOrderNote": "Cette commande est sous réserve de disponibilité",
+    "lateOrderShort": "Commande tardive - sous réserve",
+    "plateauOrder": "Commande de plateau",
+    "plateauOrderNote": "Votre demande sera envoyée à notre équipe. Nous vous contacterons sous quelques heures pour confirmer la disponibilité et vous envoyer un lien de paiement.",
+    "sendRequest": "Envoyer la demande"
+  },
+  "gallery": {
+    "title": "Galerie",
+    "pageTitle": "Notre Galerie",
+    "pageSubtitle": "Créations de pâtisserie exquises de notre cuisine",
+    "all": "Tout",
+    "receptions": "Réceptions",
+    "products": "Produits",
+    "openImage": "Ouvrir l'image: {{name}}",
+    "noImages": "Aucune image à afficher",
+    "previousImage": "Image précédente",
+    "nextImage": "Image suivante",
+    "badge": "Notre Portfolio",
+    "subtitle": "Découvrez nos créations pour des événements inoubliables",
+    "noResults": "Aucune création dans cette catégorie",
+    "filter": {
+      "all": "Toutes",
+      "wedding": "Buffet désert",
+      "bar_mitzvah": "Bar Mitzvah",
+      "bat_mitzvah": "Bat Mitzvah",
+      "brit": "Brit Mila",
+      "event": "Événements"
+    }
+  },
+  "faq": {
+    "title": "Questions Fréquentes",
+    "pageTitle": "Questions Fréquentes",
+    "pageSubtitle": "Réponses aux questions les plus courantes",
+    "contactCta": "Vous n'avez pas trouvé de réponse à votre question ?",
+    "contactLink": "Contactez-nous",
+    "items": {
+      "kashrut": {
+        "question": "Quel est le niveau de cacherout des pâtisseries ?",
+        "answer": "Tous nos produits sont fabriqués sous la supervision du Badatz Beit Yossef et possèdent un certificat de cacherout strict. Nous maintenons une séparation complète entre laitier et parve."
+      },
+      "delivery": {
+        "question": "Y a-t-il une possibilité de livraison ?",
+        "answer": "Oui ! Nous effectuons des livraisons dans toute la région de Jérusalem. Retrait en boutique également disponible au Centre Sapir 6."
+      },
+      "advance": {
+        "question": "Combien de temps à l'avance faut-il commander ?",
+        "answer": "Pour les commandes régulières - au moins 48 heures à l'avance. Pour les gâteaux spéciaux et réceptions - au moins une semaine à l'avance. Pendant les périodes chargées comme les fêtes, il est recommandé de commander plus tôt."
+      },
+      "hours": {
+        "question": "Quelles sont les heures d'ouverture de la boutique ?",
+        "answer": "La boutique est ouverte le jeudi de 14h à 20h, le vendredi et veilles de fête de 8h30 à 13h30. Sur commande en semaine."
+      },
+      "shabbatDeadline": {
+        "question": "Jusqu'à quand puis-je commander pour Shabbat ?",
+        "answer": "Le mieux est de commander jusqu'à mercredi. Nous avons une boutique, donc les gâteaux sont disponibles selon la disponibilité."
+      },
+      "eventAdvance": {
+        "question": "Combien de temps à l'avance faut-il commander pour un événement ?",
+        "answer": "1 semaine à l'avance, c'est le top !"
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "pageTitle": "Contactez-nous",
+    "pageSubtitle": "Nous serons ravis de vous entendre et de vous aider avec toute question",
+    "detailsTitle": "Coordonnées",
+    "formTitle": "Envoyez-nous un message",
+    "address": "Adresse",
+    "phone": "Téléphone",
+    "email": "Email",
+    "hours": "Horaires",
+    "form": {
+      "name": "Nom",
+      "nameLabel": "Nom complet",
+      "namePlaceholder": "Jean Dupont",
+      "email": "Email",
+      "emailPlaceholder": "exemple@email.com",
+      "phoneLabel": "Téléphone (optionnel)",
+      "phonePlaceholder": "050-0000000",
+      "message": "Message",
+      "messagePlaceholder": "Écrivez-nous votre message...",
+      "submit": "Envoyer le message",
+      "success": "Merci pour votre message !",
+      "successMessage": "Nous vous répondrons dans les plus brefs délais.",
+      "nameError": "Veuillez entrer un nom complet",
+      "emailError": "Veuillez entrer une adresse email valide",
+      "phoneError": "Veuillez entrer un numéro de téléphone valide",
+      "messageError": "Le message doit contenir au moins 10 caractères"
+    },
+    "info": {
+      "address": "Adresse",
+      "addressValue": "Centre Sapir 6, Jérusalem",
+      "phone": "Téléphone",
+      "phoneValue": "058-781-9457 (David) | 058-749-5876 (Tal)",
+      "email": "Email",
+      "emailValue": "info@davids-patisserie.co.il",
+      "hours": "Horaires d'ouverture",
+      "hoursValue": "Jeudi 14h-20h | Vendredi & veilles de fête 8h30-13h30 | Sur commande en semaine"
+    }
+  },
+  "footer": {
+    "rights": "Tous droits réservés",
+    "certification": "Sous supervision Badatz Beit Yossef",
+    "delivery": "Livraison à Jérusalem uniquement",
+    "address": "Centre Sapir 6, Jérusalem",
+    "phone": "058-781-9457",
+    "email": "info@davids-patisserie.co.il"
+  },
+  "notFound": {
+    "title": "Page non trouvée",
+    "message": "La page que vous recherchez n'existe pas.",
+    "backHome": "Retour à l'accueil"
+  },
+  "whatsapp": {
+    "message": "Bonjour, je souhaite plus d'informations..."
+  },
+  "about": {
+    "title": "Notre Histoire",
+    "pageTitle": "Notre Histoire",
+    "pageSubtitle": "La passion de la pâtisserie française depuis les origines",
+    "chefName": "David Azoulay",
+    "story": {
+      "paragraph1": "David Azoulay a découvert sa passion pour la pâtisserie très jeune. Il a commencé sa formation auprès du traiteur l'arbre de vie : Mme Wizman une professionnelle travaillant aussi avec des chefs renommés de chez Le Nôtre et autre grande Maison de Pâtisserie à Paris ainsi que dans des hôtels de luxe.",
+      "paragraph2": "Après cette période fondamentale, David a rejoint la Boulangerie Murciano à Saint Paul où il a perfectionné ses compétences, apprenant la précision et développant une profonde appréciation pour l'artisanat de qualité.",
+      "paragraph3": "À son arrivée en Israël, David et sa famille ont réalisé leur rêve d'ouvrir David's Patisserie - un espace où il peut exprimer sa créativité et offrir aux gens une expérience authentique.",
+      "paragraph4": "Son approche mélange les traditions de la pâtisserie française avec une perspective moderne, généreuse et pleine d'âme. Il est reconnu pour ses éclairs au café et sa crème pâtissière riche et veloutée. La fraîcheur est le vrai secret de ses créations."
+    },
+    "signature": "— David Azoulay, Chef Pâtissier"
+  },
+  "admin": {
+    "whatsapp": {
+      "orderConfirmed": "Commande confirmée",
+      "orderRejected": "Commande refusée",
+      "contactViaWhatsApp": "Contacter le client via WhatsApp:",
+      "sendViaWhatsApp": "Envoyer via WhatsApp",
+      "french": "Français",
+      "hebrew": "עברית"
+    }
+  },
+  "orderHistory": {
+    "title": "Mes commandes",
+    "enterEmail": "Entrez votre email pour voir vos commandes",
+    "search": "Rechercher",
+    "noOrders": "Aucune commande trouvée",
+    "orderDate": "Date de commande",
+    "pickupDate": "Date de retrait",
+    "items": "Articles",
+    "total": "Total",
+    "status": "Statut",
+    "reorder": "Commander à nouveau",
+    "reorderSuccess": "Articles ajoutés au panier",
+    "reorderUnavailable": "Certains articles ne sont plus disponibles",
+    "itemsCount": "{{count}} article(s)",
+    "reorderConfirm": {
+      "title": "Panier non vide",
+      "message": "Votre panier contient déjà des articles. Que souhaitez-vous faire?",
+      "replace": "Remplacer le panier",
+      "replaceDesc": "Vider le panier et ajouter ces articles",
+      "merge": "Fusionner",
+      "mergeDesc": "Ajouter ces articles au panier existant",
+      "cancel": "Annuler"
+    }
+  }
+}

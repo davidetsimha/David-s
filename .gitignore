@@ -33,3 +33,4 @@ photos-extracted/
 
 # PDF files
 *.pdf
+.next
