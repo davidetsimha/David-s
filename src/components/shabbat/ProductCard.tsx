@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Plus, Minus, ShoppingBag, ImageOff, Calendar, Clock, AlertCircle } from 'lucide-react';
 import { useCartStore } from '../../stores/cartStore';
+import { Modal } from '../ui/Modal';
 import type { Product } from '../../types';
 
 interface ProductCardProps {
@@ -13,9 +14,11 @@ export function ProductCard({ product }: ProductCardProps) {
   const { addItem, getItemQuantity, updateQuantity, lastValidationError, clearValidationError } = useCartStore();
   const [imgError, setImgError] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const quantity = getItemQuantity(product.id);
   const name = i18n.language === 'fr' ? product.name_fr : product.name_he;
+  const description = i18n.language === 'fr' ? product.description_fr : product.description_he;
   const price = new Intl.NumberFormat('he-IL', {
     style: 'currency',
     currency: 'ILS',
@@ -52,8 +55,11 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
       )}
 
-      {/* Image */}
-      <div className="relative aspect-square bg-cream-100 overflow-hidden">
+      {/* Image - Clickable to open modal */}
+      <div
+        className="relative aspect-square bg-cream-100 overflow-hidden cursor-pointer"
+        onClick={() => setIsModalOpen(true)}
+      >
         {product.image_url && !imgError ? (
           <img
             src={product.image_url}
@@ -133,6 +139,96 @@ export function ProductCard({ product }: ProductCardProps) {
           )
         )}
       </div>
+
+      {/* Product Detail Modal */}
+      <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)} size="lg">
+        <div className="flex flex-col md:flex-row gap-6">
+          {/* Image */}
+          <div className="md:w-1/2">
+            {product.image_url && !imgError ? (
+              <img
+                src={product.image_url}
+                alt={name}
+                className="w-full aspect-square object-cover rounded-xl"
+              />
+            ) : (
+              <div className="w-full aspect-square bg-cream-100 rounded-xl flex items-center justify-center">
+                <ImageOff className="w-16 h-16 text-cream-400" />
+              </div>
+            )}
+          </div>
+
+          {/* Details */}
+          <div className="md:w-1/2 flex flex-col">
+            {/* Name & Price */}
+            <h2 className="font-display text-2xl text-stone-900 mb-2">{name}</h2>
+            <p className="text-2xl text-gold-600 font-semibold mb-4">{price}</p>
+
+            {/* Badges */}
+            <div className="flex flex-wrap gap-2 mb-4">
+              {isIndividual && (
+                <span className="inline-flex items-center gap-1 px-3 py-1.5 bg-blue-500/90 text-white text-sm font-medium rounded-full">
+                  <Calendar className="w-4 h-4" />
+                  {t('products.fridayPickup')}
+                </span>
+              )}
+              {isPlateau && (
+                <span className="inline-flex items-center gap-1 px-3 py-1.5 bg-amber-500/90 text-white text-sm font-medium rounded-full">
+                  <Clock className="w-4 h-4" />
+                  {minDays > 0 ? t('products.minDays', { days: minDays }) : t('products.onOrder')}
+                </span>
+              )}
+              {requiresConfirmation && (
+                <span className="inline-flex items-center gap-1 px-3 py-1.5 bg-purple-500/90 text-white text-sm font-medium rounded-full">
+                  {t('products.confirmationRequired')}
+                </span>
+              )}
+            </div>
+
+            {/* Description */}
+            {description && (
+              <p className="text-stone-600 leading-relaxed mb-6 flex-1">
+                {description}
+              </p>
+            )}
+
+            {/* Cart Controls */}
+            {product.available ? (
+              <div className="mt-auto">
+                {quantity === 0 ? (
+                  <button
+                    onClick={handleAdd}
+                    className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-gold-500 text-white font-medium hover:bg-gold-600 transition-colors"
+                  >
+                    <ShoppingBag className="w-5 h-5" />
+                    {t('products.addToCart')}
+                  </button>
+                ) : (
+                  <div className="flex items-center justify-between bg-cream-100 rounded-xl p-2">
+                    <button
+                      onClick={handleDec}
+                      className="w-12 h-12 flex items-center justify-center rounded-lg hover:bg-cream-200 transition-colors"
+                    >
+                      <Minus className="w-5 h-5 text-stone-600" />
+                    </button>
+                    <span className="font-semibold text-lg text-stone-900">{quantity}</span>
+                    <button
+                      onClick={handleInc}
+                      className="w-12 h-12 flex items-center justify-center rounded-lg hover:bg-cream-200 transition-colors"
+                    >
+                      <Plus className="w-5 h-5 text-stone-600" />
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="mt-auto py-3 text-center bg-stone-100 rounded-xl text-stone-500 font-medium">
+                {t('common.unavailable')}
+              </div>
+            )}
+          </div>
+        </div>
+      </Modal>
     </article>
   );
 }
