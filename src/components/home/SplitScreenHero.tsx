@@ -26,7 +26,7 @@ export function SplitScreenHero() {
         title={t('home.splitShop', 'Boutique')}
         subtitle={t('home.splitShopSubtitle', 'Commandez pour Shabbat')}
         description={t('home.splitShopDesc', 'Challot, pâtisseries & délices livrés chez vous')}
-        image="/images/gallery/petits-fours-1.jpg"
+        image="/images/boutique-hero.jpg"
         href={ROUTES.SHOP}
         cta={t('home.orderBtn', 'Commander pour Shabbat')}
         delay={0.15}
