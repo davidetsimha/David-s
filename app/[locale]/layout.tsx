@@ -3,6 +3,10 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { locales, localeDirections, type Locale } from '@/i18n/config';
+import { Header } from '@/components/layout/Header';
+import { Footer } from '@/components/layout/Footer';
+import { MobileMenu } from '@/components/layout/MobileMenu';
+import { CartDrawer } from '@/components/cart/CartDrawer';
 
 type Props = {
   children: React.ReactNode;
@@ -64,7 +68,11 @@ export default async function LocaleLayout({ children, params }: Props) {
     <html lang={locale} dir={dir} suppressHydrationWarning>
       <body>
         <NextIntlClientProvider messages={messages}>
-          {children}
+          <Header />
+          <MobileMenu />
+          <CartDrawer />
+          <main>{children}</main>
+          <Footer />
         </NextIntlClientProvider>
       </body>
     </html>
