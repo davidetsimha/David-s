@@ -5,6 +5,7 @@ interface SplitSectionProps {
   subtitle: string;
   description?: string;
   image: string;
+  video?: string;
   href: string;
   cta: string;
   side: 'left' | 'right';
@@ -16,6 +17,7 @@ export function SplitSection({
   subtitle,
   description,
   image,
+  video,
   href,
   cta,
   side,
@@ -27,12 +29,26 @@ export function SplitSection({
       className="split-section relative flex-1 overflow-hidden group cursor-pointer
         min-h-[50vh] md:min-h-0"
     >
-      {/* Background Image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center transition-transform duration-700
-          group-hover:scale-105"
-        style={{ backgroundImage: `url(${image})` }}
-      />
+      {/* Background Video or Image */}
+      {video ? (
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          poster={image}
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700
+            group-hover:scale-105"
+        >
+          <source src={video} type="video/mp4" />
+        </video>
+      ) : (
+        <div
+          className="absolute inset-0 bg-cover bg-center transition-transform duration-700
+            group-hover:scale-105"
+          style={{ backgroundImage: `url(${image})` }}
+        />
+      )}
 
       {/* Dark Overlay - lighter on hover */}
       <div className="split-overlay absolute inset-0 bg-black/60 group-hover:bg-black/50" />

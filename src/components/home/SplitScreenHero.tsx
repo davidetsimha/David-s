@@ -13,6 +13,7 @@ export function SplitScreenHero() {
         title={t('home.splitEvents', 'Événements')}
         subtitle={t('home.splitEventsSubtitle', 'Traiteur & Réceptions')}
         description={t('home.splitEventsDesc', 'Mariages, Bar Mitzvah & célébrations sur mesure')}
+        video="/videos/events-hero.mp4"
         image="/images/creations/buffet-traiteur.jpg"
         href={ROUTES.EVENTS}
         cta={t('home.discoverBtn', 'Découvrir nos créations')}
