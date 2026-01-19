@@ -3,23 +3,28 @@
 import { useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { useUIStore } from '@/stores';
+import { ROUTES } from '@/config/routes';
 
 const navItems = [
-  { key: 'home', route: '/' },
-  { key: 'about', route: '/about' },
-  { key: 'receptions', route: '/receptions' },
-  { key: 'shabbat', route: '/shabbat' },
-  { key: 'gallery', route: '/gallery' },
-  { key: 'faq', route: '/faq' },
-  { key: 'contact', route: '/contact' },
+  { key: 'home', route: ROUTES.HOME },
+  { key: 'about', route: ROUTES.ABOUT },
+  { key: 'receptions', route: ROUTES.RECEPTIONS },
+  { key: 'shabbat', route: ROUTES.SHABBAT },
+  { key: 'gallery', route: ROUTES.GALLERY },
+  { key: 'faq', route: ROUTES.FAQ },
+  { key: 'contact', route: ROUTES.CONTACT },
 ] as const;
 
 export function MobileMenu() {
   const t = useTranslations('nav');
   const pathname = usePathname();
+  const locale = useLocale();
   const { isMobileMenuOpen, closeMobileMenu } = useUIStore();
+
+  // Remove locale prefix from pathname for comparison
+  const pathWithoutLocale = pathname.replace(`/${locale}`, '') || '/';
   const menuRef = useRef<HTMLElement>(null);
   const previousActiveElement = useRef<HTMLElement | null>(null);
 
@@ -102,7 +107,7 @@ export function MobileMenu() {
                   href={route}
                   className={`block py-3 px-4 font-display text-lg tracking-wide rounded-lg
                     transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 focus-visible:outline-none
-                    ${pathname === route
+                    ${pathWithoutLocale === route
                       ? 'text-gold-700 bg-gold-50'
                       : 'text-stone-700 hover:text-gold-700 hover:bg-cream-100'}`}
                 >

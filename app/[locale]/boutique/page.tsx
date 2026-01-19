@@ -70,7 +70,7 @@ export default async function BoutiquePage({ params }: Props) {
         {/* Background */}
         <div className="absolute inset-0">
           <Image
-            src="/images/boutique-hero.jpg"
+            src="/images/gallery/petits-fours-1.jpg"
             alt=""
             fill
             className="object-cover"
