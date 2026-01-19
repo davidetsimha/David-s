@@ -153,7 +153,7 @@ export function SplitScreenHero() {
         description={t('home.splitEventsDesc') || 'Mariages, Bar Mitzvah & célébrations sur mesure'}
         video="/videos/events-hero.mp4"
         image="/images/creations/buffet-traiteur.jpg"
-        href={`/${locale}/events`}
+        href={`/${locale}/evenements`}
         cta={t('home.discoverBtn') || 'Découvrir nos créations'}
         delay={0}
       />
