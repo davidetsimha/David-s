@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import { ShoppingBag } from 'lucide-react';
 import Link from 'next/link';
 import { useCartStore } from '@/src/stores';
+import { ROUTES } from '@/config/routes';
 
 export function EmptyCart() {
   const t = useTranslations();
@@ -28,7 +29,7 @@ export function EmptyCart() {
       </p>
 
       <Link
-        href="/boutique"
+        href={ROUTES.RECEPTIONS}
         onClick={closeCart}
         className="inline-flex items-center gap-2 px-6 py-3
           bg-gold-500 text-white font-medium rounded-lg

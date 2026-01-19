@@ -5,16 +5,17 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
 import { useUIStore, useCartStore } from '@/stores';
+import { ROUTES } from '@/config/routes';
 import { LanguageSwitch } from './LanguageSwitch';
 
 const navItems = [
-  { key: 'home', route: '/' },
-  { key: 'about', route: '/about' },
-  { key: 'receptions', route: '/evenements' },
-  { key: 'shabbat', route: '/boutique' },
-  { key: 'gallery', route: '/evenements/galerie' },
-  { key: 'faq', route: '/faq' },
-  { key: 'contact', route: '/contact' },
+  { key: 'home', route: ROUTES.HOME },
+  { key: 'about', route: ROUTES.ABOUT },
+  { key: 'receptions', route: ROUTES.RECEPTIONS },
+  { key: 'shabbat', route: ROUTES.SHABBAT },
+  { key: 'gallery', route: ROUTES.GALLERY },
+  { key: 'faq', route: ROUTES.FAQ },
+  { key: 'contact', route: ROUTES.CONTACT },
 ] as const;
 
 export function Header() {

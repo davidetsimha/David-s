@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { Plus, Minus } from 'lucide-react';
-import type { FAQItem } from './page';
 
 interface AccordionItemProps {
   question: string;
@@ -10,7 +9,7 @@ interface AccordionItemProps {
   defaultOpen?: boolean;
 }
 
-function AccordionItem({ question, answer, defaultOpen = false }: AccordionItemProps) {
+export function AccordionItem({ question, answer, defaultOpen = false }: AccordionItemProps) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
@@ -52,31 +51,6 @@ function AccordionItem({ question, answer, defaultOpen = false }: AccordionItemP
           {answer}
         </div>
       </div>
-    </div>
-  );
-}
-
-interface FAQAccordionClientProps {
-  items: FAQItem[];
-  defaultOpenIndex?: number;
-}
-
-export function FAQAccordionClient({ items, defaultOpenIndex }: FAQAccordionClientProps) {
-  return (
-    <div className="
-      bg-white rounded-2xl shadow-sm
-      border border-gold-100
-      divide-y divide-gold-100
-      px-6 md:px-8
-    ">
-      {items.map((item, index) => (
-        <AccordionItem
-          key={item.id}
-          question={item.question}
-          answer={item.answer}
-          defaultOpen={index === defaultOpenIndex}
-        />
-      ))}
     </div>
   );
 }

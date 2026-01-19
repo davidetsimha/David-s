@@ -20,7 +20,7 @@ interface ContactFormData {
   message: string;
 }
 
-export function ContactFormClient() {
+export function ContactForm() {
   const t = useTranslations('contact');
   const [isPending, setIsPending] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);

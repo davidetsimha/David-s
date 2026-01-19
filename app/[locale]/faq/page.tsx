@@ -2,13 +2,7 @@ import type { Metadata } from 'next';
 import { getTranslations, getLocale } from 'next-intl/server';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
-import { FAQAccordionClient } from './FAQAccordionClient';
-
-export interface FAQItem {
-  id: string;
-  question: string;
-  answer: string;
-}
+import { Accordion, type FAQItem } from '@/components/faq/Accordion';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -112,7 +106,7 @@ export default async function FAQPage({ params }: Props) {
 
       {/* FAQ Content */}
       <section className="max-w-3xl mx-auto px-4 py-12">
-        <FAQAccordionClient items={faqItems} defaultOpenIndex={0} />
+        <Accordion items={faqItems} defaultOpenIndex={0} />
 
         {/* Contact CTA */}
         <div className="mt-12 text-center p-8 bg-cream-100 rounded-2xl border border-gold-200/50">

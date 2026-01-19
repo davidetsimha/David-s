@@ -7,7 +7,7 @@ import { createClient } from '@/lib/supabase/client';
 import type { TimeSlot, EventFormula } from '@/types';
 
 export function FormulasSection() {
-  const t = useTranslations('formulas');
+  const t = useTranslations();
   const locale = useLocale();
   const isHebrew = locale === 'he';
   const [activeSlot, setActiveSlot] = useState<TimeSlot>('morning');
@@ -41,7 +41,7 @@ export function FormulasSection() {
   const getWhatsappLink = (formula: EventFormula) => {
     const formulaName = isHebrew ? formula.name_he : formula.name_fr;
     const message = encodeURIComponent(
-      t('whatsappMessage', { formula: formulaName })
+      t('formulas.whatsappMessage', { formula: formulaName })
     );
     return `https://wa.me/${whatsappNumber}?text=${message}`;
   };
@@ -51,13 +51,13 @@ export function FormulasSection() {
       {/* Header */}
       <div className="max-w-5xl mx-auto px-4 text-center mb-12">
         <p className="text-gold-600 text-sm tracking-[0.3em] uppercase mb-3">
-          {t('title')}
+          {t('formulas.title')}
         </p>
         <h2 className="font-display text-4xl md:text-5xl text-stone-800 mb-4">
-          {t('subtitle')}
+          {t('formulas.subtitle')}
         </h2>
         <p className="text-stone-500 max-w-lg mx-auto">
-          {t('description')}
+          {t('formulas.description')}
         </p>
       </div>
 
@@ -71,7 +71,7 @@ export function FormulasSection() {
                 ? 'text-gold-600'
                 : 'text-stone-400 hover:text-stone-600'}`}
           >
-            {t('morning')}
+            {t('formulas.morning')}
             {activeSlot === 'morning' && (
               <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gold-500" />
             )}
@@ -83,7 +83,7 @@ export function FormulasSection() {
                 ? 'text-gold-600'
                 : 'text-stone-400 hover:text-stone-600'}`}
           >
-            {t('afternoon')}
+            {t('formulas.afternoon')}
             {activeSlot === 'afternoon' && (
               <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gold-500" />
             )}
@@ -99,7 +99,7 @@ export function FormulasSection() {
           </div>
         ) : formulas.length === 0 ? (
           <div className="text-center py-12 text-stone-400">
-            {t('noFormulas')}
+            {t('formulas.noFormulas')}
           </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -121,7 +121,7 @@ export function FormulasSection() {
                   <div className="absolute bottom-4 start-4">
                     <div className="bg-white/95 backdrop-blur-sm px-4 py-2 rounded-sm">
                       <span className="text-2xl font-light text-stone-800">{formula.price}</span>
-                      <span className="text-stone-500 text-sm ms-1">{isHebrew ? '/ אדם' : '/ pers'}</span>
+                      <span className="text-stone-500 text-sm ms-1">₪ / {isHebrew ? 'אדם' : 'pers'}</span>
                     </div>
                   </div>
 
@@ -145,7 +145,7 @@ export function FormulasSection() {
                   </div>
 
                   <p className="text-stone-400 text-xs uppercase tracking-wider mb-3">
-                    {t('minGuests', { count: formula.min_guests })}
+                    {t('formulas.minGuests', { count: formula.min_guests })}
                   </p>
 
                   {/* Includes list */}
@@ -167,8 +167,8 @@ export function FormulasSection() {
                       text-sm tracking-wide transition-colors group/link"
                   >
                     <MessageCircle className="w-4 h-4" />
-                    <span>{t('cta')}</span>
-                    <span className="transition-transform group-hover/link:translate-x-1">&rarr;</span>
+                    <span>{t('formulas.cta')}</span>
+                    <span className="transition-transform group-hover/link:translate-x-1">→</span>
                   </a>
                 </div>
               </article>
@@ -178,7 +178,7 @@ export function FormulasSection() {
 
         {/* Footer note */}
         <p className="text-center text-stone-400 text-sm mt-12">
-          * {t('note')}
+          * {t('formulas.note')}
         </p>
       </div>
     </section>

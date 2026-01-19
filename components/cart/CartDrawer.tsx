@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useTranslations, useLocale } from 'next-intl';
 import { X, ArrowRight, ArrowLeft } from 'lucide-react';
 import { useCartStore } from '@/src/stores';
+import { ROUTES } from '@/config/routes';
 import { CartItem } from './CartItem';
 import { EmptyCart } from './EmptyCart';
 
@@ -60,7 +61,7 @@ export function CartDrawer() {
                 <span className="text-stone-600">{t('cart.subtotal')}</span>
                 <span className="font-display text-lg text-gold-700">{subtotal().toFixed(2)} {t('common.currency')}</span>
               </div>
-              <Link href="/boutique/checkout" onClick={closeCart}
+              <Link href={ROUTES.CHECKOUT} onClick={closeCart}
                 className="flex items-center justify-center gap-2 w-full py-3.5 bg-gold-500
                   text-white font-medium rounded-lg shadow-md hover:bg-gold-600 transition-all">
                 {t('cart.checkout')} <Arrow className="w-4 h-4" />

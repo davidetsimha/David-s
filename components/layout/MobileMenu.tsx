@@ -9,24 +9,24 @@ import { useUIStore } from '@/stores';
 const navItems = [
   { key: 'home', route: '/' },
   { key: 'about', route: '/about' },
-  { key: 'events', route: '/evenements' },
-  { key: 'boutique', route: '/boutique' },
-  { key: 'gallery', route: '/evenements/galerie' },
+  { key: 'receptions', route: '/receptions' },
+  { key: 'shabbat', route: '/shabbat' },
+  { key: 'gallery', route: '/gallery' },
   { key: 'faq', route: '/faq' },
   { key: 'contact', route: '/contact' },
 ] as const;
 
 export function MobileMenu() {
-  const { isMobileMenuOpen: isOpen, closeMobileMenu: onClose } = useUIStore();
   const t = useTranslations('nav');
   const pathname = usePathname();
+  const { isMobileMenuOpen, closeMobileMenu } = useUIStore();
   const menuRef = useRef<HTMLElement>(null);
   const previousActiveElement = useRef<HTMLElement | null>(null);
 
   // Focus trap handler
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key === 'Escape') {
-      onClose();
+      closeMobileMenu();
       return;
     }
 
@@ -45,10 +45,10 @@ export function MobileMenu() {
       e.preventDefault();
       firstElement?.focus();
     }
-  }, [onClose]);
+  }, [closeMobileMenu]);
 
   useEffect(() => {
-    if (isOpen) {
+    if (isMobileMenuOpen) {
       document.body.style.overflow = 'hidden';
       previousActiveElement.current = document.activeElement as HTMLElement;
 
@@ -70,54 +70,39 @@ export function MobileMenu() {
       document.body.style.overflow = '';
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isOpen, handleKeyDown]);
+  }, [isMobileMenuOpen, handleKeyDown]);
 
-  // Close menu on route change
   useEffect(() => {
-    onClose();
-  }, [pathname, onClose]);
-
-  // Check if current path matches route (handle locale prefix)
-  const isActive = (route: string) => {
-    if (route === '/') {
-      return pathname === '/' || pathname === '/fr' || pathname === '/he';
-    }
-    return pathname.endsWith(route);
-  };
+    closeMobileMenu();
+  }, [pathname, closeMobileMenu]);
 
   return (
     <>
-      {/* Backdrop */}
       <div
         className={`lg:hidden fixed inset-0 bg-stone-900/60 backdrop-blur-sm z-40
           transition-opacity duration-300
-          ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-        onClick={onClose}
+          ${isMobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        onClick={closeMobileMenu}
         aria-hidden="true"
       />
-
-      {/* Menu panel */}
       <nav
         ref={menuRef}
         aria-label={t('ariaMobile')}
         className={`lg:hidden fixed top-0 end-0
           h-full w-[280px] max-w-[85vw] bg-cream-50 z-50 shadow-2xl
           transform transition-transform duration-300 ease-out
-          ${isOpen ? 'translate-x-0' : 'ltr:translate-x-full rtl:-translate-x-full'}`}
+          ${isMobileMenuOpen ? 'translate-x-0' : 'ltr:translate-x-full rtl:-translate-x-full'}`}
       >
         <div className="flex flex-col h-full pt-20 pb-8 px-6">
           <ul className="flex-1 space-y-1">
             {navItems.map(({ key, route }, i) => (
-              <li
-                key={key}
-                style={{ animationDelay: `${i * 50}ms` }}
-                className={isOpen ? 'animate-fade-in-up' : ''}
-              >
+              <li key={key} style={{ animationDelay: `${i * 50}ms` }}
+                className={isMobileMenuOpen ? 'animate-fade-in-up' : ''}>
                 <Link
                   href={route}
                   className={`block py-3 px-4 font-display text-lg tracking-wide rounded-lg
                     transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 focus-visible:outline-none
-                    ${isActive(route)
+                    ${pathname === route
                       ? 'text-gold-700 bg-gold-50'
                       : 'text-stone-700 hover:text-gold-700 hover:bg-cream-100'}`}
                 >

@@ -10,7 +10,7 @@ interface ContactInfoItem {
   href?: string;
 }
 
-export function ContactInfoClient() {
+export function ContactInfo() {
   const t = useTranslations('contact');
 
   const contactItems: ContactInfoItem[] = [

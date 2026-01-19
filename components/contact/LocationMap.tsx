@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 
-export function LocationMapClient() {
+export function LocationMap() {
   const t = useTranslations('contact');
   const tFooter = useTranslations('footer');
 

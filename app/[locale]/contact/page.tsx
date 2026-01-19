@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
-import { ContactInfoClient } from './ContactInfoClient';
-import { ContactFormClient } from './ContactFormClient';
-import { LocationMapClient } from './LocationMapClient';
+import { ContactInfo } from '@/components/contact/ContactInfo';
+import { ContactForm } from '@/components/contact/ContactForm';
+import { LocationMap } from '@/components/contact/LocationMap';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -52,15 +52,15 @@ export default async function ContactPage({ params }: Props) {
           <div className="space-y-8">
             <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gold-100">
               <h2 className="font-display text-2xl text-gold-700 mb-6">{t('detailsTitle')}</h2>
-              <ContactInfoClient />
+              <ContactInfo />
             </div>
-            <LocationMapClient />
+            <LocationMap />
           </div>
 
           {/* Right Column - Form */}
           <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gold-100">
             <h2 className="font-display text-2xl text-gold-700 mb-6">{t('formTitle')}</h2>
-            <ContactFormClient />
+            <ContactForm />
           </div>
         </div>
       </section>

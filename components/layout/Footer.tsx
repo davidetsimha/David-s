@@ -2,15 +2,16 @@
 
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
+import { ROUTES } from '@/config/routes';
 
 const quickLinks = [
-  { key: 'home', route: '/' },
-  { key: 'about', route: '/about' },
-  { key: 'receptions', route: '/evenements' },
-  { key: 'shabbat', route: '/boutique' },
-  { key: 'myOrders', route: '/orders' },
-  { key: 'gallery', route: '/evenements/galerie' },
-  { key: 'contact', route: '/contact' },
+  { key: 'home', route: ROUTES.HOME },
+  { key: 'about', route: ROUTES.ABOUT },
+  { key: 'receptions', route: ROUTES.RECEPTIONS },
+  { key: 'shabbat', route: ROUTES.SHABBAT },
+  { key: 'myOrders', route: ROUTES.ORDER_HISTORY },
+  { key: 'gallery', route: ROUTES.GALLERY },
+  { key: 'contact', route: ROUTES.CONTACT },
 ];
 
 const socialLinks = [

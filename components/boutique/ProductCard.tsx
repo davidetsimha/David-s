@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
+import Image from 'next/image';
 import { Plus, Minus, ShoppingBag, ImageOff, Calendar, Clock, AlertCircle } from 'lucide-react';
 import { useCartStore } from '@/src/stores/cartStore';
 import { Modal } from '@/src/components/ui/Modal';
@@ -64,11 +65,13 @@ export function ProductCard({ product }: ProductCardProps) {
         onClick={() => setIsModalOpen(true)}
       >
         {product.image_url && !imgError ? (
-          <img
+          <Image
             src={product.image_url}
             alt={name}
+            fill
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
             onError={() => setImgError(true)}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
@@ -147,15 +150,17 @@ export function ProductCard({ product }: ProductCardProps) {
       <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)} size="lg">
         <div className="flex flex-col md:flex-row gap-6">
           {/* Image */}
-          <div className="md:w-1/2">
+          <div className="md:w-1/2 relative aspect-square">
             {product.image_url && !imgError ? (
-              <img
+              <Image
                 src={product.image_url}
                 alt={name}
-                className="w-full aspect-square object-cover rounded-xl"
+                fill
+                className="object-cover rounded-xl"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
             ) : (
-              <div className="w-full aspect-square bg-cream-100 rounded-xl flex items-center justify-center">
+              <div className="w-full h-full bg-cream-100 rounded-xl flex items-center justify-center">
                 <ImageOff className="w-16 h-16 text-cream-400" />
               </div>
             )}

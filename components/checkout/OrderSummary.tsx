@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslations, useLocale } from 'next-intl';
+import Image from 'next/image';
 import { useCartStore } from '@/src/stores/cartStore';
 import type { DeliveryMethod } from './DeliveryOptions';
 
@@ -32,12 +33,14 @@ export function OrderSummary({ deliveryMethod, deliveryFee: customDeliveryFee }:
       <div className="p-5 space-y-3 max-h-64 overflow-y-auto">
         {items.map(({ product, quantity }) => (
           <div key={product.id} className="flex gap-3">
-            <div className="w-14 h-14 rounded-lg overflow-hidden bg-cream-100 flex-shrink-0">
+            <div className="w-14 h-14 rounded-lg overflow-hidden bg-cream-100 flex-shrink-0 relative">
               {product.image_url ? (
-                <img
+                <Image
                   src={product.image_url}
                   alt={locale === 'fr' ? product.name_fr : product.name_he}
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
+                  sizes="56px"
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center
