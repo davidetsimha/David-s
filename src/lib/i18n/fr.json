@@ -225,6 +225,7 @@
       "message": "Votre commande a été annulée. Votre panier a été conservé."
     },
     "pickupDate": "Date de retrait",
+    "deliveryDate": "Date de livraison",
     "selectNeighborhood": "Sélectionnez votre quartier",
     "timeSlot": "Créneau horaire",
     "individualNote": "Les gâteaux individuels sont disponibles uniquement le vendredi",

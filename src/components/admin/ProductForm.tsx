@@ -28,6 +28,7 @@ const schema = z.object({
   product_type: z.enum(['individual', 'plateau']),
   requires_confirmation: z.boolean(),
   min_days_advance: z.coerce.number().min(0, 'Le delai doit etre positif'),
+  sort_order: z.coerce.number().min(0, "L'ordre doit etre positif"),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -57,6 +58,7 @@ export function ProductForm({ product, onSubmit, onCancel, loading }: ProductFor
       product_type: product?.product_type ?? 'individual',
       requires_confirmation: product?.requires_confirmation ?? false,
       min_days_advance: product?.min_days_advance ?? 0,
+      sort_order: product?.sort_order ?? 0,
     },
   });
 
@@ -179,17 +181,34 @@ export function ProductForm({ product, onSubmit, onCancel, loading }: ProductFor
       <div className="pb-6 border-b border-gray-100">
         <h3 className="text-sm font-medium text-gray-900 mb-4">Parametres de commande</h3>
         <div className="space-y-4">
-          <Input
-            label="Delai minimum (jours)"
-            type="number"
-            min="0"
-            {...register('min_days_advance')}
-            error={errors.min_days_advance?.message}
-            placeholder="0"
-          />
-          <p className="text-xs text-gray-500">
-            Nombre de jours a l'avance necessaires pour commander ce produit (0 = meme jour)
-          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <Input
+                label="Delai minimum (jours)"
+                type="number"
+                min="0"
+                {...register('min_days_advance')}
+                error={errors.min_days_advance?.message}
+                placeholder="0"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Jours a l'avance pour commander (0 = meme jour)
+              </p>
+            </div>
+            <div>
+              <Input
+                label="Ordre d'affichage"
+                type="number"
+                min="0"
+                {...register('sort_order')}
+                error={errors.sort_order?.message}
+                placeholder="0"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Plus petit = affiché en premier
+              </p>
+            </div>
+          </div>
 
           <div className="flex items-center justify-between py-4 px-4 bg-amber-50 rounded-lg">
             <div>

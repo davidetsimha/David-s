@@ -305,7 +305,7 @@ export function CheckoutPage() {
                   `}>
                     {step === 'info' && t('checkout.customerInfo')}
                     {step === 'delivery' && t('checkout.deliveryMethod')}
-                    {step === 'pickup_date' && t('checkout.pickupDate')}
+                    {step === 'pickup_date' && (deliveryMethod === 'delivery' ? t('checkout.deliveryDate') : t('checkout.pickupDate'))}
                     {step === 'review' && t('checkout.orderSummary')}
                   </span>
 
@@ -430,7 +430,7 @@ export function CheckoutPage() {
               <div className="bg-white rounded-2xl p-6 shadow-sm border border-cream-200 animate-fade-in-up">
                 <h3 className="font-display text-lg text-stone-800 mb-2 flex items-center gap-2">
                   <Calendar className="w-5 h-5 text-gold-500" />
-                  {t('checkout.pickupDate')}
+                  {deliveryMethod === 'delivery' ? t('checkout.deliveryDate') : t('checkout.pickupDate')}
                 </h3>
                 <p className="text-sm text-stone-500 mb-4">
                   {isIndividualOrder
@@ -597,11 +597,11 @@ export function CheckoutPage() {
                   </div>
                 </div>
 
-                {/* Pickup Date Summary */}
+                {/* Pickup/Delivery Date Summary */}
                 <div className="bg-white rounded-2xl p-6 shadow-sm border border-cream-200">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-display text-lg text-stone-800">
-                      {t('checkout.pickupDate')}
+                      {deliveryMethod === 'delivery' ? t('checkout.deliveryDate') : t('checkout.pickupDate')}
                     </h3>
                     <button
                       onClick={() => setCurrentStep('pickup_date')}

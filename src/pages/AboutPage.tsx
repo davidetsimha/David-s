@@ -21,10 +21,19 @@ export function AboutPage() {
       {/* Story Content */}
       <section className="max-w-4xl mx-auto px-4 py-12">
         <div className="bg-white rounded-2xl shadow-sm border border-gold-100 p-8 md:p-12">
-          {/* Chef Name */}
-          <h2 className="font-display text-2xl md:text-3xl text-gold-700 mb-8 text-center">
-            {t('about.chefName')}
-          </h2>
+          {/* Chef Photo and Name */}
+          <div className="flex flex-col items-center mb-10">
+            <div className="w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden border-4 border-gold-200 shadow-lg mb-6">
+              <img
+                src="https://davids-patisserie.co.il/wp-content/uploads/2025/12/4300-2.png"
+                alt={t('about.chefName')}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <h2 className="font-display text-2xl md:text-3xl text-gold-700 text-center">
+              {t('about.chefName')}
+            </h2>
+          </div>
 
           {/* Story paragraphs */}
           <div className="space-y-6 text-stone-700 leading-relaxed text-lg">

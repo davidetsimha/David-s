@@ -225,6 +225,7 @@
       "message": "ההזמנה בוטלה. הסל שלך נשמר."
     },
     "pickupDate": "תאריך איסוף",
+    "deliveryDate": "תאריך משלוח",
     "selectNeighborhood": "בחר את השכונה שלך",
     "timeSlot": "שעת איסוף",
     "individualNote": "עוגות אישיות זמינות רק ביום שישי",

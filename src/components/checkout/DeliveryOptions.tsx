@@ -54,8 +54,8 @@ export function DeliveryOptions({ value, onChange, address, onAddressChange }: D
           {/* City and postal code in a row */}
           <div className="grid grid-cols-2 gap-3">
             <Input
-              label={t('contact.info.address')}
-              placeholder={t('contact.info.address')}
+              label={t('checkout.city')}
+              placeholder={t('checkout.city')}
               value={address.city}
               onChange={(e) => onAddressChange({ ...address, city: e.target.value })}
               required
