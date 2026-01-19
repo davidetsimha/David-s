@@ -13,10 +13,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  experimental: {
-    // Enable React 19 features
-    reactCompiler: false,
-  },
 };
 
 export default withNextIntl(nextConfig);
