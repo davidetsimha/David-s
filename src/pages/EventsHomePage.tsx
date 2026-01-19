@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { Sparkles, Camera, FileText } from 'lucide-react';
 import { EventTypeList } from '../components/receptions/EventTypeList';
 import { FormulasSection } from '../components/events/FormulasSection';
+import { EventVideoSection } from '../components/events/EventVideoSection';
+import { VideoBackground } from '../components/ui/VideoBackground';
 import { useCreations } from '../hooks/useCreations';
 import { ROUTES } from '../config/routes';
 import type { EventType } from '../types';
@@ -18,15 +20,11 @@ export function EventsHomePage() {
     <div className="min-h-screen bg-cream-50">
       {/* Hero Section */}
       <section className="relative py-20 md:py-28 px-4 overflow-hidden">
-        {/* Background */}
-        <div className="absolute inset-0">
-          <img
-            src="/images/creations/buffet-traiteur.jpg"
-            alt=""
-            className="w-full h-full object-cover blur-sm"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/70" />
-        </div>
+        {/* Video Background */}
+        <VideoBackground
+          src="/videos/events-hero.mp4"
+          poster="/images/creations/buffet-traiteur.jpg"
+        />
 
         {/* Content */}
         <div className="relative max-w-6xl mx-auto text-center">
@@ -73,7 +71,13 @@ export function EventsHomePage() {
         </div>
       </section>
 
-      {/* Formulas Section - First thing after hero */}
+      {/* Video Section - Full video presentation */}
+      <EventVideoSection
+        src="/videos/events-full.mp4"
+        poster="/images/creations/buffet-traiteur.jpg"
+      />
+
+      {/* Formulas Section */}
       <FormulasSection />
 
       {/* Gallery Preview */}
