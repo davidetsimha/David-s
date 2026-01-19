@@ -1,6 +1,6 @@
 # Migration Next.js - Log
 
-## Statut: EN COURS
+## Statut: ✅ TERMINÉ
 
 ### Phase 1 - Setup ✅
 - [x] Branche `feature/nextjs-migration`
@@ -47,3 +47,8 @@
 - First Load JS: 101 kB (shared)
 - Middleware: 90.7 kB
 - All routes bilingues (FR/HE)
+
+## Notes
+- Homepage simplifiée (pas de vidéo background, logo animé du design original)
+- Admin 100% client-side (pas SSR)
+- Tous les stores Zustand préservés
