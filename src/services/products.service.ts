@@ -63,3 +63,17 @@ export async function deleteProduct(id: string): Promise<void> {
   const { error } = await supabase.from('products').delete().eq('id', id);
   if (error) throw error;
 }
+
+export async function bulkUpdateProductAvailability(
+  ids: string[],
+  available: boolean
+): Promise<void> {
+  if (ids.length === 0) return;
+
+  const { error } = await supabase
+    .from('products')
+    .update({ available, updated_at: new Date().toISOString() })
+    .in('id', ids);
+
+  if (error) throw error;
+}

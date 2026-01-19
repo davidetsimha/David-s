@@ -1,5 +1,6 @@
 import { Package, Pencil, Trash2, Copy, ArrowUpDown } from 'lucide-react';
 import { Switch } from '../ui/Switch';
+import { Checkbox } from '../ui/Checkbox';
 import { DropdownMenu } from '../ui/DropdownMenu';
 import { Spinner } from '../ui/Spinner';
 import type { Product } from '../../types';
@@ -17,6 +18,13 @@ interface ProductsTableProps {
   sortKey?: SortKey;
   sortDirection?: SortDirection;
   onSort?: (key: SortKey) => void;
+  // Selection props
+  selectable?: boolean;
+  selectedIds?: Set<string>;
+  onToggleSelect?: (id: string) => void;
+  onToggleAll?: () => void;
+  isAllSelected?: boolean;
+  isIndeterminate?: boolean;
 }
 
 export function ProductsTable({
@@ -29,6 +37,12 @@ export function ProductsTable({
   sortKey,
   sortDirection: _sortDirection,
   onSort,
+  selectable = false,
+  selectedIds,
+  onToggleSelect,
+  onToggleAll,
+  isAllSelected = false,
+  isIndeterminate = false,
 }: ProductsTableProps) {
   if (loading) {
     return (
@@ -65,6 +79,16 @@ export function ProductsTable({
       <table className="w-full">
         <thead>
           <tr className="border-b border-gray-100">
+            {selectable && (
+              <th className="text-start px-4 py-3 w-12">
+                <Checkbox
+                  checked={isAllSelected}
+                  indeterminate={isIndeterminate}
+                  onChange={() => onToggleAll?.()}
+                  size="sm"
+                />
+              </th>
+            )}
             <th className="text-start px-4 py-3 w-16"></th>
             <th className="text-start px-4 py-3">
               {onSort ? (
@@ -94,13 +118,29 @@ export function ProductsTable({
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-50">
-          {products.map((product) => (
-            <tr
-              key={product.id}
-              className="group hover:bg-gray-50/50 transition-colors"
-            >
-              {/* Image */}
-              <td className="px-4 py-3">
+          {products.map((product) => {
+            const isSelected = selectable && selectedIds?.has(product.id);
+            return (
+              <tr
+                key={product.id}
+                className={`group transition-colors ${
+                  isSelected
+                    ? 'bg-gold-50/50 hover:bg-gold-50'
+                    : 'hover:bg-gray-50/50'
+                }`}
+              >
+                {/* Checkbox */}
+                {selectable && (
+                  <td className="px-4 py-3">
+                    <Checkbox
+                      checked={isSelected ?? false}
+                      onChange={() => onToggleSelect?.(product.id)}
+                      size="sm"
+                    />
+                  </td>
+                )}
+                {/* Image */}
+                <td className="px-4 py-3">
                 {product.image_url ? (
                   <img
                     src={product.image_url}
@@ -158,7 +198,8 @@ export function ProductsTable({
                 />
               </td>
             </tr>
-          ))}
+            );
+          })}
         </tbody>
       </table>
     </div>

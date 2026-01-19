@@ -6,6 +6,7 @@ import {
   createProduct,
   updateProduct,
   deleteProduct,
+  bulkUpdateProductAvailability,
 } from '../services/products.service';
 import type { ProductFilters, CreateProductDTO, Product } from '../types';
 
@@ -69,6 +70,35 @@ export function useToggleProductAvailability() {
         queryKeys.products.list(),
         (old: Product[] | undefined) =>
           old?.map((p) => (p.id === id ? { ...p, available } : p))
+      );
+
+      return { previousProducts };
+    },
+    onError: (_, __, context) => {
+      if (context?.previousProducts) {
+        queryClient.setQueryData(queryKeys.products.list(), context.previousProducts);
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.products.all });
+    },
+  });
+}
+
+export function useBulkUpdateProductAvailability() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ ids, available }: { ids: string[]; available: boolean }) =>
+      bulkUpdateProductAvailability(ids, available),
+    onMutate: async ({ ids, available }) => {
+      await queryClient.cancelQueries({ queryKey: queryKeys.products.all });
+      const previousProducts = queryClient.getQueryData(queryKeys.products.list());
+
+      const idsSet = new Set(ids);
+      queryClient.setQueryData(
+        queryKeys.products.list(),
+        (old: Product[] | undefined) =>
+          old?.map((p) => (idsSet.has(p.id) ? { ...p, available } : p))
       );
 
       return { previousProducts };

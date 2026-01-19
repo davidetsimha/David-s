@@ -1,5 +1,6 @@
 import { Package, Pencil, Trash2, Copy } from 'lucide-react';
 import { Switch } from '../ui/Switch';
+import { Checkbox } from '../ui/Checkbox';
 import { DropdownMenu } from '../ui/DropdownMenu';
 import type { Product } from '../../types';
 
@@ -9,6 +10,10 @@ interface ProductCardProps {
   onDelete: (id: string) => void;
   onToggleAvailability: (id: string, available: boolean) => void;
   onDuplicate?: (product: Product) => void;
+  // Selection props
+  selectable?: boolean;
+  selected?: boolean;
+  onToggleSelect?: () => void;
 }
 
 export function ProductCard({
@@ -17,6 +22,9 @@ export function ProductCard({
   onDelete,
   onToggleAvailability,
   onDuplicate,
+  selectable = false,
+  selected = false,
+  onToggleSelect,
 }: ProductCardProps) {
   const menuItems = [
     { label: 'Modifier', icon: Pencil, onClick: () => onEdit(product) },
@@ -26,7 +34,13 @@ export function ProductCard({
   ];
 
   return (
-    <div className="group bg-white rounded-xl border border-gray-100 shadow-card overflow-hidden transition-all duration-150 hover:shadow-elevated hover:border-gray-200">
+    <div
+      className={`group bg-white rounded-xl border-2 shadow-card overflow-hidden transition-all duration-150 hover:shadow-elevated ${
+        selected
+          ? 'border-gold-500 ring-2 ring-gold-100'
+          : 'border-gray-100 hover:border-gray-200'
+      }`}
+    >
       {/* Image */}
       <div className="relative aspect-[4/3] bg-gray-50">
         {product.image_url ? (
@@ -43,6 +57,23 @@ export function ProductCard({
 
         {/* Overlay on hover */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+
+        {/* Checkbox overlay */}
+        {selectable && (
+          <div
+            className={`absolute top-2 start-2 transition-opacity ${
+              selected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+            }`}
+          >
+            <div className="bg-white rounded-lg shadow-card p-1">
+              <Checkbox
+                checked={selected}
+                onChange={() => onToggleSelect?.()}
+                size="sm"
+              />
+            </div>
+          </div>
+        )}
 
         {/* Action button */}
         <div className="absolute top-2 end-2 opacity-0 group-hover:opacity-100 transition-opacity">

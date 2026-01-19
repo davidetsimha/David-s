@@ -1,19 +1,23 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Plus, Search, LayoutGrid, List, SlidersHorizontal } from 'lucide-react';
+import { Plus, Search, LayoutGrid, List, SlidersHorizontal, Layers } from 'lucide-react';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 import { Modal } from '../../components/ui/Modal';
 import { Select } from '../../components/ui/Select';
+import { Checkbox } from '../../components/ui/Checkbox';
 import { ConfirmModal } from '../../components/admin/ConfirmModal';
 import { ProductsTable } from '../../components/admin/ProductsTable';
 import { ProductCard } from '../../components/admin/ProductCard';
 import { ProductForm } from '../../components/admin/ProductForm';
-import { useProducts, useCreateProduct, useUpdateProduct, useDeleteProduct, useToggleProductAvailability } from '../../hooks/useProducts';
+import { BulkActionBar } from '../../components/admin/BulkActionBar';
+import { GroupedProductsView, type GroupByOption } from '../../components/admin/GroupedProductsView';
+import { useProducts, useCreateProduct, useUpdateProduct, useDeleteProduct, useToggleProductAvailability, useBulkUpdateProductAvailability } from '../../hooks/useProducts';
 import { useCategories } from '../../hooks/useCategories';
+import { useSelection, computeSelectionState } from '../../hooks/useSelection';
 import type { Product, CreateProductDTO } from '../../types';
 
-type ViewMode = 'grid' | 'list';
+type ViewMode = 'grid' | 'list' | 'grouped';
 type SortKey = 'name' | 'price' | 'category';
 type SortDirection = 'asc' | 'desc';
 type AvailabilityFilter = 'all' | 'available' | 'hidden';
@@ -38,6 +42,11 @@ const availabilityOptions = [
   { value: 'hidden', label: 'Masque' },
 ];
 
+const groupByOptions = [
+  { value: 'category', label: 'Par categorie' },
+  { value: 'product_type', label: 'Par type (plateau/individuel)' },
+];
+
 export function AdminProducts() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { data: products, isLoading } = useProducts();
@@ -46,6 +55,7 @@ export function AdminProducts() {
   const updateMutation = useUpdateProduct();
   const deleteMutation = useDeleteProduct();
   const toggleAvailabilityMutation = useToggleProductAvailability();
+  const bulkUpdateMutation = useBulkUpdateProductAvailability();
 
   const [modalOpen, setModalOpen] = useState(false);
   const [editProduct, setEditProduct] = useState<Product | undefined>();
@@ -59,6 +69,11 @@ export function AdminProducts() {
   const [availabilityFilter, setAvailabilityFilter] = useState<AvailabilityFilter>('all');
   const [sortValue, setSortValue] = useState('name_asc');
   const [showFilters, setShowFilters] = useState(false);
+
+  // Grouping & Selection
+  const [groupBy, setGroupBy] = useState<GroupByOption>('category');
+  const [selectionMode, setSelectionMode] = useState(false);
+  const selection = useSelection();
 
   // Sync search with URL params
   useEffect(() => {
@@ -161,6 +176,41 @@ export function AdminProducts() {
     }
   };
 
+  // Bulk actions handlers
+  const handleBulkSetAvailable = () => {
+    const ids = selection.getSelectedIds();
+    bulkUpdateMutation.mutate(
+      { ids, available: true },
+      { onSuccess: () => selection.clearSelection() }
+    );
+  };
+
+  const handleBulkSetUnavailable = () => {
+    const ids = selection.getSelectedIds();
+    bulkUpdateMutation.mutate(
+      { ids, available: false },
+      { onSuccess: () => selection.clearSelection() }
+    );
+  };
+
+  const toggleSelectionMode = () => {
+    if (selectionMode) {
+      selection.clearSelection();
+    }
+    setSelectionMode(!selectionMode);
+  };
+
+  // Compute selection state for current filtered products
+  const filteredProductIds = useMemo(() => filteredProducts.map((p) => p.id), [filteredProducts]);
+  const { isAllSelected, isIndeterminate } = useMemo(
+    () => computeSelectionState(selection.selectedIds, filteredProductIds),
+    [selection.selectedIds, filteredProductIds]
+  );
+
+  const handleToggleAll = () => {
+    selection.toggleAll(filteredProductIds);
+  };
+
   const activeFiltersCount = [categoryFilter, availabilityFilter !== 'all'].filter(Boolean).length;
 
   return (
@@ -224,6 +274,27 @@ export function AdminProducts() {
               )}
             </button>
 
+            {/* Selection mode toggle */}
+            <button
+              onClick={toggleSelectionMode}
+              className={`
+                h-9 px-3 rounded-lg border text-sm font-medium transition-all
+                flex items-center gap-2
+                ${selectionMode
+                  ? 'border-gold-300 bg-gold-50 text-gold-700'
+                  : 'border-gray-200 text-gray-600 hover:bg-gray-50'
+                }
+              `}
+              title="Mode selection"
+            >
+              <Checkbox
+                checked={selectionMode}
+                onChange={toggleSelectionMode}
+                size="sm"
+              />
+              <span className="hidden sm:inline">Selection</span>
+            </button>
+
             {/* View toggle */}
             <div className="flex rounded-lg border border-gray-200 p-0.5">
               <button
@@ -240,8 +311,48 @@ export function AdminProducts() {
               >
                 <LayoutGrid className="w-4 h-4" />
               </button>
+              <button
+                onClick={() => setViewMode('grouped')}
+                className={`p-1.5 rounded-md transition-colors ${viewMode === 'grouped' ? 'bg-gray-100 text-gray-900' : 'text-gray-400 hover:text-gray-600'}`}
+                aria-label="Vue groupee"
+              >
+                <Layers className="w-4 h-4" />
+              </button>
             </div>
           </div>
+
+          {/* Selection toolbar when in selection mode */}
+          {selectionMode && (
+            <div className="flex items-center gap-3 pt-3 border-t border-gray-100">
+              <Checkbox
+                checked={isAllSelected}
+                indeterminate={isIndeterminate}
+                onChange={handleToggleAll}
+                size="sm"
+                label={isAllSelected ? 'Tout deselectionner' : 'Tout selectionner'}
+              />
+              {selection.selectedCount > 0 && (
+                <span className="text-sm text-gold-600 font-medium">
+                  {selection.selectedCount} selectionne{selection.selectedCount > 1 ? 's' : ''}
+                </span>
+              )}
+            </div>
+          )}
+
+          {/* GroupBy dropdown when in grouped view */}
+          {viewMode === 'grouped' && (
+            <div className="flex items-center gap-3 pt-3 border-t border-gray-100">
+              <span className="text-sm text-gray-500">Regrouper par:</span>
+              <div className="w-56">
+                <Select
+                  options={groupByOptions}
+                  value={groupBy}
+                  onChange={(e) => setGroupBy(e.target.value as GroupByOption)}
+                  selectSize="sm"
+                />
+              </div>
+            </div>
+          )}
 
           {/* Filters row */}
           {showFilters && (
@@ -313,10 +424,25 @@ export function AdminProducts() {
                 onEdit={openEdit}
                 onDelete={setDeleteId}
                 onToggleAvailability={handleToggleAvailability}
+                selectable={selectionMode}
+                selected={selection.selectedIds.has(product.id)}
+                onToggleSelect={() => selection.toggle(product.id)}
               />
             ))
           )}
         </div>
+      ) : viewMode === 'grouped' ? (
+        <GroupedProductsView
+          products={filteredProducts}
+          groupBy={groupBy}
+          selectedIds={selection.selectedIds}
+          onToggleSelect={selection.toggle}
+          onToggleGroupSelect={selection.toggleAll}
+          onEdit={openEdit}
+          onDelete={setDeleteId}
+          onToggleAvailability={handleToggleAvailability}
+          selectable={selectionMode}
+        />
       ) : (
         <Card padding="none">
           <ProductsTable
@@ -328,9 +454,24 @@ export function AdminProducts() {
             sortKey={currentSort.key}
             sortDirection={currentSort.direction}
             onSort={handleSort}
+            selectable={selectionMode}
+            selectedIds={selection.selectedIds}
+            onToggleSelect={selection.toggle}
+            onToggleAll={handleToggleAll}
+            isAllSelected={isAllSelected}
+            isIndeterminate={isIndeterminate}
           />
         </Card>
       )}
+
+      {/* Bulk Action Bar */}
+      <BulkActionBar
+        selectedCount={selection.selectedCount}
+        onSetAvailable={handleBulkSetAvailable}
+        onSetUnavailable={handleBulkSetUnavailable}
+        onClose={selection.clearSelection}
+        loading={bulkUpdateMutation.isPending}
+      />
 
       {/* Modals */}
       <Modal
