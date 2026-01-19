@@ -27,6 +27,7 @@
     "certification": "Certification"
   },
   "common": {
+    "viewAll": "Voir tout",
     "loading": "Chargement...",
     "error": "Une erreur s'est produite",
     "required": "Obligatoire",
@@ -169,11 +170,11 @@
     "description": "Deux formules adaptées à chaque célébration",
     "morning": "Matin",
     "afternoon": "Après-midi",
-    "minGuests": "Min. {{count}} personnes",
+    "minGuests": "Min. {count} personnes",
     "includes": "Inclus",
     "cta": "Plus d'infos",
     "note": "Mise en place, service, vaisselle, nappes et boissons inclus. +900₪ hors Jérusalem.",
-    "whatsappMessage": "Bonjour, je suis intéressé(e) par la formule \"{{formula}}\" pour mon événement.",
+    "whatsappMessage": "Bonjour, je suis intéressé(e) par la formule \"{formula}\" pour mon événement.",
     "noFormulas": "Aucune formule disponible"
   },
   "products": {
@@ -183,7 +184,7 @@
     "allCategories": "Toutes les catégories",
     "price": "Prix",
     "fridayPickup": "Retrait vendredi",
-    "minDays": "{{days}}j min.",
+    "minDays": "{days}j min.",
     "onOrder": "Sur commande",
     "confirmationRequired": "Confirmation requise"
   },
@@ -250,7 +251,7 @@
     "selectNeighborhood": "Sélectionnez votre quartier",
     "timeSlot": "Créneau horaire",
     "individualNote": "Les gâteaux individuels sont disponibles uniquement le vendredi",
-    "plateauMinDays": "Minimum {{days}} jours à l'avance pour les plateaux",
+    "plateauMinDays": "Minimum {days} jours à l'avance pour les plateaux",
     "shabbat": "Shabbat",
     "lateOrder": "Commande tardive",
     "lateOrderNote": "Cette commande est sous réserve de disponibilité",
@@ -266,7 +267,7 @@
     "all": "Tout",
     "receptions": "Réceptions",
     "products": "Produits",
-    "openImage": "Ouvrir l'image: {{name}}",
+    "openImage": "Ouvrir l'image: {name}",
     "noImages": "Aucune image à afficher",
     "previousImage": "Image précédente",
     "nextImage": "Image suivante",
@@ -406,7 +407,7 @@
     "reorder": "Commander à nouveau",
     "reorderSuccess": "Articles ajoutés au panier",
     "reorderUnavailable": "Certains articles ne sont plus disponibles",
-    "itemsCount": "{{count}} article(s)",
+    "itemsCount": "{count} article(s)",
     "reorderConfirm": {
       "title": "Panier non vide",
       "message": "Votre panier contient déjà des articles. Que souhaitez-vous faire?",

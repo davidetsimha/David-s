@@ -27,6 +27,7 @@
     "certification": "הכשרות"
   },
   "common": {
+    "viewAll": "ראה הכל",
     "loading": "טוען...",
     "error": "אירעה שגיאה",
     "required": "שדה חובה",
@@ -169,11 +170,11 @@
     "description": "שתי פורמולות לכל סוג אירוע",
     "morning": "בוקר",
     "afternoon": "אחר הצהריים",
-    "minGuests": "מינימום {{count}} אורחים",
+    "minGuests": "מינימום {count} אורחים",
     "includes": "כולל",
     "cta": "מידע נוסף",
     "note": "הקמה, שירות, כלים, מפות ומשקאות כלולים. +900₪ מחוץ לירושלים.",
-    "whatsappMessage": "שלום, אני מעוניין/ת בפורמולה \"{{formula}}\" לאירוע שלי.",
+    "whatsappMessage": "שלום, אני מעוניין/ת בפורמולה \"{formula}\" לאירוע שלי.",
     "noFormulas": "אין פורמולות זמינות"
   },
   "products": {
@@ -183,7 +184,7 @@
     "allCategories": "כל הקטגוריות",
     "price": "מחיר",
     "fridayPickup": "איסוף יום שישי",
-    "minDays": "{{days}} ימים מינ.",
+    "minDays": "{days} ימים מינ.",
     "onOrder": "בהזמנה",
     "confirmationRequired": "דורש אישור"
   },
@@ -250,7 +251,7 @@
     "selectNeighborhood": "בחר את השכונה שלך",
     "timeSlot": "שעת איסוף",
     "individualNote": "עוגות אישיות זמינות רק ביום שישי",
-    "plateauMinDays": "מינימום {{days}} ימים מראש לפלטות",
+    "plateauMinDays": "מינימום {days} ימים מראש לפלטות",
     "shabbat": "שבת",
     "lateOrder": "הזמנה מאוחרת",
     "lateOrderNote": "הזמנה זו כפופה לזמינות",
@@ -266,7 +267,7 @@
     "all": "הכל",
     "receptions": "אירועים",
     "products": "מוצרים",
-    "openImage": "פתח תמונה: {{name}}",
+    "openImage": "פתח תמונה: {name}",
     "noImages": "אין תמונות להצגה",
     "previousImage": "תמונה קודמת",
     "nextImage": "תמונה הבאה",
@@ -406,7 +407,7 @@
     "reorder": "הזמן שוב",
     "reorderSuccess": "הפריטים נוספו לסל",
     "reorderUnavailable": "חלק מהפריטים אינם זמינים יותר",
-    "itemsCount": "{{count}} פריט(ים)",
+    "itemsCount": "{count} פריט(ים)",
     "reorderConfirm": {
       "title": "הסל לא ריק",
       "message": "הסל שלך כבר מכיל פריטים. מה תרצו לעשות?",
