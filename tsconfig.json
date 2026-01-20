@@ -1,7 +1,77 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "ES2022"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": [
+        "./*",
+        "./src/*"
+      ],
+      "@/components/*": [
+        "./src/components/*",
+        "./components/*"
+      ],
+      "@/lib/*": [
+        "./lib/*",
+        "./src/lib/*"
+      ],
+      "@/i18n/*": [
+        "./i18n/*",
+        "./src/i18n/*"
+      ],
+      "@/stores/*": [
+        "./src/stores/*"
+      ],
+      "@/types/*": [
+        "./src/types/*"
+      ],
+      "@/services/*": [
+        "./src/services/*"
+      ],
+      "@/hooks/*": [
+        "./src/hooks/*"
+      ]
+    },
+    "baseUrl": "."
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "supabase/functions",
+    "src/pages-old",
+    "src/components/cart",
+    "src/components/checkout",
+    "src/components/contact",
+    "src/components/gallery",
+    "src/components/home",
+    "src/components/layout",
+    "src/components/receptions",
+    "src/components/shabbat"
   ]
 }

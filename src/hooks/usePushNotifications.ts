@@ -10,7 +10,7 @@ import {
 } from '../services/push.service';
 
 // VAPID public key - should be set in environment variables
-const VAPID_PUBLIC_KEY = import.meta.env.VITE_VAPID_PUBLIC_KEY || '';
+const VAPID_PUBLIC_KEY = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || '';
 
 export interface UsePushNotificationsReturn {
   isSupported: boolean;

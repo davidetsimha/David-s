@@ -1,0 +1,421 @@
+{
+  "nav": {
+    "home": "דף הבית",
+    "about": "הסיפור שלנו",
+    "receptions": "אירועים",
+    "shabbat": "הזמנות שבת",
+    "gallery": "גלריה",
+    "faq": "שאלות נפוצות",
+    "contact": "צור קשר",
+    "ariaMain": "ניווט ראשי",
+    "ariaMobile": "ניווט נייד",
+    "ariaFooter": "ניווט תחתון",
+    "products": "מוצרים",
+    "shopHome": "מוצרים",
+    "requestQuote": "בקשת הצעת מחיר",
+    "myCart": "העגלה שלי",
+    "myOrders": "ההזמנות שלי",
+    "boutique": "חנות",
+    "events": "אירועים",
+    "ariaShopNav": "ניווט חנות",
+    "ariaEventsNav": "ניווט אירועים",
+    "switchToHebrew": "עברית",
+    "switchToFrench": "Français"
+  },
+  "ui": {
+    "excellenceArtisanale": "מצוינות אומנותית",
+    "certification": "הכשרות"
+  },
+  "common": {
+    "viewAll": "ראה הכל",
+    "loading": "טוען...",
+    "error": "אירעה שגיאה",
+    "required": "שדה חובה",
+    "optional": "אופציונלי",
+    "close": "סגור",
+    "decrease": "הפחת",
+    "increase": "הוסף",
+    "delete": "הסר",
+    "currency": "₪",
+    "free": "חינם",
+    "quantity": "כמות",
+    "all": "הכל",
+    "unavailable": "לא זמין",
+    "add": "הוסף",
+    "undo": "בטל",
+    "noProductsFound": "לא נמצאו מוצרים",
+    "questions": "שאלות?",
+    "thanksTitle": "תודה!",
+    "thanksMessage": "ניצור איתך קשר בהקדם",
+    "choose": "בחר...",
+    "next": "הבא",
+    "back": "חזרה",
+    "edit": "עריכה",
+    "menu": "תפריט",
+    "closeModal": "סגור חלון",
+    "contactWhatsApp": "צור קשר בוואטסאפ"
+  },
+  "home": {
+    "heroTitle": "אומנות הקונדיטוריה הצרפתית",
+    "heroSubtitle": "יצירות אומן בהשגחת בד״ץ בית יוסף",
+    "discoverBtn": "גלו את היצירות שלנו",
+    "orderBtn": "הזמינו לשבת",
+    "receptionsTitle": "אירועים וקבלות פנים",
+    "receptionsSubtitle": "הפכו את האירוע שלכם לרגע בלתי נשכח",
+    "shabbatTitle": "הזמנות שבת",
+    "shabbatSubtitle": "הזמינו עוגות ומאפים לשבת",
+    "viewProducts": "צפו בכל המוצרים",
+    "splitEvents": "אירועים",
+    "splitEventsSubtitle": "קייטרינג וקבלות פנים",
+    "splitEventsDesc": "חתונות, בר מצווה ואירועים בהתאמה אישית",
+    "splitShop": "חנות",
+    "splitShopSubtitle": "הזמינו לשבת",
+    "splitShopDesc": "חלות, מאפים ופינוקים עד הבית",
+    "scrollDown": "גלול"
+  },
+  "shabbat": {
+    "title": "הזמנות שבת",
+    "orderBefore": "הזמנה עד יום חמישי",
+    "subtitle": "מאפים טריים מוכנים לשבת שלכם"
+  },
+  "shop": {
+    "title": "חנות שבת",
+    "subtitle": "חלות, מאפים ופינוקים אומנותיים עד הבית בירושלים",
+    "orderBefore": "הזמינו עד חמישי בחצות",
+    "freeDelivery": "משלוח בירושלים",
+    "freshProducts": "מוצרים טריים",
+    "cartItems": "פריט(ים) בעגלה",
+    "viewCart": "צפה בעגלה",
+    "productsTitle": "המוצרים שלנו",
+    "productsSubtitle": "בחרו את המועדפים שלכם לשבת זו",
+    "howTo": {
+      "orderTitle": "הזמינו",
+      "orderDesc": "בצעו הזמנה עד חמישי בחצות למשלוח ביום שישי",
+      "prepareTitle": "הכנה",
+      "prepareDesc": "אנו מכינים את המוצרים שלכם טריים ביום המשלוח",
+      "deliverTitle": "משלוח",
+      "deliverDesc": "משלוח ביום שישי בירושלים, בזמן לשבת"
+    }
+  },
+  "receptions": {
+    "title": "קבלות פנים ואירועים",
+    "subtitle": "תנו לנו לארגן את האירוע שלכם",
+    "customEvents": "אירועים בהתאמה אישית",
+    "heroSubtitle": "יצירות קונדיטוריה יוצאות דופן לרגעים היקרים שלכם",
+    "ourCreations": "היצירות שלנו",
+    "quoteTitle": "בקשת הצעת מחיר",
+    "quoteSubtitle": "ספרו לנו על האירוע שלכם, נחזור אליכם בהקדם",
+    "eventTypes": {
+      "bar_mitzvah": "בר מצווה",
+      "bat_mitzvah": "בת מצווה",
+      "brit": "ברית מילה",
+      "private_party": "מסיבה פרטית"
+    },
+    "eventDesc": {
+      "bar_mitzvah": "חגיגת הרגע",
+      "bat_mitzvah": "יום מיוחד",
+      "brit": "קבלת פני החיים",
+      "private_party": "האירועים שלכם"
+    },
+    "quoteForm": {
+      "title": "בקשת הצעת מחיר",
+      "name": "שם מלא",
+      "email": "אימייל",
+      "phone": "טלפון",
+      "eventType": "סוג האירוע",
+      "eventDate": "תאריך האירוע",
+      "guestCount": "מספר אורחים",
+      "message": "הודעה (אופציונלי)",
+      "submit": "שלח בקשה",
+      "success": "הבקשה נשלחה בהצלחה!"
+    }
+  },
+  "events": {
+    "badge": "קייטרינג ואירועים",
+    "title": "ניצור יחד את האירוע שלכם",
+    "subtitle": "חתונות, בר/בת מצווה, ברית מילה וחגיגות בהתאמה אישית עם קונדיטוריה יוצאת מן הכלל",
+    "requestQuote": "בקשת הצעת מחיר",
+    "viewGallery": "צפו בגלריה",
+    "typesTitle": "אנחנו מלווים את כל האירועים שלכם",
+    "typesBadge": "החגיגות שלכם",
+    "ctaTitle": "מוכנים ליצור את האירוע שלכם?",
+    "ctaSubtitle": "צרו איתנו קשר כדי לדון בפרויקט שלכם ולקבל הצעת מחיר מותאמת אישית",
+    "creationsTitle": "היצירות שלנו",
+    "creationsSubtitle": "הצצה לאומנות שלנו",
+    "videoSection": {
+      "badge": "גלו",
+      "title": "העולם שלנו",
+      "subtitle": "היכנסו לאווירה של האירועים שלנו"
+    }
+  },
+  "quote": {
+    "badge": "הצעת מחיר חינם",
+    "title": "בקשת הצעת מחיר",
+    "subtitle": "ספרו לנו על האירוע שלכם וקבלו הצעה מותאמת תוך 48 שעות",
+    "formTitle": "ספרו לנו על הפרויקט שלכם",
+    "formSubtitle": "מלאו את הטופס להלן",
+    "contactTitle": "צריכים עזרה?",
+    "contactDesc": "הצוות שלנו זמין לענות על שאלותיכם",
+    "processTitle": "איך זה עובד?",
+    "step1Title": "שלחו את הבקשה",
+    "step1Desc": "מלאו את הטופס עם פרטי האירוע שלכם",
+    "step2Title": "אנחנו יוצרים קשר",
+    "step2Desc": "הצוות שלנו יחזור אליכם תוך 48 שעות לדיון בפרטים",
+    "step3Title": "קבלו את ההצעה",
+    "step3Desc": "הצעה מפורטת המותאמת לצרכים שלכם"
+  },
+  "formulas": {
+    "title": "הפורמולות שלנו",
+    "subtitle": "בחרו את הרגע",
+    "description": "שתי פורמולות לכל סוג אירוע",
+    "morning": "בוקר",
+    "afternoon": "אחר הצהריים",
+    "minGuests": "מינימום {count} אורחים",
+    "includes": "כולל",
+    "cta": "מידע נוסף",
+    "note": "הקמה, שירות, כלים, מפות ומשקאות כלולים. +900₪ מחוץ לירושלים.",
+    "whatsappMessage": "שלום, אני מעוניין/ת בפורמולה \"{formula}\" לאירוע שלי.",
+    "noFormulas": "אין פורמולות זמינות"
+  },
+  "products": {
+    "title": "המוצרים שלנו",
+    "addToCart": "הוסף לסל",
+    "outOfStock": "אזל מהמלאי",
+    "allCategories": "כל הקטגוריות",
+    "price": "מחיר",
+    "fridayPickup": "איסוף יום שישי",
+    "minDays": "{days} ימים מינ.",
+    "onOrder": "בהזמנה",
+    "confirmationRequired": "דורש אישור"
+  },
+  "cart": {
+    "title": "סל הקניות",
+    "yourCart": "סל הקניות שלך",
+    "empty": "הסל שלך ריק",
+    "emptyMessage": "גלו את המאפים הטעימים שלנו והוסיפו את המועדפים עליכם",
+    "subtotal": "סכום ביניים",
+    "checkout": "לתשלום",
+    "continueShopping": "המשך לקנות",
+    "remove": "הסר",
+    "quantity": "כמות",
+    "discoverProducts": "גלו את המוצרים שלנו",
+    "orderSummary": "סיכום הזמנה",
+    "delivery": "משלוח",
+    "deliveryCalculated": "יחושב בקופה",
+    "total": "סה\"כ",
+    "itemRemoved": "הפריט הוסר",
+    "viewMoreProducts": "צפה במוצרים נוספים"
+  },
+  "checkout": {
+    "title": "סיום ההזמנה",
+    "customerInfo": "הפרטים שלך",
+    "name": "שם מלא",
+    "email": "כתובת אימייל",
+    "phone": "מספר טלפון",
+    "deliveryMethod": "אופן משלוח",
+    "pickup": "איסוף עצמי",
+    "pickupSubtitle": "חינם - מוכן תוך 24 שעות",
+    "delivery": "משלוח עד הבית",
+    "deliverySubtitle": "החל מ-15 ₪",
+    "address": "כתובת למשלוח",
+    "deliveryNotes": "הוראות משלוח (אופציונלי)",
+    "notes": "הערות / הוראות מיוחדות",
+    "orderSummary": "ההזמנה שלך",
+    "subtotal": "סכום ביניים",
+    "deliveryFee": "משלוח",
+    "total": "סה\"כ",
+    "payNow": "לתשלום",
+    "confirmOrder": "אישור הזמנה",
+    "securePayment": "תשלום מאובטח ונתונים מוגנים",
+    "backToProducts": "חזרה למוצרים",
+    "emptyCart": "סל הקניות שלך ריק",
+    "paymentAccepted": "אמצעי תשלום",
+    "postalCode": "מיקוד",
+    "city": "עיר",
+    "orderNumber": "מספר הזמנה",
+    "orderCancelled": "ההזמנה בוטלה",
+    "retry": "נסה שוב",
+    "contactUs": "צור קשר",
+    "needHelp": "צריכים עזרה?",
+    "helpMessage": "אם נתקלתם בבעיה, אל תהססו לפנות אלינו.",
+    "success": {
+      "title": "ההזמנה אושרה!",
+      "message": "תודה על הזמנתך. תקבל אימייל אישור בקרוב."
+    },
+    "cancel": {
+      "title": "ההזמנה בוטלה",
+      "message": "ההזמנה בוטלה. הסל שלך נשמר."
+    },
+    "pickupDate": "תאריך איסוף",
+    "deliveryDate": "תאריך משלוח",
+    "selectNeighborhood": "בחר את השכונה שלך",
+    "timeSlot": "שעת איסוף",
+    "individualNote": "עוגות אישיות זמינות רק ביום שישי",
+    "plateauMinDays": "מינימום {days} ימים מראש לפלטות",
+    "shabbat": "שבת",
+    "lateOrder": "הזמנה מאוחרת",
+    "lateOrderNote": "הזמנה זו כפופה לזמינות",
+    "lateOrderShort": "הזמנה מאוחרת - כפופה לזמינות",
+    "plateauOrder": "הזמנת פלטה",
+    "plateauOrderNote": "בקשתך תישלח לצוות שלנו. ניצור איתך קשר תוך מספר שעות לאישור הזמינות ונשלח לך קישור לתשלום.",
+    "sendRequest": "שלח בקשה"
+  },
+  "gallery": {
+    "title": "גלריה",
+    "pageTitle": "הגלריה שלנו",
+    "pageSubtitle": "יצירות קונדיטוריה מעולות מהמטבח שלנו",
+    "all": "הכל",
+    "receptions": "אירועים",
+    "products": "מוצרים",
+    "openImage": "פתח תמונה: {name}",
+    "noImages": "אין תמונות להצגה",
+    "previousImage": "תמונה קודמת",
+    "nextImage": "תמונה הבאה",
+    "badge": "הפורטפוליו שלנו",
+    "subtitle": "גלו את היצירות שלנו לאירועים בלתי נשכחים",
+    "noResults": "אין יצירות בקטגוריה זו",
+    "filter": {
+      "all": "הכל",
+      "wedding": "בופה מתוק",
+      "bar_mitzvah": "בר מצווה",
+      "bat_mitzvah": "בת מצווה",
+      "brit": "ברית מילה",
+      "event": "אירועים"
+    }
+  },
+  "faq": {
+    "title": "שאלות נפוצות",
+    "pageTitle": "שאלות נפוצות",
+    "pageSubtitle": "תשובות לשאלות הנפוצות ביותר שלנו",
+    "contactCta": "לא מצאתם תשובה לשאלה שלכם?",
+    "contactLink": "צרו איתנו קשר",
+    "items": {
+      "kashrut": {
+        "question": "מה רמת הכשרות של המאפים?",
+        "answer": "כל המוצרים שלנו מיוצרים תחת השגחת בד״ץ בית יוסף ומחזיקים בתעודת כשרות מהודרת. אנו מקפידים על הפרדה מלאה בין חלבי לפרווה."
+      },
+      "delivery": {
+        "question": "האם יש אפשרות למשלוחים?",
+        "answer": "כן! אנו מבצעים משלוחים באזור ירושלים. ניתן גם לאסוף מהחנות במרכז ספיר 6."
+      },
+      "advance": {
+        "question": "כמה זמן מראש צריך להזמין?",
+        "answer": "להזמנות רגילות - לפחות 48 שעות מראש. לעוגות מיוחדות וקבלות פנים - לפחות שבוע מראש. בתקופות עמוסות כמו חגים, מומלץ להזמין מוקדם יותר."
+      },
+      "hours": {
+        "question": "מהם שעות הפעילות של החנות?",
+        "answer": "החנות פתוחה ביום חמישי 14:00-20:00, שישי וערבי חג 8:30-13:30. בהזמנה מראש בימי חול."
+      },
+      "shabbatDeadline": {
+        "question": "עד מתי אפשר להזמין לשבת?",
+        "answer": "הכי טוב להזמין עד יום רביעי. יש לנו חנות, אז העוגות זמינות לפי המלאי."
+      },
+      "eventAdvance": {
+        "question": "כמה זמן מראש צריך להזמין לאירוע?",
+        "answer": "שבוע מראש זה הכי טוב!"
+      }
+    }
+  },
+  "contact": {
+    "title": "צור קשר",
+    "pageTitle": "צרו קשר",
+    "pageSubtitle": "נשמח לשמוע מכם ולעזור בכל שאלה",
+    "detailsTitle": "פרטי התקשרות",
+    "formTitle": "שלחו לנו הודעה",
+    "address": "כתובת",
+    "phone": "טלפון",
+    "email": "אימייל",
+    "hours": "שעות פעילות",
+    "form": {
+      "name": "שם",
+      "nameLabel": "שם מלא",
+      "namePlaceholder": "ישראל ישראלי",
+      "email": "אימייל",
+      "emailPlaceholder": "exemple@email.com",
+      "phoneLabel": "טלפון (אופציונלי)",
+      "phonePlaceholder": "050-0000000",
+      "message": "הודעה",
+      "messagePlaceholder": "כתבו לנו את הודעתכם...",
+      "submit": "שלח הודעה",
+      "success": "תודה על פנייתך!",
+      "successMessage": "נחזור אליך בהקדם האפשרי.",
+      "nameError": "נא להזין שם מלא",
+      "emailError": "נא להזין כתובת אימייל תקינה",
+      "phoneError": "נא להזין מספר טלפון תקין",
+      "messageError": "ההודעה צריכה להכיל לפחות 10 תווים"
+    },
+    "info": {
+      "address": "כתובת",
+      "addressValue": "מרכז ספיר 6, ירושלים",
+      "phone": "טלפון",
+      "phoneValue": "058-781-9457 (דוד) | 058-749-5876 (טל)",
+      "email": "אימייל",
+      "emailValue": "info@davids-patisserie.co.il",
+      "hours": "שעות פעילות",
+      "hoursValue": "חמישי 14:00-20:00 | שישי וערבי חג 8:30-13:30 | בהזמנה מראש בימי חול"
+    }
+  },
+  "footer": {
+    "rights": "כל הזכויות שמורות",
+    "certification": "בהשגחת בד״ץ בית יוסף",
+    "delivery": "משלוחים בירושלים בלבד",
+    "address": "מרכז ספיר 6, ירושלים",
+    "phone": "058-781-9457",
+    "email": "info@davids-patisserie.co.il"
+  },
+  "notFound": {
+    "title": "הדף לא נמצא",
+    "message": "הדף שאתם מחפשים לא קיים.",
+    "backHome": "חזרה לדף הבית"
+  },
+  "whatsapp": {
+    "message": "שלום, אשמח לקבל מידע נוסף..."
+  },
+  "about": {
+    "title": "הסיפור שלנו",
+    "pageTitle": "הסיפור שלנו",
+    "pageSubtitle": "התשוקה לקונדיטוריה צרפתית מההתחלה",
+    "chefName": "דוד אזולאי",
+    "story": {
+      "paragraph1": "דוד אזולאי גילה את התשוקה שלו לקונדיטוריה בגיל צעיר מאוד. הוא התחיל את הכשרתו אצל קייטרינג עץ החיים: גב' ויזמן, מקצוענית שעבדה גם עם שפים מפורסמים מלה נוטר ובתי קונדיטוריה גדולים אחרים בפריז וכן במלונות יוקרה.",
+      "paragraph2": "לאחר תקופה מכוננת זו, דוד הצטרף למאפיית מורסיאנו בסן פול שם שיכלל את כישוריו, למד דיוק ופיתח הערכה עמוקה לאומנות איכותית.",
+      "paragraph3": "עם הגיעו לישראל, דוד ומשפחתו הגשימו את חלומם לפתוח את David's Patisserie - מקום שבו הוא יכול לבטא את היצירתיות שלו ולהעניק לאנשים חוויה אותנטית.",
+      "paragraph4": "הגישה שלו משלבת את המסורות של הקונדיטוריה הצרפתית עם פרספקטיבה מודרנית, נדיבה ומלאת נשמה. הוא מוכר בזכות האקלרים לקפה שלו והקרם פטיסייר העשיר והקטיפתי שלו. הטריות היא הסוד האמיתי של היצירות שלו."
+    },
+    "signature": "— דוד אזולאי, שף קונדיטור"
+  },
+  "admin": {
+    "whatsapp": {
+      "orderConfirmed": "ההזמנה אושרה",
+      "orderRejected": "ההזמנה נדחתה",
+      "contactViaWhatsApp": "צור קשר עם הלקוח בוואטסאפ:",
+      "sendViaWhatsApp": "שלח בוואטסאפ",
+      "french": "Français",
+      "hebrew": "עברית"
+    }
+  },
+  "orderHistory": {
+    "title": "ההזמנות שלי",
+    "enterEmail": "הזינו את האימייל שלכם כדי לראות את ההזמנות",
+    "search": "חיפוש",
+    "noOrders": "לא נמצאו הזמנות",
+    "orderDate": "תאריך הזמנה",
+    "pickupDate": "תאריך איסוף",
+    "items": "פריטים",
+    "total": "סה\"כ",
+    "status": "סטטוס",
+    "reorder": "הזמן שוב",
+    "reorderSuccess": "הפריטים נוספו לסל",
+    "reorderUnavailable": "חלק מהפריטים אינם זמינים יותר",
+    "itemsCount": "{count} פריט(ים)",
+    "reorderConfirm": {
+      "title": "הסל לא ריק",
+      "message": "הסל שלך כבר מכיל פריטים. מה תרצו לעשות?",
+      "replace": "החלף את הסל",
+      "replaceDesc": "רוקן את הסל והוסף פריטים אלה",
+      "merge": "מזג",
+      "mergeDesc": "הוסף פריטים אלה לסל הקיים",
+      "cancel": "ביטול"
+    }
+  }
+}

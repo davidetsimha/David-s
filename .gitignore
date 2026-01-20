@@ -33,3 +33,5 @@ photos-extracted/
 
 # PDF files
 *.pdf
+.next
+.env*.local
