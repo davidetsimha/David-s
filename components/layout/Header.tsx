@@ -26,20 +26,31 @@ export function Header() {
   const { totalItems, openCart } = useCartStore();
   const [isScrolled, setIsScrolled] = useState(false);
 
+  // Remove locale prefix from pathname for comparison
+  const pathWithoutLocale = pathname.replace(`/${locale}`, '') || '/';
+  const isHomePage = pathWithoutLocale === '/';
+
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    const handleScroll = () => {
+      // Use higher threshold for homepage (100px) vs other pages (20px)
+      const threshold = isHomePage ? 100 : 20;
+      setIsScrolled(window.scrollY > threshold);
+    };
     window.addEventListener('scroll', handleScroll, { passive: true });
+    // Check initial scroll position
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isHomePage]);
 
   const itemCount = totalItems();
 
-  // Remove locale prefix from pathname for comparison
-  const pathWithoutLocale = pathname.replace(`/${locale}`, '') || '/';
+  // Header is visible when: not on homepage OR scrolled past threshold
+  const isHeaderVisible = !isHomePage || isScrolled;
 
   return (
-    <header className={`fixed top-0 inset-x-0 z-40 transition-all duration-200
-      ${isScrolled ? 'bg-cream-50/95 backdrop-blur-md shadow-sm' : 'bg-transparent'}`}>
+    <header className={`fixed top-0 inset-x-0 z-40 transition-all duration-300
+      ${isScrolled ? 'bg-cream-50/95 backdrop-blur-md shadow-sm' : 'bg-transparent'}
+      ${isHeaderVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16 md:h-20">
           <div className="flex items-center gap-3">

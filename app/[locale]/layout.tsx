@@ -7,6 +7,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { MobileMenu } from '@/components/layout/MobileMenu';
 import { CartDrawer } from '@/components/cart/CartDrawer';
+import { ClientLayout } from '@/components/layout/ClientLayout';
 
 type Props = {
   children: React.ReactNode;
@@ -68,11 +69,13 @@ export default async function LocaleLayout({ children, params }: Props) {
     <html lang={locale} dir={dir} suppressHydrationWarning>
       <body>
         <NextIntlClientProvider messages={messages}>
-          <Header />
-          <MobileMenu />
-          <CartDrawer />
-          <main>{children}</main>
-          <Footer />
+          <ClientLayout>
+            <Header />
+            <MobileMenu />
+            <CartDrawer />
+            <main>{children}</main>
+            <Footer />
+          </ClientLayout>
         </NextIntlClientProvider>
       </body>
     </html>
