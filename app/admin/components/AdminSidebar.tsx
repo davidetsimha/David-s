@@ -10,17 +10,15 @@ import {
   MessageSquare,
   LogOut,
   X,
-  FolderTree,
   Settings,
   Mail,
   Users,
   MapPin,
   UtensilsCrossed,
-  Image,
-  HelpCircle,
   type LucideIcon
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { ConfirmModal } from './ConfirmModal'
 
 interface NavItem {
   href: string
@@ -45,7 +43,6 @@ const navGroups: NavGroup[] = [
     label: 'Catalogue',
     items: [
       { href: '/admin/products', icon: Package, label: 'Produits' },
-      { href: '/admin/categories', icon: FolderTree, label: 'Categories' },
       { href: '/admin/formulas', icon: UtensilsCrossed, label: 'Formules' },
     ],
   },
@@ -61,13 +58,6 @@ const navGroups: NavGroup[] = [
     items: [
       { href: '/admin/messages', icon: Mail, label: 'Messages' },
       { href: '/admin/customers', icon: Users, label: 'Clients' },
-    ],
-  },
-  {
-    label: 'Contenu',
-    items: [
-      { href: '/admin/media', icon: Image, label: 'Medias' },
-      { href: '/admin/faq', icon: HelpCircle, label: 'FAQ' },
     ],
   },
   {
@@ -114,7 +104,7 @@ export function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
       <aside
         className={`
           fixed inset-y-0 start-0 w-64 bg-white border-e border-gray-100
-          flex flex-col z-50 shadow-sm
+          flex flex-col z-50 shadow-soft
           transform transition-transform duration-300 ease-in-out
           lg:translate-x-0
           ${isOpen ? 'translate-x-0' : '-translate-x-full'}
@@ -123,12 +113,12 @@ export function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
         {/* Header */}
         <div className="h-16 px-5 flex items-center justify-between border-b border-gray-100">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-sm">
-              <span className="font-serif text-white text-base font-semibold">D</span>
+            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center shadow-soft">
+              <span className="font-display text-white text-base font-semibold">D</span>
             </div>
             <div>
-              <h1 className="font-serif text-gray-900 text-base leading-tight">David's</h1>
-              <p className="text-[10px] text-gray-400 tracking-[0.15em] uppercase">Admin</p>
+              <h1 className="font-display text-gray-900 text-base leading-tight">David's</h1>
+              <p className="text-[10px] text-gray-400 tracking-[0.15em] uppercase">Patisserie</p>
             </div>
           </div>
           <button
@@ -159,12 +149,12 @@ export function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
                         flex items-center gap-3 px-3 py-2.5 rounded-lg
                         transition-all duration-150 group
                         ${active
-                          ? 'bg-amber-50 text-amber-700 font-medium'
+                          ? 'bg-gold-50 text-gold-700 font-medium'
                           : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                         }
                       `}
                     >
-                      <Icon className={`w-[18px] h-[18px] transition-colors ${active ? 'text-amber-600' : 'text-gray-400 group-hover:text-gray-500'}`} />
+                      <Icon className={`w-[18px] h-[18px] transition-colors ${active ? 'text-gold-600' : 'text-gray-400 group-hover:text-gray-500'}`} />
                       <span className="text-sm">{label}</span>
                     </Link>
                   )
@@ -188,31 +178,15 @@ export function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
         </div>
       </aside>
 
-      {/* Inline logout confirmation modal */}
-      {logoutConfirm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-sm p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-2">Deconnexion</h2>
-            <p className="text-sm text-gray-500 mb-4">
-              Etes-vous sur de vouloir vous deconnecter ?
-            </p>
-            <div className="flex gap-3">
-              <button
-                onClick={() => setLogoutConfirm(false)}
-                className="flex-1 py-2 text-sm text-gray-600 hover:text-gray-900 border border-gray-200 rounded-lg"
-              >
-                Annuler
-              </button>
-              <button
-                onClick={handleLogout}
-                className="flex-1 py-2 text-sm text-white bg-red-500 hover:bg-red-600 rounded-lg"
-              >
-                Deconnexion
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmModal
+        open={logoutConfirm}
+        onClose={() => setLogoutConfirm(false)}
+        onConfirm={handleLogout}
+        title="Deconnexion"
+        message="Etes-vous sur de vouloir vous deconnecter ?"
+        confirmText="Deconnexion"
+        variant="danger"
+      />
     </>
   )
 }
