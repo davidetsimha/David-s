@@ -11,6 +11,13 @@ import {
   LogOut,
   X,
   FolderTree,
+  Settings,
+  Mail,
+  Users,
+  MapPin,
+  UtensilsCrossed,
+  Image,
+  HelpCircle,
   type LucideIcon
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
@@ -39,6 +46,7 @@ const navGroups: NavGroup[] = [
     items: [
       { href: '/admin/products', icon: Package, label: 'Produits' },
       { href: '/admin/categories', icon: FolderTree, label: 'Categories' },
+      { href: '/admin/formulas', icon: UtensilsCrossed, label: 'Formules' },
     ],
   },
   {
@@ -46,6 +54,27 @@ const navGroups: NavGroup[] = [
     items: [
       { href: '/admin/orders', icon: ShoppingBag, label: 'Commandes' },
       { href: '/admin/quotes', icon: MessageSquare, label: 'Devis' },
+    ],
+  },
+  {
+    label: 'Relations',
+    items: [
+      { href: '/admin/messages', icon: Mail, label: 'Messages' },
+      { href: '/admin/customers', icon: Users, label: 'Clients' },
+    ],
+  },
+  {
+    label: 'Contenu',
+    items: [
+      { href: '/admin/media', icon: Image, label: 'Medias' },
+      { href: '/admin/faq', icon: HelpCircle, label: 'FAQ' },
+    ],
+  },
+  {
+    label: 'Configuration',
+    items: [
+      { href: '/admin/delivery-zones', icon: MapPin, label: 'Zones livraison' },
+      { href: '/admin/settings', icon: Settings, label: 'Parametres' },
     ],
   },
 ]
