@@ -35,17 +35,17 @@ const sortOptions: SortOption[] = [
   { value: 'name_asc', label: 'Nom A-Z', key: 'name', direction: 'asc' },
   { value: 'name_desc', label: 'Nom Z-A', key: 'name', direction: 'desc' },
   { value: 'price_asc', label: 'Prix croissant', key: 'price', direction: 'asc' },
-  { value: 'price_desc', label: 'Prix decroissant', key: 'price', direction: 'desc' },
+  { value: 'price_desc', label: 'Prix décroissant', key: 'price', direction: 'desc' },
 ]
 
 const availabilityOptions = [
   { value: 'all', label: 'Tous les statuts' },
   { value: 'available', label: 'Disponible' },
-  { value: 'hidden', label: 'Masque' },
+  { value: 'hidden', label: 'Masqué' },
 ]
 
 const groupByOptions = [
-  { value: 'category', label: 'Par categorie' },
+  { value: 'category', label: 'Par catégorie' },
   { value: 'product_type', label: 'Par type (plateau/individuel)' },
 ]
 
@@ -132,7 +132,7 @@ export default function AdminProducts() {
   }, [products, search, categoryFilter, availabilityFilter, currentSort])
 
   const categoryOptions = [
-    { value: '', label: 'Toutes les categories' },
+    { value: '', label: 'Toutes les catégories' },
     ...(categories?.map(c => ({ value: c.id, label: c.name_fr })) ?? []),
   ]
 
@@ -145,12 +145,12 @@ export default function AdminProducts() {
     if (editProduct) {
       updateMutation.mutate({ id: editProduct.id, data }, {
         onSuccess: closeModal,
-        onError: (err) => setError(err instanceof Error ? err.message : 'Erreur lors de la mise a jour'),
+        onError: (err) => setError(err instanceof Error ? err.message : 'Erreur lors de la mise à jour'),
       })
     } else {
       createMutation.mutate(data, {
         onSuccess: closeModal,
-        onError: (err) => setError(err instanceof Error ? err.message : 'Erreur lors de la creation'),
+        onError: (err) => setError(err instanceof Error ? err.message : 'Erreur lors de la création'),
       })
     }
   }
@@ -285,7 +285,7 @@ export default function AdminProducts() {
                   : 'border-gray-200 text-gray-600 hover:bg-gray-50'
                 }
               `}
-              title="Mode selection"
+              title="Mode sélection"
             >
               <Checkbox
                 checked={selectionMode}
@@ -314,7 +314,7 @@ export default function AdminProducts() {
               <button
                 onClick={() => setViewMode('grouped')}
                 className={`p-1.5 rounded-md transition-colors ${viewMode === 'grouped' ? 'bg-gray-100 text-gray-900' : 'text-gray-400 hover:text-gray-600'}`}
-                aria-label="Vue groupee"
+                aria-label="Vue groupée"
               >
                 <Layers className="w-4 h-4" />
               </button>
@@ -329,11 +329,11 @@ export default function AdminProducts() {
                 indeterminate={isIndeterminate}
                 onChange={handleToggleAll}
                 size="sm"
-                label={isAllSelected ? 'Tout deselectionner' : 'Tout selectionner'}
+                label={isAllSelected ? 'Tout désélectionner' : 'Tout sélectionner'}
               />
               {selection.selectedCount > 0 && (
                 <span className="text-sm text-gold-600 font-medium">
-                  {selection.selectedCount} selectionne{selection.selectedCount > 1 ? 's' : ''}
+                  {selection.selectedCount} sélectionné{selection.selectedCount > 1 ? 's' : ''}
                 </span>
               )}
             </div>
@@ -363,7 +363,7 @@ export default function AdminProducts() {
                   value={categoryFilter}
                   onChange={(e) => setCategoryFilter(e.target.value)}
                   selectSize="sm"
-                  placeholder="Categorie"
+                  placeholder="Catégorie"
                 />
               </div>
               <div className="w-40">
@@ -390,7 +390,7 @@ export default function AdminProducts() {
                   }}
                   className="text-sm text-gray-500 hover:text-gray-700 underline"
                 >
-                  Reinitialiser
+                  Réinitialiser
                 </button>
               )}
             </div>
@@ -414,7 +414,7 @@ export default function AdminProducts() {
             ))
           ) : filteredProducts.length === 0 ? (
             <div className="col-span-full py-12 text-center">
-              <p className="text-sm text-gray-500">Aucun produit trouve</p>
+              <p className="text-sm text-gray-500">Aucun produit trouvé</p>
             </div>
           ) : (
             filteredProducts.map((product) => (
@@ -493,7 +493,7 @@ export default function AdminProducts() {
         onClose={() => setDeleteId(null)}
         onConfirm={handleDelete}
         title="Supprimer le produit"
-        message="Etes-vous sur de vouloir supprimer ce produit ? Cette action est irreversible."
+        message="Êtes-vous sûr de vouloir supprimer ce produit ? Cette action est irréversible."
         confirmText="Supprimer"
         loading={deleteMutation.isPending}
       />

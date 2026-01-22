@@ -22,9 +22,9 @@ type SortOrder = 'asc' | 'desc'
 
 const STATUS_LABELS: Record<OrderStatus, string> = {
   pending: 'En attente',
-  confirmed: 'Confirmee',
-  completed: 'Terminee',
-  cancelled: 'Annulee',
+  confirmed: 'Confirmée',
+  completed: 'Terminée',
+  cancelled: 'Annulée',
 }
 
 const STATUS_COLORS: Record<OrderStatus, string> = {
@@ -131,7 +131,7 @@ export default function AdminCustomersPage() {
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Rechercher par nom, email ou telephone..."
+          placeholder="Rechercher par nom, email ou téléphone..."
           className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gold-500/20 focus:border-gold-500"
         />
       </div>
@@ -144,7 +144,7 @@ export default function AdminCustomersPage() {
         <Card className="text-center py-12">
           <User className="w-12 h-12 mx-auto text-gray-300 mb-3" />
           <p className="text-gray-500">
-            {search ? 'Aucun client trouve' : 'Aucun client pour le moment'}
+            {search ? 'Aucun client trouvé' : 'Aucun client pour le moment'}
           </p>
         </Card>
       ) : (
@@ -185,7 +185,7 @@ export default function AdminCustomersPage() {
                     onClick={() => handleSort('last_order_date')}
                     className="flex items-center gap-1 hover:text-gray-900 ml-auto"
                   >
-                    Derniere cmd
+                    Dernière cmd
                     <ArrowUpDown className="w-4 h-4" />
                   </button>
                 </th>
@@ -276,7 +276,7 @@ function CustomerDetailModal({
   }
 
   return (
-    <Modal open={true} onClose={onClose} title="Detail client">
+    <Modal open={true} onClose={onClose} title="Détail client">
       <div className="space-y-6">
         {/* Customer Info */}
         <div className="flex items-start gap-4 pb-4 border-b">

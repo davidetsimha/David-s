@@ -9,7 +9,7 @@ const EVENT_LABELS: Record<string, string> = {
   bar_mitzvah: 'Bar Mitzvah',
   bat_mitzvah: 'Bat Mitzvah',
   brit: 'Brit Mila',
-  private_party: 'Fete privee',
+  private_party: 'Fête privée',
 }
 
 const COLORS = [
@@ -51,8 +51,8 @@ export function EventTypeChart() {
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h3 className="text-sm font-medium text-gray-500">Types d&apos;evenements</h3>
-          <p className="text-xs text-gray-400 mt-0.5">Repartition des devis</p>
+          <h3 className="text-sm font-medium text-gray-500">Types d&apos;événements</h3>
+          <p className="text-xs text-gray-400 mt-0.5">Répartition des devis</p>
         </div>
         <div className="p-2 bg-gray-50 rounded-lg">
           <Calendar className="w-5 h-5 text-gray-400" />

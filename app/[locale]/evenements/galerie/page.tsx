@@ -12,12 +12,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const t = await getTranslations({ locale, namespace: 'gallery' });
 
   const titles: Record<string, string> = {
-    fr: "Galerie Evenements | David's Patisserie",
+    fr: "Galerie Événements | David's Pâtisserie",
     he: "גלריית אירועים | David's Patisserie",
   };
 
   const descriptions: Record<string, string> = {
-    fr: 'Decouvrez nos creations patissieres pour evenements: buffets, gateaux de celebration, pieces montees. Inspiration pour vos Bar/Bat Mitzvah, Brit et fetes.',
+    fr: 'Découvrez nos créations pâtissières pour événements: buffets, gâteaux de célébration, pièces montées. Inspiration pour vos Bar/Bat Mitzvah, Brit et fêtes.',
     he: 'צפו ביצירות הקונדיטוריה שלנו לאירועים: מזנונים, עוגות חגיגיות, מגדלי מאפים. השראה לבר/בת מצווה, ברית וחגיגות.',
   };
 

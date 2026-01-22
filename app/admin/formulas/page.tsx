@@ -13,12 +13,12 @@ import { useEventFormulas, useUpdateEventFormula } from '@/hooks/useFormulas'
 import type { EventFormula } from '@/types'
 
 const schema = z.object({
-  name_fr: z.string().min(1, 'Le nom en francais est requis'),
-  name_he: z.string().min(1, 'Le nom en hebreu est requis'),
-  tagline_fr: z.string().min(1, 'Le slogan en francais est requis'),
-  tagline_he: z.string().min(1, 'Le slogan en hebreu est requis'),
-  price: z.coerce.number().min(0, 'Le prix doit etre positif'),
-  min_guests: z.coerce.number().min(1, 'Le minimum d\'invites est requis'),
+  name_fr: z.string().min(1, 'Le nom en français est requis'),
+  name_he: z.string().min(1, 'Le nom en hébreu est requis'),
+  tagline_fr: z.string().min(1, 'Le slogan en français est requis'),
+  tagline_he: z.string().min(1, 'Le slogan en hébreu est requis'),
+  price: z.coerce.number().min(0, 'Le prix doit être positif'),
+  min_guests: z.coerce.number().min(1, 'Le minimum d\'invités est requis'),
   image_url: z.string().nullable(),
   includes_fr: z.array(z.object({ value: z.string() })),
   includes_he: z.array(z.object({ value: z.string() })),
@@ -111,7 +111,7 @@ export default function AdminFormulasPage() {
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-2">
               <span className="px-2 py-0.5 bg-gold-100 text-gold-700 text-xs font-medium rounded">
-                {formula.time_slot === 'morning' ? 'Matin' : 'Apres-midi'}
+                {formula.time_slot === 'morning' ? 'Matin' : 'Après-midi'}
               </span>
             </div>
             <h3 className="font-display text-lg text-gray-900">{formula.name_fr}</h3>
@@ -120,7 +120,7 @@ export default function AdminFormulasPage() {
           </div>
           <div className="text-right">
             <p className="font-display text-2xl text-gold-600">{formula.price} ₪</p>
-            <p className="text-xs text-gray-500">min. {formula.min_guests} invites</p>
+            <p className="text-xs text-gray-500">min. {formula.min_guests} invités</p>
           </div>
         </div>
 
@@ -155,8 +155,8 @@ export default function AdminFormulasPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-2xl lg:text-3xl text-gray-900">Formules Evenements</h1>
-        <p className="text-gray-500 mt-1">Modifiez les 6 formules proposees pour les evenements</p>
+        <h1 className="font-display text-2xl lg:text-3xl text-gray-900">Formules Événements</h1>
+        <p className="text-gray-500 mt-1">Modifiez les 6 formules proposées pour les événements</p>
       </div>
 
       {isLoading ? (
@@ -166,9 +166,9 @@ export default function AdminFormulasPage() {
       ) : formulas?.length === 0 ? (
         <Card className="text-center py-12">
           <UtensilsCrossed className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-          <p className="text-gray-500">Aucune formule trouvee.</p>
+          <p className="text-gray-500">Aucune formule trouvée.</p>
           <p className="text-sm text-gray-400 mt-2">
-            Executez la migration pour ajouter les formules.
+            Exécutez la migration pour ajouter les formules.
           </p>
         </Card>
       ) : (
@@ -194,7 +194,7 @@ export default function AdminFormulasPage() {
               <span className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
                 <span className="text-orange-600">☼</span>
               </span>
-              Formules Apres-midi
+              Formules Après-midi
             </h2>
             <div className="grid gap-4 md:grid-cols-3">
               {afternoonFormulas.map((formula) => (
@@ -248,7 +248,7 @@ export default function AdminFormulasPage() {
               error={errors.price?.message}
             />
             <Input
-              label="Min. invites"
+              label="Min. invités"
               type="number"
               {...register('min_guests')}
               error={errors.min_guests?.message}
@@ -264,7 +264,7 @@ export default function AdminFormulasPage() {
                   <input
                     {...register(`includes_fr.${index}.value`)}
                     className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500/20 focus:border-gold-500 text-sm"
-                    placeholder="Element inclus..."
+                    placeholder="Élément inclus..."
                   />
                   <button
                     type="button"
@@ -280,7 +280,7 @@ export default function AdminFormulasPage() {
                 onClick={() => appendIncludeFr({ value: '' })}
                 className="text-sm text-gold-600 hover:text-gold-700 flex items-center gap-1"
               >
-                <Plus className="w-4 h-4" /> Ajouter un element
+                <Plus className="w-4 h-4" /> Ajouter un élément
               </button>
             </div>
           </div>
@@ -311,7 +311,7 @@ export default function AdminFormulasPage() {
                 onClick={() => appendIncludeHe({ value: '' })}
                 className="text-sm text-gold-600 hover:text-gold-700 flex items-center gap-1"
               >
-                <Plus className="w-4 h-4" /> Ajouter un element
+                <Plus className="w-4 h-4" /> Ajouter un élément
               </button>
             </div>
           </div>

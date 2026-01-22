@@ -162,11 +162,11 @@ export function SplitScreenHero() {
       <SplitSection
         side="right"
         title={t('home.splitShop') || 'Boutique'}
-        subtitle={t('home.splitShopSubtitle') || 'Commandez pour Shabbat'}
-        description={t('home.splitShopDesc') || 'Challot, pâtisseries & délices livrés chez vous'}
+        subtitle={t('home.splitShopSubtitle') || 'Commandez pour Chabbat'}
+        description={t('home.splitShopDesc') || 'Pâtisseries & délices livrés chez vous'}
         image="/images/boutique-hero.jpg"
         href={`/${locale}/boutique`}
-        cta={t('home.orderBtn') || 'Commander pour Shabbat'}
+        cta={t('home.orderBtn') || 'Commander pour Chabbat'}
         delay={0.15}
       />
 

@@ -28,15 +28,15 @@ const eventLabels: Record<string, string> = {
   bar_mitzvah: 'Bar Mitzvah',
   bat_mitzvah: 'Bat Mitzvah',
   brit: 'Brit Mila',
-  private_party: 'Fete privee',
+  private_party: 'Fête privée',
 }
 
 const statusLabels: Record<QuoteStatus, string> = {
   new: 'nouveau',
   contacted: 'en cours', // legacy
-  quoted: 'devis envoye', // legacy
-  confirmed: 'confirme',
-  rejected: 'rejete',
+  quoted: 'devis envoyé', // legacy
+  confirmed: 'confirmé',
+  rejected: 'rejeté',
 }
 
 export function QuoteDetails({ quote, open, onClose, onStatusChange }: QuoteDetailsProps) {
@@ -87,7 +87,7 @@ export function QuoteDetails({ quote, open, onClose, onStatusChange }: QuoteDeta
           <h4 className="font-semibold text-gray-900">{eventLabels[quote.event_type] || quote.event_type}</h4>
           <div className="flex items-center gap-4 text-sm text-gray-600">
             <span className="flex items-center gap-1"><Calendar className="w-4 h-4" /> {eventDate}</span>
-            <span className="flex items-center gap-1"><Users className="w-4 h-4" /> {quote.guest_count} invites</span>
+            <span className="flex items-center gap-1"><Users className="w-4 h-4" /> {quote.guest_count} invités</span>
           </div>
         </div>
 

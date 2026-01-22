@@ -14,7 +14,7 @@ export function AboutContent() {
         <div className="flex flex-col items-center mb-10">
           <div className="w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden border-4 border-gold-200 shadow-lg mb-6">
             <Image
-              src="https://davids-patisserie.co.il/wp-content/uploads/2025/12/4300-2.png"
+              src="/images/david-chef.jpg"
               alt={t('chefName')}
               width={224}
               height={224}

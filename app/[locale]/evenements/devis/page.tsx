@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 
   const descriptions: Record<string, string> = {
-    fr: 'Demandez un devis gratuit pour votre evenement: Bar/Bat Mitzvah, Brit Mila, mariage ou fete privee. Reponse personnalisee sous 48h.',
+    fr: 'Demandez un devis gratuit pour votre événement: Bar/Bat Mitzvah, Brit Mila, mariage ou fête privée. Réponse personnalisée sous 48h.',
     he: 'בקשו הצעת מחיר חינם לאירוע שלכם: בר/בת מצווה, ברית מילה, חתונה או אירוע פרטי. מענה מותאם אישית תוך 48 שעות.',
   };
 

@@ -33,16 +33,16 @@ export function EventsHomeContent() {
             border border-gold-400/30 rounded-full mb-6">
             <Sparkles className="w-4 h-4 text-gold-300" />
             <span className="text-sm font-medium text-gold-200">
-              {t('events.badge', { defaultValue: 'Traiteur & Receptions' })}
+              {t('events.badge', { defaultValue: 'Traiteur & Réceptions' })}
             </span>
           </div>
 
           <h1 className="font-display text-4xl md:text-6xl text-white mb-4">
-            {t('events.title', { defaultValue: 'Creons ensemble votre evenement' })}
+            {t('events.title', { defaultValue: 'Créons ensemble votre événement' })}
           </h1>
 
           <p className="text-lg md:text-xl text-cream-100/90 max-w-2xl mx-auto mb-8">
-            {t('events.subtitle', { defaultValue: "Mariages, Bar/Bat Mitzvah, Brit Mila et celebrations sur mesure avec une patisserie d'exception" })}
+            {t('events.subtitle', { defaultValue: "Mariages, Bar/Bat Mitzvah, Brit Mila et célébrations sur mesure avec une pâtisserie d'exception" })}
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -104,10 +104,10 @@ export function EventsHomeContent() {
       <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="font-display text-3xl md:text-4xl text-stone-900 mb-4">
-            {t('events.ctaTitle', { defaultValue: 'Pret a creer votre evenement ?' })}
+            {t('events.ctaTitle', { defaultValue: 'Prêt à créer votre événement ?' })}
           </h2>
           <p className="text-stone-600 mb-8 max-w-xl mx-auto">
-            {t('events.ctaSubtitle', { defaultValue: 'Contactez-nous pour discuter de votre projet et recevoir un devis personnalise' })}
+            {t('events.ctaSubtitle', { defaultValue: 'Contactez-nous pour discuter de votre projet et recevoir un devis personnalisé' })}
           </p>
           <Link
             href="/evenements/devis"

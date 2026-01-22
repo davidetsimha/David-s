@@ -14,23 +14,23 @@ import { useCategories } from '@/hooks/useCategories'
 import type { Product } from '@/types'
 
 const productTypeOptions = [
-  { value: 'individual', label: 'Gateau individuel (retrait vendredi)' },
-  { value: 'plateau', label: 'Plateau / Grand gateau (sur commande)' },
+  { value: 'individual', label: 'Gâteau individuel (retrait vendredi)' },
+  { value: 'plateau', label: 'Plateau / Grand gâteau (sur commande)' },
 ]
 
 const schema = z.object({
-  name_fr: z.string().min(1, 'Le nom en francais est requis'),
-  name_he: z.string().min(1, 'Le nom en hebreu est requis'),
+  name_fr: z.string().min(1, 'Le nom en français est requis'),
+  name_he: z.string().min(1, 'Le nom en hébreu est requis'),
   description_fr: z.string().optional(),
   description_he: z.string().optional(),
-  price: z.coerce.number().min(0, 'Le prix doit etre positif'),
-  category_id: z.string().min(1, 'La categorie est requise'),
+  price: z.coerce.number().min(0, 'Le prix doit être positif'),
+  category_id: z.string().min(1, 'La catégorie est requise'),
   image_url: z.string().optional(),
   available: z.boolean(),
   product_type: z.enum(['individual', 'plateau']),
   requires_confirmation: z.boolean(),
-  min_days_advance: z.coerce.number().min(0, 'Le delai doit etre positif'),
-  sort_order: z.coerce.number().min(0, "L'ordre doit etre positif"),
+  min_days_advance: z.coerce.number().min(0, 'Le délai doit être positif'),
+  sort_order: z.coerce.number().min(0, "L'ordre doit être positif"),
 })
 
 type FormData = z.infer<typeof schema>
@@ -123,7 +123,7 @@ export function ProductForm({ product, onSubmit, onCancel, loading }: ProductFor
             label="Description (FR)"
             {...register('description_fr')}
             rows={3}
-            placeholder="Description en francais..."
+            placeholder="Description en français..."
           />
           <Textarea
             label="Description (HE)"
@@ -137,7 +137,7 @@ export function ProductForm({ product, onSubmit, onCancel, loading }: ProductFor
 
       {/* Price & Category Section */}
       <div className="pb-6 border-b border-gray-100">
-        <h3 className="text-sm font-medium text-gray-900 mb-4">Prix et categorie</h3>
+        <h3 className="text-sm font-medium text-gray-900 mb-4">Prix et catégorie</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Input
             label="Prix (₪)"
@@ -149,11 +149,11 @@ export function ProductForm({ product, onSubmit, onCancel, loading }: ProductFor
             placeholder="15"
           />
           <Select
-            label="Categorie"
+            label="Catégorie"
             options={categoryOptions}
             {...register('category_id')}
             error={errors.category_id?.message}
-            placeholder="Selectionner une categorie"
+            placeholder="Sélectionner une catégorie"
           />
         </div>
       </div>
@@ -169,24 +169,24 @@ export function ProductForm({ product, onSubmit, onCancel, loading }: ProductFor
         />
         {productType === 'individual' && (
           <p className="mt-2 text-sm text-blue-600">
-            Les gateaux individuels sont retires le vendredi uniquement (8h30-13h30)
+            Les gâteaux individuels sont retirés le vendredi uniquement (8h30-13h30)
           </p>
         )}
         {productType === 'plateau' && (
           <p className="mt-2 text-sm text-amber-600">
-            Les plateaux necessitent une confirmation avant paiement
+            Les plateaux nécessitent une confirmation avant paiement
           </p>
         )}
       </div>
 
       {/* Order Settings Section */}
       <div className="pb-6 border-b border-gray-100">
-        <h3 className="text-sm font-medium text-gray-900 mb-4">Parametres de commande</h3>
+        <h3 className="text-sm font-medium text-gray-900 mb-4">Paramètres de commande</h3>
         <div className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <Input
-                label="Delai minimum (jours)"
+                label="Délai minimum (jours)"
                 type="number"
                 min="0"
                 {...register('min_days_advance')}
@@ -194,7 +194,7 @@ export function ProductForm({ product, onSubmit, onCancel, loading }: ProductFor
                 placeholder="0"
               />
               <p className="text-xs text-gray-500 mt-1">
-                Jours a l&apos;avance pour commander (0 = meme jour)
+                Jours à l&apos;avance pour commander (0 = même jour)
               </p>
             </div>
             <div>
@@ -234,7 +234,7 @@ export function ProductForm({ product, onSubmit, onCancel, loading }: ProductFor
       {/* Availability Section */}
       <div className="flex items-center justify-between py-4 px-4 bg-gray-50 rounded-lg">
         <div>
-          <p className="font-medium text-gray-900">Disponible a la vente</p>
+          <p className="font-medium text-gray-900">Disponible à la vente</p>
           <p className="text-sm text-gray-500">Le produit sera visible dans le catalogue</p>
         </div>
         <Controller
@@ -257,7 +257,7 @@ export function ProductForm({ product, onSubmit, onCancel, loading }: ProductFor
           </Button>
         )}
         <Button type="submit" loading={loading} className={onCancel ? 'flex-1' : 'w-full'}>
-          {product ? 'Mettre a jour' : 'Creer le produit'}
+          {product ? 'Mettre à jour' : 'Créer le produit'}
         </Button>
       </div>
     </form>

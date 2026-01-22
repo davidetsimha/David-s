@@ -11,12 +11,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const t = await getTranslations({ locale, namespace: 'home' });
 
   const titles: Record<string, string> = {
-    fr: "David's Patisserie - Patisserie Francaise Casher a Jerusalem",
+    fr: "David's Pâtisserie - Pâtisserie Française Casher à Jérusalem",
     he: "David's Patisserie - קונדיטוריה צרפתית כשרה בירושלים",
   };
 
   const descriptions: Record<string, string> = {
-    fr: 'Patisserie francaise artisanale sous supervision Badatz Beit Yossef. Commandes pour Shabbat, receptions et evenements a Jerusalem.',
+    fr: 'Pâtisserie française artisanale sous supervision Badatz Beit Yossef. Commandes pour Chabbat, réceptions et événements à Jérusalem.',
     he: 'קונדיטוריה צרפתית בוטיק בהשגחת בד"ץ בית יוסף. הזמנות לשבת, אירועים וקייטרינג בירושלים.',
   };
 
