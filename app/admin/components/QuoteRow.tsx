@@ -1,0 +1,93 @@
+'use client'
+
+import { Badge } from '@/components/ui/Badge'
+import { Button } from '@/components/ui/Button'
+import { Calendar, Users, Eye } from 'lucide-react'
+import type { QuoteRequest, QuoteStatus } from '@/types'
+
+interface QuoteRowProps {
+  quote: QuoteRequest
+  onStatusChange: (id: string, status: QuoteStatus) => void
+  onViewDetails: () => void
+}
+
+const statusMap: Record<QuoteStatus, 'pending' | 'confirmed' | 'processing' | 'completed' | 'cancelled'> = {
+  new: 'pending',
+  contacted: 'processing',
+  quoted: 'processing',
+  confirmed: 'confirmed',
+  rejected: 'cancelled',
+}
+
+const eventLabels: Record<string, string> = {
+  bar_mitzvah: 'Bar Mitzvah',
+  bat_mitzvah: 'Bat Mitzvah',
+  brit: 'Brit Mila',
+  private_party: 'Fete privee',
+}
+
+const statusLabels: Record<QuoteStatus, string> = {
+  new: 'nouveau',
+  contacted: 'en cours', // legacy
+  quoted: 'devis envoye', // legacy
+  confirmed: 'confirme',
+  rejected: 'rejete',
+}
+
+export function QuoteRow({ quote, onStatusChange, onViewDetails }: QuoteRowProps) {
+  const eventDate = new Date(quote.event_date).toLocaleDateString('fr-FR', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  })
+
+  return (
+    <tr className="hover:bg-gray-50/50 transition-colors">
+      <td className="px-4 py-4">
+        <div>
+          <p className="font-medium text-gray-900">{quote.name}</p>
+          <p className="text-sm text-gray-500">{quote.email}</p>
+        </div>
+      </td>
+      <td className="px-4 py-4">
+        <span className="text-sm font-medium text-gray-700">
+          {eventLabels[quote.event_type] || quote.event_type}
+        </span>
+      </td>
+      <td className="px-4 py-4 hidden sm:table-cell">
+        <div className="flex items-center gap-4 text-sm text-gray-600">
+          <span className="flex items-center gap-1">
+            <Calendar className="w-4 h-4" /> {eventDate}
+          </span>
+          <span className="flex items-center gap-1">
+            <Users className="w-4 h-4" /> {quote.guest_count}
+          </span>
+        </div>
+      </td>
+      <td className="px-4 py-4">
+        <Badge status={statusMap[quote.status]}>{statusLabels[quote.status]}</Badge>
+      </td>
+      <td className="px-4 py-4">
+        <div className="flex gap-2">
+          <button
+            onClick={onViewDetails}
+            className="p-2 rounded-lg text-gray-400 hover:text-gold-600 hover:bg-gold-50"
+            title="Voir les details"
+          >
+            <Eye className="w-4 h-4" />
+          </button>
+          {(quote.status === 'new' || quote.status === 'contacted' || quote.status === 'quoted') && (
+            <>
+              <Button size="sm" onClick={() => onStatusChange(quote.id, 'confirmed')}>
+                Confirmer
+              </Button>
+              <Button size="sm" variant="outline" className="text-red-600 border-red-200 hover:bg-red-50" onClick={() => onStatusChange(quote.id, 'rejected')}>
+                Rejeter
+              </Button>
+            </>
+          )}
+        </div>
+      </td>
+    </tr>
+  )
+}
