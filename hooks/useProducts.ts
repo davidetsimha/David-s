@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { queryKeys } from '../config/queryClient';
+import { queryKeys } from '@/config/queryClient';
 import {
   getProducts,
   getProductById,
@@ -7,8 +7,8 @@ import {
   updateProduct,
   deleteProduct,
   bulkUpdateProductAvailability,
-} from '../services/products.service';
-import type { ProductFilters, CreateProductDTO, Product } from '../types';
+} from '@/services/products.service';
+import type { ProductFilters, CreateProductDTO, Product } from '@/types';
 
 export function useProducts(filters?: ProductFilters) {
   return useQuery({

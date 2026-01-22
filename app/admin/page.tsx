@@ -1,7 +1,7 @@
 'use client'
 
-import { useOrders } from '@/src/hooks/useOrders'
-import { useQuotes } from '@/src/hooks/useQuotes'
+import { useOrders } from '@/hooks/useOrders'
+import { useQuotes } from '@/hooks/useQuotes'
 import { ShoppingBag, MessageSquare, TrendingUp, Clock, BarChart3 } from 'lucide-react'
 
 export default function AdminDashboard() {

@@ -1,12 +1,12 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { queryKeys } from '../config/queryClient';
+import { queryKeys } from '@/config/queryClient';
 import {
   getCategories,
   createCategory,
   updateCategory,
   deleteCategory,
-} from '../services/categories.service';
-import type { CreateCategoryDTO } from '../types';
+} from '@/services/categories.service';
+import type { CreateCategoryDTO } from '@/types';
 
 export function useCategories() {
   return useQuery({

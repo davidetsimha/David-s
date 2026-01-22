@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getConfig, getAllConfig, updateConfig } from '../services/config.service';
+import { getConfig, getAllConfig, updateConfig } from '@/services/config.service';
 
 export function useConfig(key: string) {
   return useQuery({

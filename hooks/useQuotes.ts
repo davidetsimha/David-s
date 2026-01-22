@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { queryKeys } from '../config/queryClient';
+import { queryKeys } from '@/config/queryClient';
 import {
   getQuotes,
   createQuote,
@@ -7,8 +7,8 @@ import {
   updateQuoteNotes,
   getEventTypeDistribution,
   getQuoteConversionRate,
-} from '../services/quotes.service';
-import type { QuoteStatus, CreateQuoteDTO } from '../types';
+} from '@/services/quotes.service';
+import type { QuoteStatus, CreateQuoteDTO } from '@/types';
 
 export function useQuotes() {
   return useQuery({

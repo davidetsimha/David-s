@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { CheckCircle, ArrowRight, ArrowLeft, Phone } from 'lucide-react';
-import { Link } from '@/src/i18n/navigation';
+import { Link } from '@/i18n/navigation';
 
 const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '058-781-9457';
 

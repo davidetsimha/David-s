@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { User, Mail, Phone } from 'lucide-react';
-import { Input } from '@/src/components/ui/Input';
+import { Input } from '@/components/ui/Input';
 
 const checkoutSchema = z.object({
   name: z.string().min(2),

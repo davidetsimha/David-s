@@ -23,34 +23,15 @@
       }
     ],
     "paths": {
-      "@/*": [
-        "./*",
-        "./src/*"
-      ],
-      "@/components/*": [
-        "./src/components/*",
-        "./components/*"
-      ],
-      "@/lib/*": [
-        "./lib/*",
-        "./src/lib/*"
-      ],
-      "@/i18n/*": [
-        "./i18n/*",
-        "./src/i18n/*"
-      ],
-      "@/stores/*": [
-        "./src/stores/*"
-      ],
-      "@/types/*": [
-        "./src/types/*"
-      ],
-      "@/services/*": [
-        "./src/services/*"
-      ],
-      "@/hooks/*": [
-        "./src/hooks/*"
-      ]
+      "@/*": ["./*"],
+      "@/components/*": ["./components/*"],
+      "@/lib/*": ["./lib/*"],
+      "@/i18n/*": ["./i18n/*"],
+      "@/stores/*": ["./stores/*"],
+      "@/types/*": ["./types/*"],
+      "@/services/*": ["./services/*"],
+      "@/hooks/*": ["./hooks/*"],
+      "@/config/*": ["./config/*"]
     },
     "baseUrl": "."
   },
@@ -64,14 +45,6 @@
   "exclude": [
     "node_modules",
     "supabase/functions",
-    "src/pages-old",
-    "src/components/cart",
-    "src/components/checkout",
-    "src/components/contact",
-    "src/components/gallery",
-    "src/components/home",
-    "src/components/layout",
-    "src/components/receptions",
-    "src/components/shabbat"
+    "src"
   ]
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations, useLocale } from 'next-intl';
-import type { Category } from '@/src/types';
+import type { Category } from '@/types';
 
 interface ProductFiltersProps {
   categories: Category[];

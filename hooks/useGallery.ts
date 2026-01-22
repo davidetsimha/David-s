@@ -1,12 +1,12 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { queryKeys } from '../config/queryClient';
+import { queryKeys } from '@/config/queryClient';
 import {
   getGalleryImages,
   createGalleryImage,
   deleteGalleryImage,
   type CreateGalleryImageDTO,
-} from '../services/gallery.service';
-import type { GalleryCategory } from '../types';
+} from '@/services/gallery.service';
+import type { GalleryCategory } from '@/types';
 
 export function useGallery(category?: GalleryCategory) {
   return useQuery({

@@ -5,8 +5,8 @@ import { useTranslations } from 'next-intl';
 import { Calendar, ShoppingBag, Truck } from 'lucide-react';
 import { ProductFilters } from './ProductFilters';
 import { ProductGrid } from './ProductGrid';
-import { useCartStore } from '@/src/stores/cartStore';
-import type { Product, Category } from '@/src/types';
+import { useCartStore } from '@/stores/cartStore';
+import type { Product, Category } from '@/types';
 
 interface ShopContentProps {
   initialProducts: Product[];

@@ -2,10 +2,10 @@
 
 import { useState } from 'react'
 import { Plus, Search, Pencil, Trash2, Copy, ChevronUp, ChevronDown } from 'lucide-react'
-import { useProducts, useDeleteProduct, useToggleProductAvailability, useCreateProduct, useUpdateProduct, useBulkUpdateProductAvailability } from '@/src/hooks/useProducts'
-import { useCategories } from '@/src/hooks/useCategories'
-import { useSelection, computeSelectionState } from '@/src/hooks/useSelection'
-import type { Product, CreateProductDTO } from '@/src/types'
+import { useProducts, useDeleteProduct, useToggleProductAvailability, useCreateProduct, useUpdateProduct, useBulkUpdateProductAvailability } from '@/hooks/useProducts'
+import { useCategories } from '@/hooks/useCategories'
+import { useSelection, computeSelectionState } from '@/hooks/useSelection'
+import type { Product, CreateProductDTO } from '@/types'
 
 type SortKey = 'name' | 'price' | 'category'
 type SortDirection = 'asc' | 'desc'

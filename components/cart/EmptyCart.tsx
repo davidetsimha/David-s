@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { ShoppingBag } from 'lucide-react';
 import Link from 'next/link';
-import { useCartStore } from '@/src/stores';
+import { useCartStore } from '@/stores';
 import { ROUTES } from '@/config/routes';
 
 export function EmptyCart() {

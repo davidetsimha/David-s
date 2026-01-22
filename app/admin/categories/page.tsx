@@ -2,8 +2,8 @@
 
 import { useState } from 'react'
 import { Plus, Pencil, Trash2 } from 'lucide-react'
-import { useCategories, useCreateCategory, useUpdateCategory, useDeleteCategory } from '@/src/hooks/useCategories'
-import type { Category, CreateCategoryDTO } from '@/src/types'
+import { useCategories, useCreateCategory, useUpdateCategory, useDeleteCategory } from '@/hooks/useCategories'
+import type { Category, CreateCategoryDTO } from '@/types'
 
 export default function AdminCategoriesPage() {
   const [formOpen, setFormOpen] = useState(false)

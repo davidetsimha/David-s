@@ -1,9 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { useOrders, useUpdateOrderStatus } from '@/src/hooks/useOrders'
+import { useOrders, useUpdateOrderStatus } from '@/hooks/useOrders'
 import { ShoppingBag, Eye, X } from 'lucide-react'
-import type { Order, OrderStatus } from '@/src/types'
+import type { Order, OrderStatus } from '@/types'
 
 const statusTabs: { value: OrderStatus | 'all'; label: string }[] = [
   { value: 'all', label: 'Toutes' },

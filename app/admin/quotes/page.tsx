@@ -1,9 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { useQuotes, useUpdateQuoteStatus } from '@/src/hooks/useQuotes'
+import { useQuotes, useUpdateQuoteStatus } from '@/hooks/useQuotes'
 import { MessageSquare, Eye, X } from 'lucide-react'
-import type { QuoteRequest, QuoteStatus } from '@/src/types'
+import type { QuoteRequest, QuoteStatus } from '@/types'
 
 const statusTabs: { value: QuoteStatus | 'all'; label: string }[] = [
   { value: 'all', label: 'Tous' },

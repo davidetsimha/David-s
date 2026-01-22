@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { queryKeys } from '../config/queryClient';
-import { getEventFormulas, updateEventFormula } from '../services/formulas.service';
-import type { UpdateEventFormulaDTO } from '../types';
+import { queryKeys } from '@/config/queryClient';
+import { getEventFormulas, updateEventFormula } from '@/services/formulas.service';
+import type { UpdateEventFormulaDTO } from '@/types';
 
 export function useEventFormulas() {
   return useQuery({

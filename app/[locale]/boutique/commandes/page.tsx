@@ -3,14 +3,14 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
-import { Link } from '@/src/i18n/navigation';
+import { Link } from '@/i18n/navigation';
 import { ArrowLeft, ArrowRight, Mail, Search, Package, Loader2 } from 'lucide-react';
-import { useCustomerStore, useCartStore } from '@/src/stores';
-import { useCustomerOrders } from '@/src/hooks/useCustomers';
-import { getProductById } from '@/src/services/products.service';
+import { useCustomerStore, useCartStore } from '@/stores';
+import { useCustomerOrders } from '@/hooks/useCustomers';
+import { getProductById } from '@/services/products.service';
 import { OrderHistoryCard, ReorderConfirmDialog, type ReorderAction } from '@/components/orders';
-import { Input } from '@/src/components/ui/Input';
-import type { Order, OrderStatus } from '@/src/types';
+import { Input } from '@/components/ui/Input';
+import type { Order, OrderStatus } from '@/types';
 
 const statusFilters: (OrderStatus | 'all')[] = ['all', 'pending', 'confirmed', 'completed', 'cancelled'];
 

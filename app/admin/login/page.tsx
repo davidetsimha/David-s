@@ -2,9 +2,9 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@/src/lib/supabase/client'
-import { Button } from '@/src/components/ui/Button'
-import { Spinner } from '@/src/components/ui/Spinner'
+import { createClient } from '@/lib/supabase/client'
+import { Button } from '@/components/ui/Button'
+import { Spinner } from '@/components/ui/Spinner'
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState('')

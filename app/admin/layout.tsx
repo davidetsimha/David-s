@@ -3,9 +3,9 @@
 import { useState, useEffect, type ReactNode } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { Menu } from 'lucide-react'
-import { QueryProvider } from '@/src/components/providers/QueryProvider'
-import { createClient } from '@/src/lib/supabase/client'
-import { Spinner } from '@/src/components/ui/Spinner'
+import { QueryProvider } from '@/components/providers/QueryProvider'
+import { createClient } from '@/lib/supabase/client'
+import { Spinner } from '@/components/ui/Spinner'
 import { AdminSidebar } from './components/AdminSidebar'
 
 export default function AdminLayout({ children }: { children: ReactNode }) {

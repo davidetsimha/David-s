@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { queryKeys } from '../config/queryClient';
+import { queryKeys } from '@/config/queryClient';
 import {
   getCreations,
   createCreation,
@@ -7,7 +7,7 @@ import {
   deleteCreation,
   type CreateCreationDTO,
   type UpdateCreationDTO,
-} from '../services/creations.service';
+} from '@/services/creations.service';
 
 export function useCreations() {
   return useQuery({

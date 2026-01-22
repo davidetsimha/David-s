@@ -3,8 +3,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { Minus, Plus, Trash2, Undo2 } from 'lucide-react';
-import { useCartStore } from '@/src/stores';
-import type { Product } from '@/src/types';
+import { useCartStore } from '@/stores';
+import type { Product } from '@/types';
 
 interface CartItemProps {
   product: Product;

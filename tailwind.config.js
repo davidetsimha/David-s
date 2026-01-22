@@ -1,8 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
-    "./src/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./hooks/**/*.{js,ts,tsx}",
+    "./stores/**/*.{js,ts}",
   ],
   theme: {
     extend: {
@@ -73,7 +75,5 @@ export default {
       },
     },
   },
-  plugins: [
-    require('tailwindcss-rtl'),
-  ],
+  plugins: [],
 }

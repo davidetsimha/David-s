@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { XCircle, ArrowRight, ArrowLeft, ShoppingBag } from 'lucide-react';
-import { Link } from '@/src/i18n/navigation';
+import { Link } from '@/i18n/navigation';
 
 type Props = {
   params: Promise<{ locale: string }>;

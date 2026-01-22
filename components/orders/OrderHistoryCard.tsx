@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { ChevronDown, ChevronUp, Calendar, Clock, RefreshCw } from 'lucide-react';
-import { Badge } from '@/src/components/ui/Badge';
-import type { Order, OrderStatus } from '@/src/types';
+import { Badge } from '@/components/ui/Badge';
+import type { Order, OrderStatus } from '@/types';
 
 const statusLabels: Record<OrderStatus, Record<string, string>> = {
   pending: { fr: 'En attente', he: 'בהמתנה' },

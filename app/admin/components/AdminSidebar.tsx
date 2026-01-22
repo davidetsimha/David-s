@@ -13,7 +13,7 @@ import {
   FolderTree,
   type LucideIcon
 } from 'lucide-react'
-import { createClient } from '@/src/lib/supabase/client'
+import { createClient } from '@/lib/supabase/client'
 
 interface NavItem {
   href: string

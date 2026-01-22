@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Calendar, ShoppingBag, Truck } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { ShopContent } from '@/components/boutique';
-import type { Product, Category } from '@/src/types';
+import type { Product, Category } from '@/types';
 
 type Props = {
   params: Promise<{ locale: string }>;

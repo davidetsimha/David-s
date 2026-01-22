@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { Store, Truck, MapPin } from 'lucide-react';
-import { Input } from '@/src/components/ui/Input';
-import { Textarea } from '@/src/components/ui/Textarea';
+import { Input } from '@/components/ui/Input';
+import { Textarea } from '@/components/ui/Textarea';
 
 export type DeliveryMethod = 'pickup' | 'delivery';
 

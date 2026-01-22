@@ -1,10 +1,10 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { queryKeys } from '../config/queryClient';
+import { queryKeys } from '@/config/queryClient';
 import {
   getEventTypes,
   updateEventType,
   type UpdateEventTypeDTO,
-} from '../services/eventTypes.service';
+} from '@/services/eventTypes.service';
 
 export function useEventTypes() {
   return useQuery({

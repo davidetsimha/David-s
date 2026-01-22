@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 import { useTranslations, useLocale } from 'next-intl';
 import { X, ArrowRight, ArrowLeft } from 'lucide-react';
-import { useCartStore } from '@/src/stores';
+import { useCartStore } from '@/stores';
 import { ROUTES } from '@/config/routes';
 import { CartItem } from './CartItem';
 import { EmptyCart } from './EmptyCart';

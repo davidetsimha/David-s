@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { queryKeys } from '../config/queryClient';
+import { queryKeys } from '@/config/queryClient';
 import {
   getFAQs,
   createFAQ,
@@ -7,7 +7,7 @@ import {
   deleteFAQ,
   type CreateFAQDTO,
   type UpdateFAQDTO,
-} from '../services/faq.service';
+} from '@/services/faq.service';
 
 export function useFAQs() {
   return useQuery({

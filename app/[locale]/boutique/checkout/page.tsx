@@ -3,15 +3,15 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
-import { Link } from '@/src/i18n/navigation';
+import { Link } from '@/i18n/navigation';
 import { ArrowLeft, ArrowRight, ShieldCheck, Loader2, Check, CreditCard, Calendar, Clock, Send, AlertTriangle, MapPin } from 'lucide-react';
-import { useCartStore, useCustomerStore } from '@/src/stores';
+import { useCartStore, useCustomerStore } from '@/stores';
 import { CheckoutForm, DeliveryOptions, OrderSummary } from '@/components/checkout';
 import type { CheckoutFormData, DeliveryMethod, DeliveryAddress } from '@/components/checkout';
-import { useDeliveryZones } from '@/src/hooks/useDeliveryZones';
-import { createOrder } from '@/src/services/orders.service';
-import { initiatePayment } from '@/src/services/payment.service';
-import type { CreateOrderDTO, DeliveryZone } from '@/src/types';
+import { useDeliveryZones } from '@/hooks/useDeliveryZones';
+import { createOrder } from '@/services/orders.service';
+import { initiatePayment } from '@/services/payment.service';
+import type { CreateOrderDTO, DeliveryZone } from '@/types';
 
 type CheckoutStep = 'info' | 'delivery' | 'pickup_date' | 'review';
 

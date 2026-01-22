@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { queryKeys } from '../config/queryClient';
+import { queryKeys } from '@/config/queryClient';
 import {
   getOrders,
   getOrderById,
@@ -12,8 +12,8 @@ import {
   confirmPlateauOrder,
   rejectPlateauOrder,
   updateOrderAdminNotes,
-} from '../services/orders.service';
-import type { OrderStatus, CreateOrderDTO, ConfirmationStatus } from '../types';
+} from '@/services/orders.service';
+import type { OrderStatus, CreateOrderDTO, ConfirmationStatus } from '@/types';
 
 export function useOrders(status?: OrderStatus) {
   return useQuery({

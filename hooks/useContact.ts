@@ -4,8 +4,8 @@ import {
   getContactMessages,
   markMessageAsRead,
   deleteContactMessage,
-} from '../services/contact.service';
-import type { CreateContactDTO } from '../types';
+} from '@/services/contact.service';
+import type { CreateContactDTO } from '@/types';
 
 export function useCreateContact() {
   return useMutation({

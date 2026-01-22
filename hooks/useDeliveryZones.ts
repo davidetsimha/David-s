@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { queryKeys } from '../config/queryClient';
+import { queryKeys } from '@/config/queryClient';
 import {
   getDeliveryZones,
   getDeliveryZoneById,
@@ -8,7 +8,7 @@ import {
   deleteDeliveryZone,
   toggleDeliveryZoneActive,
   type CreateDeliveryZoneDTO,
-} from '../services/delivery.service';
+} from '@/services/delivery.service';
 
 export function useDeliveryZones(activeOnly = true) {
   return useQuery({

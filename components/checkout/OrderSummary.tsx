@@ -2,7 +2,7 @@
 
 import { useTranslations, useLocale } from 'next-intl';
 import Image from 'next/image';
-import { useCartStore } from '@/src/stores/cartStore';
+import { useCartStore } from '@/stores/cartStore';
 import type { DeliveryMethod } from './DeliveryOptions';
 
 interface OrderSummaryProps {

@@ -2,8 +2,8 @@
 
 import { useTranslations } from 'next-intl';
 import { ProductCard } from './ProductCard';
-import { Skeleton } from '@/src/components/ui/Skeleton';
-import type { Product } from '@/src/types';
+import { Skeleton } from '@/components/ui/Skeleton';
+import type { Product } from '@/types';
 
 interface ProductGridProps {
   products: Product[];

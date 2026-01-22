@@ -1,13 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { queryKeys } from '../config/queryClient';
+import { queryKeys } from '@/config/queryClient';
 import {
   isPushSupported,
   getNotificationPermission,
   subscribeToPush,
   unsubscribeFromPush,
   getCurrentPushSubscription,
-} from '../services/push.service';
+} from '@/services/push.service';
 
 // VAPID public key - should be set in environment variables
 const VAPID_PUBLIC_KEY = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || '';

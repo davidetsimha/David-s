@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations, useLocale } from 'next-intl';
-import { Modal } from '@/src/components/ui/Modal';
+import { Modal } from '@/components/ui/Modal';
 import { ShoppingCart, Layers, X } from 'lucide-react';
 
 export type ReorderAction = 'replace' | 'merge' | 'cancel';
