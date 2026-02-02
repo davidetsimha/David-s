@@ -213,6 +213,7 @@ export default function CheckoutPage() {
 
       // For individual orders: proceed to payment
       const response = await initiatePayment({
+        orderId,
         amount: total,
         currency: 'ILS',
         items: items.map(item => ({
@@ -226,6 +227,7 @@ export default function CheckoutPage() {
         successUrl: `${window.location.origin}/${locale}/boutique/checkout/success?order_id=${orderId}`,
         failureUrl: `${window.location.origin}/${locale}/boutique/checkout/cancel?order_id=${orderId}`,
         callbackUrl: `${window.location.origin}/api/payment/callback`,
+        language: locale === 'he' ? 'he' : 'fr',
       });
 
       if (response.success) {
@@ -736,9 +738,9 @@ export default function CheckoutPage() {
                     <circle cx="30" cy="8" r="5" fill="#F79E1B"/>
                     <path d="M24 4.27C25.5 5.5 26.5 7.1 26.5 8C26.5 8.9 25.5 10.5 24 11.73C22.5 10.5 21.5 8.9 21.5 8C21.5 7.1 22.5 5.5 24 4.27Z" fill="#FF5F00"/>
                   </svg>
-                  {/* PayPlus */}
-                  <div className="h-7 px-3 bg-gradient-to-r from-blue-600 to-blue-500 rounded flex items-center justify-center">
-                    <span className="text-white text-xs font-bold tracking-wide">PayPlus</span>
+                  {/* Hyp */}
+                  <div className="h-7 px-3 bg-gradient-to-r from-indigo-600 to-purple-500 rounded flex items-center justify-center">
+                    <span className="text-white text-xs font-bold tracking-wide">Hyp</span>
                   </div>
                   {/* Bit */}
                   <div className="h-7 px-3 bg-gradient-to-r from-green-500 to-green-400 rounded flex items-center justify-center">

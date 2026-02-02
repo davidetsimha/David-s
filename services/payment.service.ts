@@ -1,16 +1,9 @@
 /**
- * PayPlus Payment Service
+ * Payment Service
  *
- * Documentation: https://docs.payplus.co.il/reference/introduction
- *
- * IMPORTANT: All API requests must be made server-side.
- * This service prepares the data for a backend endpoint that will
- * communicate with PayPlus API.
- *
- * Required environment variables (for backend):
- * - PAYPLUS_API_KEY
- * - PAYPLUS_SECRET_KEY
- * - PAYPLUS_PAYMENT_PAGE_UID
+ * Handles payment initiation via Hyp/CreditGuard gateway.
+ * This service calls the backend API endpoints which communicate
+ * with the CreditGuard API.
  */
 
 export interface PaymentItem {
@@ -20,6 +13,7 @@ export interface PaymentItem {
 }
 
 export interface PaymentRequest {
+  orderId: string;
   amount: number;
   currency: 'ILS';
   items: PaymentItem[];
@@ -37,6 +31,7 @@ export interface PaymentRequest {
   successUrl: string;
   failureUrl: string;
   callbackUrl: string;
+  language?: 'he' | 'en' | 'fr';
 }
 
 export interface PaymentResponse {
@@ -44,88 +39,132 @@ export interface PaymentResponse {
   paymentUrl?: string;
   transactionId?: string;
   error?: string;
+  errorCode?: string;
 }
 
 /**
- * Initiates a payment with PayPlus
- * In production, this should call your backend which then calls PayPlus API
+ * Initiates a payment via the Hyp/CreditGuard gateway
+ * Calls the backend /api/payment/initiate endpoint
  */
 export async function initiatePayment(request: PaymentRequest): Promise<PaymentResponse> {
-  // Mode test: si pas d'API configurée ou en développement, simuler le succès
-  if (!process.env.NEXT_PUBLIC_PAYMENT_API_URL || process.env.NODE_ENV === 'development') {
-    console.info('Mode test active: paiement simule');
-    return {
-      success: true,
-      paymentUrl: undefined,
-      transactionId: `test_${Date.now()}`,
-    };
-  }
-
-  const backendUrl = process.env.NEXT_PUBLIC_PAYMENT_API_URL;
-
   try {
-    const response = await fetch(backendUrl, {
+    // Build description from items
+    const description = request.items
+      .map(item => `${item.name} x${item.quantity}`)
+      .join(', ')
+      .slice(0, 100); // CreditGuard has a limit on description length
+
+    const response = await fetch('/api/payment/initiate', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        payment_page_uid: process.env.NEXT_PUBLIC_PAYPLUS_PAGE_UID,
-        charge_method: 1, // 1 = Charge
+        orderId: request.orderId,
         amount: request.amount,
-        currency_code: request.currency,
-        refURL_success: request.successUrl,
-        refURL_failure: request.failureUrl,
-        refURL_callback: request.callbackUrl,
+        currency: request.currency,
+        description: description || `Order ${request.orderId}`,
         customer: {
-          customer_name: request.customer.name,
+          name: request.customer.name,
           email: request.customer.email,
           phone: request.customer.phone,
         },
-        items: request.items.map(item => ({
-          name: item.name,
-          quantity: item.quantity,
-          price: item.price,
-        })),
-        more_info: JSON.stringify({
-          deliveryMethod: request.deliveryMethod,
-          deliveryAddress: request.deliveryAddress,
-        }),
+        successUrl: request.successUrl,
+        cancelUrl: request.failureUrl,
+        callbackUrl: request.callbackUrl,
+        language: request.language || 'fr',
       }),
     });
 
-    if (!response.ok) {
-      throw new Error('Payment initiation failed');
-    }
-
     const data = await response.json();
 
+    if (!response.ok) {
+      return {
+        success: false,
+        error: data.error || 'Payment initiation failed',
+        errorCode: data.errorCode,
+      };
+    }
+
     return {
-      success: true,
-      paymentUrl: data.data?.payment_page_link,
-      transactionId: data.data?.transaction_uid,
+      success: data.success,
+      paymentUrl: data.paymentUrl,
+      transactionId: data.transactionId,
+      error: data.error,
     };
   } catch (error) {
-    console.error('Payment error:', error);
+    console.error('[Payment] Error initiating payment:', error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Payment failed',
+      error: error instanceof Error ? error.message : 'Network error',
     };
   }
 }
 
 /**
- * Verifies a payment callback from PayPlus
- * Should be called on the success/callback page
+ * Verifies a payment callback from Hyp/CreditGuard
+ * Parses URL parameters returned after payment
  */
 export function parsePaymentCallback(searchParams: URLSearchParams): {
   transactionId?: string;
-  status?: string;
-  amount?: number;
+  orderId?: string;
+  status?: 'approved' | 'declined' | 'cancelled' | 'pending';
+  errorCode?: string;
+  errorMessage?: string;
 } {
+  const result = searchParams.get('result') || searchParams.get('status');
+  const transactionId = searchParams.get('tranId') || searchParams.get('txId');
+  const orderId = searchParams.get('uniqueid') || searchParams.get('order_id');
+  const errorMessage = searchParams.get('message') || searchParams.get('userMessage');
+
+  // Map CreditGuard result codes to status
+  let status: 'approved' | 'declined' | 'cancelled' | 'pending' = 'pending';
+  if (result === '000' || result === 'approved') {
+    status = 'approved';
+  } else if (result === 'cancelled' || result === 'cancel') {
+    status = 'cancelled';
+  } else if (result) {
+    status = 'declined';
+  }
+
   return {
-    transactionId: searchParams.get('transaction_uid') || undefined,
-    status: searchParams.get('status') || undefined,
-    amount: searchParams.get('amount') ? parseFloat(searchParams.get('amount')!) : undefined,
+    transactionId: transactionId || undefined,
+    orderId: orderId || undefined,
+    status,
+    errorCode: result !== '000' ? result || undefined : undefined,
+    errorMessage: status !== 'approved' ? errorMessage || undefined : undefined,
   };
+}
+
+/**
+ * Check payment status for an order
+ * Calls backend API to verify transaction status
+ */
+export async function checkPaymentStatus(orderId: string): Promise<{
+  success: boolean;
+  status?: 'pending' | 'confirmed' | 'failed';
+  error?: string;
+}> {
+  try {
+    const response = await fetch(`/api/payment/status?order_id=${encodeURIComponent(orderId)}`);
+
+    if (!response.ok) {
+      return {
+        success: false,
+        error: 'Failed to check payment status',
+      };
+    }
+
+    const data = await response.json();
+    return {
+      success: true,
+      status: data.status,
+    };
+  } catch (error) {
+    console.error('[Payment] Error checking status:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Network error',
+    };
+  }
 }

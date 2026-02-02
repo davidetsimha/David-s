@@ -258,7 +258,12 @@
     "lateOrderShort": "הזמנה מאוחרת - כפופה לזמינות",
     "plateauOrder": "הזמנת פלטה",
     "plateauOrderNote": "בקשתך תישלח לצוות שלנו. ניצור איתך קשר תוך מספר שעות לאישור הזמינות ונשלח לך קישור לתשלום.",
-    "sendRequest": "שלח בקשה"
+    "sendRequest": "שלח בקשה",
+    "paymentFailed": "התשלום נכשל",
+    "paymentFailedMessage": "לא ניתן היה לבצע את התשלום. אנא נסה שוב או צור קשר עם הצוות שלנו.",
+    "paymentFailedNote": "אם הבעיה נמשכת, ניתן לפנות אלינו ישירות להשלמת ההזמנה.",
+    "orderReceived": "הזמנה התקבלה",
+    "paymentPendingMessage": "הזמנתך התקבלה. התשלום בתהליך עיבוד."
   },
   "gallery": {
     "title": "גלריה",

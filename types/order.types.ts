@@ -3,6 +3,8 @@ export type DeliveryType = 'delivery' | 'pickup';
 export type OrderType = 'individual' | 'plateau';
 export type ConfirmationStatus = 'not_required' | 'pending_confirmation' | 'confirmed' | 'rejected';
 
+export type PaymentStatus = 'pending' | 'approved' | 'declined' | 'error';
+
 export interface Order {
   id: string;
   customer_name: string;
@@ -25,6 +27,15 @@ export interface Order {
   is_late_order: boolean;
   delivery_zone_id: string | null;
   delivery_zone?: DeliveryZone;
+  // Payment fields (Hyp/CreditGuard)
+  payment_transaction_id?: string | null;
+  payment_auth_code?: string | null;
+  payment_card_mask?: string | null;
+  payment_card_brand?: string | null;
+  payment_status?: PaymentStatus | null;
+  payment_error_code?: string | null;
+  payment_error_message?: string | null;
+  payment_updated_at?: string | null;
 }
 
 export interface DeliveryZone {

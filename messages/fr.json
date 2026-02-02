@@ -258,7 +258,12 @@
     "lateOrderShort": "Commande tardive - sous réserve",
     "plateauOrder": "Commande de plateau",
     "plateauOrderNote": "Votre demande sera envoyée à notre équipe. Nous vous contacterons sous quelques heures pour confirmer la disponibilité et vous envoyer un lien de paiement.",
-    "sendRequest": "Envoyer la demande"
+    "sendRequest": "Envoyer la demande",
+    "paymentFailed": "Paiement échoué",
+    "paymentFailedMessage": "Le paiement n'a pas pu être effectué. Veuillez réessayer ou contacter notre équipe.",
+    "paymentFailedNote": "Si le problème persiste, vous pouvez nous contacter directement pour finaliser votre commande.",
+    "orderReceived": "Commande reçue",
+    "paymentPendingMessage": "Votre commande a été reçue. Le paiement est en cours de traitement."
   },
   "gallery": {
     "title": "Galerie",
