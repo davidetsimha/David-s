@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
 import { Link } from '@/i18n/navigation';
-import { ArrowLeft, ArrowRight, ShieldCheck, Loader2, Check, CreditCard, Calendar, Clock, Send, AlertTriangle, MapPin } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ShieldCheck, Loader2, Check, CreditCard, Calendar, Clock, Send, AlertTriangle, MapPin, XCircle } from 'lucide-react';
 import { useCartStore, useCustomerStore } from '@/stores';
 import { CheckoutForm, DeliveryOptions, OrderSummary } from '@/components/checkout';
 import type { CheckoutFormData, DeliveryMethod, DeliveryAddress } from '@/components/checkout';
@@ -80,7 +80,7 @@ export default function CheckoutPage() {
   const router = useRouter();
   const locale = useLocale();
   const { items, clearCart, subtotal, getCartType } = useCartStore();
-  const { customer, setCustomerInfo } = useCustomerStore();
+  const { customer, setCustomerInfo, clearCustomerInfo } = useCustomerStore();
   const t = useTranslations();
   const { data: deliveryZones = [] } = useDeliveryZones();
   const [currentStep, setCurrentStep] = useState<CheckoutStep>('info');
@@ -92,6 +92,8 @@ export default function CheckoutPage() {
   const [pickupTimeSlot, setPickupTimeSlot] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [paymentError, setPaymentError] = useState<string | null>(null);
+  const submissionRef = useRef(false); // Prevent double-click
 
   const isRTL = locale === 'he';
   const direction = isRTL ? 'rtl' : 'ltr';
@@ -102,6 +104,27 @@ export default function CheckoutPage() {
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  // Pre-fill delivery address from saved customer data
+  useEffect(() => {
+    if (isMounted && customer?.deliveryAddress) {
+      setDeliveryAddress({
+        street: customer.deliveryAddress.street,
+        city: customer.deliveryAddress.city,
+        postalCode: customer.deliveryAddress.postalCode || '',
+      });
+    }
+  }, [isMounted, customer?.deliveryAddress]);
+
+  // Pre-select delivery zone from saved preference
+  useEffect(() => {
+    if (isMounted && customer?.preferredDeliveryZoneId && deliveryZones.length > 0 && !selectedZone) {
+      const zone = deliveryZones.find(z => z.id === customer.preferredDeliveryZoneId);
+      if (zone) {
+        setSelectedZone(zone);
+      }
+    }
+  }, [isMounted, customer?.preferredDeliveryZoneId, deliveryZones, selectedZone]);
 
   // Determine cart type
   const cartType = getCartType();
@@ -173,7 +196,12 @@ export default function CheckoutPage() {
   const handleFinalSubmit = async () => {
     if (!customerData || !pickupDate || !pickupTimeSlot) return;
 
+    // Prevent double-click
+    if (submissionRef.current) return;
+    submissionRef.current = true;
+
     setIsSubmitting(true);
+    setPaymentError(null);
 
     try {
       const deliveryFee = deliveryMethod === 'delivery' && selectedZone ? selectedZone.price : 0;
@@ -204,12 +232,26 @@ export default function CheckoutPage() {
 
       const orderId = await createOrder(orderData);
 
+      // Store order ID in sessionStorage for recovery
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('pendingOrderId', orderId);
+      }
+
       // For plateau orders: no payment, just redirect to confirmation
       if (isPlateauOrder) {
         clearCart();
         router.push(`/${locale}/boutique/checkout/success?order_id=${orderId}&type=plateau`);
         return;
       }
+
+      // Save delivery address to customer store for next time
+      setCustomerInfo({
+        name: customerData.name,
+        email: customerData.email,
+        phone: customerData.phone,
+        deliveryAddress: deliveryMethod === 'delivery' ? deliveryAddress : undefined,
+        preferredDeliveryZoneId: deliveryMethod === 'delivery' && selectedZone ? selectedZone.id : undefined,
+      });
 
       // For individual orders: proceed to payment
       const response = await initiatePayment({
@@ -230,21 +272,21 @@ export default function CheckoutPage() {
         language: locale === 'he' ? 'he' : 'fr',
       });
 
-      if (response.success) {
-        if (response.paymentUrl) {
-          window.location.href = response.paymentUrl;
-        } else {
-          clearCart();
-          router.push(`/${locale}/boutique/checkout/success?order_id=${orderId}`);
-        }
+      if (response.success && response.paymentUrl) {
+        // Redirect to payment page - don't clear cart yet
+        window.location.href = response.paymentUrl;
       } else {
-        console.error('Payment failed:', response.error);
-        clearCart();
-        router.push(`/${locale}/boutique/checkout/success?order_id=${orderId}&payment_pending=true`);
+        // Payment initialization failed - show error, keep cart
+        console.error('Payment initialization failed:', response.error);
+        setPaymentError(t('checkout.errors.paymentInitFailed'));
+        setIsSubmitting(false);
+        submissionRef.current = false;
       }
     } catch (error) {
       console.error('Order/Payment error:', error);
+      setPaymentError(t('checkout.errors.networkError'));
       setIsSubmitting(false);
+      submissionRef.current = false;
     }
   };
 
@@ -287,6 +329,21 @@ export default function CheckoutPage() {
         <h1 className="font-display text-3xl md:text-4xl text-stone-800 mb-6">
           {t('checkout.title')}
         </h1>
+
+        {/* Welcome back message for returning customers */}
+        {customer?.name && (
+          <div className="mb-6 p-4 bg-gold-50 border border-gold-200 rounded-xl flex items-center justify-between">
+            <p className="text-gold-800">
+              {t('checkout.welcomeBack', { name: customer.name.split(' ')[0] })}
+            </p>
+            <button
+              onClick={() => clearCustomerInfo()}
+              className="text-sm text-gold-600 hover:text-gold-700 underline"
+            >
+              {t('checkout.notYou')}
+            </button>
+          </div>
+        )}
 
         {/* Progress Steps */}
         <div className="mb-10">
@@ -681,6 +738,19 @@ export default function CheckoutPage() {
                 deliveryFee={selectedZone?.price}
               />
 
+              {/* Payment Error Message */}
+              {currentStep === 'review' && paymentError && (
+                <div className="p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3">
+                  <XCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-medium text-red-800">{paymentError}</p>
+                    <p className="text-xs text-red-600 mt-1">
+                      {t('checkout.errors.tryAgain')}
+                    </p>
+                  </div>
+                </div>
+              )}
+
               {/* Action Button (on review step) */}
               {currentStep === 'review' && (
                 <button
@@ -692,7 +762,7 @@ export default function CheckoutPage() {
                       ? 'bg-amber-500 hover:bg-amber-600 shadow-amber-500/20'
                       : 'bg-gold-500 hover:bg-gold-600 shadow-gold-500/20'
                     }
-                    disabled:opacity-50`}
+                    disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
                   {isSubmitting ? (
                     <Loader2 className="w-5 h-5 animate-spin" />

@@ -263,7 +263,19 @@
     "paymentFailedMessage": "Le paiement n'a pas pu être effectué. Veuillez réessayer ou contacter notre équipe.",
     "paymentFailedNote": "Si le problème persiste, vous pouvez nous contacter directement pour finaliser votre commande.",
     "orderReceived": "Commande reçue",
-    "paymentPendingMessage": "Votre commande a été reçue. Le paiement est en cours de traitement."
+    "paymentPendingMessage": "Votre commande a été reçue. Le paiement est en cours de traitement.",
+    "welcomeBack": "Bienvenue {name} !",
+    "notYou": "Pas vous ?",
+    "errors": {
+      "paymentInitFailed": "Impossible d'initialiser le paiement. Veuillez réessayer.",
+      "networkError": "Erreur de connexion. Vérifiez votre internet.",
+      "serverError": "Erreur serveur. Veuillez réessayer plus tard.",
+      "cardDeclined": "Carte refusée. Vérifiez vos informations.",
+      "timeout": "Délai dépassé. Le paiement n'a pas pu être vérifié.",
+      "tryAgain": "Veuillez réessayer ou contacter notre équipe.",
+      "verifyingPayment": "Vérification du paiement en cours...",
+      "checkEmail": "Le statut n'a pas pu être vérifié. Vérifiez votre email pour la confirmation."
+    }
   },
   "gallery": {
     "title": "Galerie",

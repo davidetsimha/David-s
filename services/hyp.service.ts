@@ -97,8 +97,10 @@ export async function createPaymentPage(
     params.append('UTF8', 'True'); // UTF-8 encoding
     params.append('UTF8out', 'True'); // UTF-8 output
 
-    // Language
-    const langMap: Record<string, string> = { he: 'HEB', en: 'ENG', fr: 'ENG' };
+    // Language mapping for Yaad Shrig
+    // Note: Yaad only supports HEB (Hebrew) and ENG (English)
+    // For French users, we default to Hebrew as they are in Israel
+    const langMap: Record<string, string> = { he: 'HEB', en: 'ENG', fr: 'HEB' };
     params.append('PageLang', langMap[request.language || 'he'] || 'HEB');
 
     // Build the full payment page URL

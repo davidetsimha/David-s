@@ -1,98 +1,136 @@
-import type { Metadata } from 'next';
-import { getTranslations } from 'next-intl/server';
-import { CheckCircle, ArrowRight, ArrowLeft, Phone, Clock, AlertCircle } from 'lucide-react';
+'use client';
+
+import { useEffect, useState, useCallback } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useTranslations, useLocale } from 'next-intl';
+import { CheckCircle, ArrowRight, ArrowLeft, Phone, Clock, AlertCircle, Loader2 } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
-import { createClient } from '@supabase/supabase-js';
+import { useCartStore } from '@/stores';
 
 const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '058-781-9457';
+const POLLING_INTERVAL = 5000; // 5 seconds
+const POLLING_TIMEOUT = 120000; // 2 minutes
 
-type Props = {
-  params: Promise<{ locale: string }>;
-  searchParams: Promise<{
-    order_id?: string;
-    type?: string;
-    payment_pending?: string;
-    // CreditGuard callback params
-    result?: string;
-    tranId?: string;
-    uniqueid?: string;
-  }>;
-};
+type PaymentStatus = 'pending' | 'confirmed' | 'failed' | 'loading';
 
-// Create Supabase client for server component
-function getSupabase() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-  return createClient(url, key);
-}
+export default function CheckoutSuccessPage() {
+  const searchParams = useSearchParams();
+  const locale = useLocale();
+  const t = useTranslations();
+  const { clearCart } = useCartStore();
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: 'checkout.success' });
+  const orderId = searchParams.get('order_id');
+  const type = searchParams.get('type');
+  const paymentPending = searchParams.get('payment_pending');
+  const result = searchParams.get('result');
 
-  return {
-    title: t('title'),
-  };
-}
-
-export default async function CheckoutSuccessPage({ params, searchParams }: Props) {
-  const { locale } = await params;
-  const {
-    order_id: orderIdParam,
-    type,
-    payment_pending: paymentPending,
-    result,
-    uniqueid,
-  } = await searchParams;
-
-  const t = await getTranslations({ locale });
   const isRTL = locale === 'he';
   const direction = isRTL ? 'rtl' : 'ltr';
   const Arrow = isRTL ? ArrowLeft : ArrowRight;
 
   const isPlateauOrder = type === 'plateau';
 
-  // Determine order ID from params or callback
-  const orderId = orderIdParam || uniqueid;
-
-  // Check payment result from CreditGuard redirect
+  // Determine initial payment status from URL params
   const paymentApproved = result === '000';
   const paymentDeclined = result && result !== '000';
 
-  // Get order details if we have an order ID
-  let order = null;
-  let paymentStatus: 'confirmed' | 'pending' | 'failed' | null = null;
+  const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>(() => {
+    if (isPlateauOrder || paymentApproved) return 'confirmed';
+    if (paymentDeclined) return 'failed';
+    if (paymentPending) return 'pending';
+    return 'loading';
+  });
+  const [cartCleared, setCartCleared] = useState(false);
+  const [pollingTimedOut, setPollingTimedOut] = useState(false);
+  const [orderDetails, setOrderDetails] = useState<{ totalAmount?: number } | null>(null);
 
-  if (orderId) {
+  // Check payment status from API
+  const checkPaymentStatus = useCallback(async () => {
+    if (!orderId) return;
+
     try {
-      const supabase = getSupabase();
-      const { data } = await supabase
-        .from('orders')
-        .select('id, status, customer_name, total_amount, payment_status')
-        .eq('id', orderId)
-        .single();
+      const response = await fetch(`/api/payment/status?order_id=${orderId}`);
+      const data = await response.json();
 
-      order = data;
-
-      // Determine payment status
-      if (order) {
-        if (order.status === 'confirmed' || order.payment_status === 'approved') {
-          paymentStatus = 'confirmed';
-        } else if (order.payment_status === 'declined' || paymentDeclined) {
-          paymentStatus = 'failed';
-        } else {
-          paymentStatus = 'pending';
-        }
+      if (data.success) {
+        setPaymentStatus(data.status);
+        return data.status;
       }
     } catch (error) {
-      console.error('Error fetching order:', error);
+      console.error('Error checking payment status:', error);
     }
-  }
+    return null;
+  }, [orderId]);
+
+  // Clear cart when payment is confirmed
+  useEffect(() => {
+    if (paymentStatus === 'confirmed' && !cartCleared) {
+      clearCart();
+      setCartCleared(true);
+      // Clear pending order from sessionStorage
+      if (typeof window !== 'undefined') {
+        sessionStorage.removeItem('pendingOrderId');
+      }
+    }
+  }, [paymentStatus, cartCleared, clearCart]);
+
+  // Polling for pending payments
+  useEffect(() => {
+    // Don't poll if already confirmed, failed, or plateau order
+    if (paymentStatus !== 'pending' && paymentStatus !== 'loading') return;
+    if (isPlateauOrder) {
+      setPaymentStatus('confirmed');
+      return;
+    }
+
+    let pollCount = 0;
+    let timeoutId: NodeJS.Timeout | null = null;
+    let isCancelled = false;
+    const maxPolls = POLLING_TIMEOUT / POLLING_INTERVAL;
+
+    const poll = async () => {
+      if (isCancelled) return;
+
+      const status = await checkPaymentStatus();
+      pollCount++;
+
+      if (isCancelled) return;
+
+      if (status === 'confirmed' || status === 'failed') {
+        return; // Stop polling
+      }
+
+      if (pollCount >= maxPolls) {
+        setPollingTimedOut(true);
+        return; // Stop polling after timeout
+      }
+
+      // Continue polling
+      timeoutId = setTimeout(poll, POLLING_INTERVAL);
+    };
+
+    // Initial check
+    poll();
+
+    // Cleanup on unmount
+    return () => {
+      isCancelled = true;
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [checkPaymentStatus, isPlateauOrder, paymentStatus]);
+
+  // For initial loading, fetch order details
+  useEffect(() => {
+    if (paymentStatus === 'loading' && orderId) {
+      checkPaymentStatus();
+    }
+  }, [paymentStatus, orderId, checkPaymentStatus]);
 
   // Determine what to show
-  const showSuccess = isPlateauOrder || paymentApproved || paymentStatus === 'confirmed';
-  const showPending = paymentPending || paymentStatus === 'pending';
-  const showFailed = paymentDeclined || paymentStatus === 'failed';
+  const showPending = paymentStatus === 'pending' || paymentStatus === 'loading';
+  const showFailed = paymentStatus === 'failed';
 
   return (
     <div className="min-h-screen bg-cream-50 flex items-center justify-center p-4" dir={direction}>
@@ -108,10 +146,14 @@ export default async function CheckoutSuccessPage({ params, searchParams }: Prop
           </div>
         ) : showPending ? (
           <div className="relative mx-auto w-24 h-24 mb-8">
-            <div className="absolute inset-0 bg-amber-100 rounded-full opacity-50" />
+            <div className="absolute inset-0 bg-amber-100 rounded-full opacity-50 animate-pulse" />
             <div className="relative w-24 h-24 bg-gradient-to-br from-amber-400 to-amber-500
               rounded-full flex items-center justify-center shadow-lg shadow-amber-500/30">
-              <Clock className="w-12 h-12 text-white" strokeWidth={1.5} />
+              {paymentStatus === 'loading' ? (
+                <Loader2 className="w-12 h-12 text-white animate-spin" strokeWidth={1.5} />
+              ) : (
+                <Clock className="w-12 h-12 text-white" strokeWidth={1.5} />
+              )}
             </div>
           </div>
         ) : (
@@ -141,10 +183,20 @@ export default async function CheckoutSuccessPage({ params, searchParams }: Prop
             : isPlateauOrder
               ? t('checkout.plateauOrderNote')
               : showPending
-                ? t('checkout.paymentPendingMessage')
+                ? pollingTimedOut
+                  ? t('checkout.errors.timeout')
+                  : t('checkout.paymentPendingMessage')
                 : t('checkout.success.message')
           }
         </p>
+
+        {/* Polling indicator for pending payments */}
+        {showPending && !pollingTimedOut && (
+          <div className="mb-6 flex items-center justify-center gap-2 text-sm text-amber-600">
+            <Loader2 className="w-4 h-4 animate-spin" />
+            <span>{t('checkout.errors.verifyingPayment')}</span>
+          </div>
+        )}
 
         {/* Order Number */}
         {orderId && (
@@ -155,9 +207,9 @@ export default async function CheckoutSuccessPage({ params, searchParams }: Prop
             <p className="font-display text-xl text-gold-700">
               #{orderId.slice(0, 8)}
             </p>
-            {order?.total_amount && (
+            {orderDetails?.totalAmount && (
               <p className="text-sm text-stone-500 mt-2">
-                {t('checkout.total')}: {order.total_amount} ₪
+                {t('checkout.total')}: {orderDetails.totalAmount} ₪
               </p>
             )}
           </div>
@@ -177,6 +229,15 @@ export default async function CheckoutSuccessPage({ params, searchParams }: Prop
           <div className="bg-red-50 rounded-xl p-4 border border-red-200 mb-8">
             <p className="text-sm text-red-800">
               {t('checkout.paymentFailedNote')}
+            </p>
+          </div>
+        )}
+
+        {/* Timeout notice */}
+        {pollingTimedOut && (
+          <div className="bg-amber-50 rounded-xl p-4 border border-amber-200 mb-8">
+            <p className="text-sm text-amber-800">
+              {t('checkout.errors.checkEmail')}
             </p>
           </div>
         )}
