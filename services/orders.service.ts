@@ -39,7 +39,11 @@ function validatePickupDate(
   orderType: 'individual' | 'plateau',
   minDaysAdvance: number
 ): void {
-  const date = new Date(dateStr);
+  // Parse date parts to avoid timezone issues
+  // dateStr is in format "YYYY-MM-DD"
+  const [year, month, day] = dateStr.split('-').map(Number);
+  const date = new Date(year, month - 1, day); // month is 0-indexed
+
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
@@ -48,7 +52,7 @@ function validatePickupDate(
     throw new Error('Date de retrait invalide (passée)');
   }
 
-  // Not a Saturday (Shabbat)
+  // Not a Saturday (Shabbat) - getDay() now works correctly with local date
   if (date.getDay() === 6) {
     throw new Error('Retrait impossible le samedi');
   }
