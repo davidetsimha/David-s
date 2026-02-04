@@ -10,15 +10,14 @@ interface OrderSummaryProps {
   deliveryFee?: number;
 }
 
-const DEFAULT_DELIVERY_FEE = 15;
-
 export function OrderSummary({ deliveryMethod, deliveryFee: customDeliveryFee }: OrderSummaryProps) {
   const { items, subtotal } = useCartStore();
   const t = useTranslations();
   const locale = useLocale();
 
   const subTotal = subtotal();
-  const deliveryFeeAmount = customDeliveryFee ?? DEFAULT_DELIVERY_FEE;
+  // Use 0 if no zone is selected (no default fallback)
+  const deliveryFeeAmount = customDeliveryFee ?? 0;
   const deliveryFee = deliveryMethod === 'delivery' ? deliveryFeeAmount : 0;
   const total = subTotal + deliveryFee;
 

@@ -7,6 +7,8 @@
  * This service handles communication with the Yaad Shrig payment gateway.
  */
 
+import crypto from 'crypto';
+
 export interface HypPaymentRequest {
   orderId: string;
   amount: number; // In ILS (shekels)
@@ -48,65 +50,130 @@ export interface HypTransactionStatus {
 const YAAD_API_URL = 'https://icom.yaad.net/p/';
 
 /**
- * Create a payment page URL for Yaad Shrig
- * This uses the simple redirect-based API
+ * Verify the signature of a Hyp callback
+ * Yaad Shrig uses an MD5 hash of certain parameters + PassP
  */
-export async function createPaymentPage(
+export function verifyCallbackSignature(
+  data: Record<string, string>,
+  signature: string
+): boolean {
+  const passP = process.env.HYP_API_KEY;
+  if (!passP) return false;
+
+  // Yaad Shrig uses a hash of certain parameters + PassP
+  const params = ['Id', 'CCode', 'Amount', 'Order', 'Fild1', 'Fild2', 'Fild3'];
+  const values = params.map(p => data[p] || '').join('');
+  const expectedSignature = crypto
+    .createHash('md5')
+    .update(values + passP)
+    .digest('hex');
+
+  return signature === expectedSignature;
+}
+
+/**
+ * Parse Yaad Shrig response (key=value&key=value format)
+ */
+function parseYaadResponse(response: string): Record<string, string> {
+  const result: Record<string, string> = {};
+  const pairs = response.split('&');
+
+  for (const pair of pairs) {
+    const [key, value] = pair.split('=');
+    if (key && value !== undefined) {
+      result[decodeURIComponent(key)] = decodeURIComponent(value);
+    }
+  }
+
+  return result;
+}
+
+/**
+ * Create a SIGNED payment URL using Yaad APISign flow
+ * This is more secure as PassP is never exposed to the client
+ */
+export async function createSignedPaymentUrl(
   request: HypPaymentRequest
 ): Promise<HypPaymentResponse> {
   const masof = process.env.HYP_TERMINAL_ID;
   const passP = process.env.HYP_API_KEY;
 
   if (!masof || !passP) {
-    throw new Error('Missing Hyp credentials in environment variables');
+    throw new Error('Missing Hyp credentials');
   }
 
   try {
-    // Build the payment page URL with parameters
-    const params = new URLSearchParams();
-
-    // Required parameters
-    params.append('action', 'pay');
-    params.append('Masof', masof);
-    params.append('PassP', passP);
-    params.append('Amount', request.amount.toFixed(2));
-    params.append('Currency', '1'); // 1 = ILS
-    params.append('Order', request.orderId);
-    params.append('Info', request.description.slice(0, 50)); // Max 50 chars
-
-    // Customer info
-    params.append('ClientName', request.customer.name);
-    params.append('ClientLName', ''); // Last name (optional, included in name)
-    params.append('email', request.customer.email);
-    params.append('phone', request.customer.phone);
-
-    // Redirect URLs
-    params.append('SuccessURL', request.successUrl);
-    params.append('ErrorURL', request.cancelUrl);
-    params.append('CancelURL', request.cancelUrl);
-
-    // Callback/IPN URL (NotifyURL)
-    params.append('NotifyURL', request.callbackUrl);
-
-    // Transaction settings
-    params.append('J5', 'False'); // J5=False means one-time payment (not token)
-    params.append('Coin', '1'); // 1 = ILS
-    params.append('Tash', '1'); // Number of payments (1 = single payment)
-    params.append('FixTash', 'False'); // Allow customer to change number of payments
-    params.append('Sign', 'True'); // Enable signature verification
-    params.append('UTF8', 'True'); // UTF-8 encoding
-    params.append('UTF8out', 'True'); // UTF-8 output
-
     // Language mapping for Yaad Shrig
-    // Note: Yaad only supports HEB (Hebrew) and ENG (English)
-    // For French users, we default to Hebrew as they are in Israel
     const langMap: Record<string, string> = { he: 'HEB', en: 'ENG', fr: 'HEB' };
-    params.append('PageLang', langMap[request.language || 'he'] || 'HEB');
 
-    // Build the full payment page URL
-    const paymentUrl = `${YAAD_API_URL}?${params.toString()}`;
+    // Step 1: Build params for signature request
+    const signParams = new URLSearchParams();
+    signParams.append('action', 'APISign');
+    signParams.append('What', 'SIGN');
+    signParams.append('KEY', passP);
+    signParams.append('Masof', masof);
+    signParams.append('PassP', passP);
+    signParams.append('Amount', request.amount.toFixed(2));
+    signParams.append('Currency', '1'); // ILS
+    signParams.append('Order', request.orderId);
+    signParams.append('Info', request.description.slice(0, 50));
+    signParams.append('ClientName', request.customer.name);
+    signParams.append('email', request.customer.email);
+    signParams.append('phone', request.customer.phone);
+    signParams.append('SuccessURL', request.successUrl);
+    signParams.append('ErrorURL', request.cancelUrl);
+    signParams.append('CancelURL', request.cancelUrl);
+    signParams.append('NotifyURL', request.callbackUrl);
+    signParams.append('J5', 'False');
+    signParams.append('Coin', '1');
+    signParams.append('Tash', '1');
+    signParams.append('Sign', 'True');
+    signParams.append('UTF8', 'True');
+    signParams.append('UTF8out', 'True');
+    signParams.append('PageLang', langMap[request.language || 'he'] || 'HEB');
 
-    console.log('[Hyp] Payment page URL created for order:', request.orderId);
+    // Step 2: Call Yaad API to get signature
+    const signResponse = await fetch(`${YAAD_API_URL}?${signParams.toString()}`);
+    const signText = await signResponse.text();
+    const signResult = parseYaadResponse(signText);
+
+    if (signResult.CCode !== '0' || !signResult.signature) {
+      console.error('[Hyp] APISign failed:', signResult);
+      return {
+        success: false,
+        errorCode: signResult.CCode || 'SIGN_ERROR',
+        errorMessage: signResult.Err || 'Failed to generate signature',
+      };
+    }
+
+    // Step 3: Build client URL WITHOUT PassP, WITH signature
+    const clientParams = new URLSearchParams();
+    clientParams.append('action', 'pay');
+    clientParams.append('Masof', masof);
+    // NO PassP here!
+    clientParams.append('Amount', request.amount.toFixed(2));
+    clientParams.append('Currency', '1');
+    clientParams.append('Order', request.orderId);
+    clientParams.append('Info', request.description.slice(0, 50));
+    clientParams.append('ClientName', request.customer.name);
+    clientParams.append('email', request.customer.email);
+    clientParams.append('phone', request.customer.phone);
+    clientParams.append('SuccessURL', request.successUrl);
+    clientParams.append('ErrorURL', request.cancelUrl);
+    clientParams.append('CancelURL', request.cancelUrl);
+    clientParams.append('NotifyURL', request.callbackUrl);
+    clientParams.append('J5', 'False');
+    clientParams.append('Coin', '1');
+    clientParams.append('Tash', '1');
+    clientParams.append('Sign', 'True');
+    clientParams.append('UTF8', 'True');
+    clientParams.append('UTF8out', 'True');
+    clientParams.append('PageLang', langMap[request.language || 'he'] || 'HEB');
+    clientParams.append('signature', signResult.signature);
+
+    const paymentUrl = `${YAAD_API_URL}?${clientParams.toString()}`;
+
+    console.log('[Hyp] Signed payment URL created for order:', request.orderId);
 
     return {
       success: true,
@@ -114,13 +181,24 @@ export async function createPaymentPage(
       transactionId: request.orderId,
     };
   } catch (error) {
-    console.error('[Hyp] Error creating payment page:', error);
+    console.error('[Hyp] Error creating signed payment URL:', error);
     return {
       success: false,
       errorCode: 'BUILD_ERROR',
       errorMessage: error instanceof Error ? error.message : 'Failed to create payment URL',
     };
   }
+}
+
+/**
+ * Create a payment page URL for Yaad Shrig
+ * Now uses the secure APISign flow to avoid exposing PassP in client URLs
+ */
+export async function createPaymentPage(
+  request: HypPaymentRequest
+): Promise<HypPaymentResponse> {
+  // Use the secure APISign flow
+  return createSignedPaymentUrl(request);
 }
 
 /**
@@ -179,23 +257,6 @@ export async function verifyTransaction(
       errorMessage: error instanceof Error ? error.message : 'Network error',
     };
   }
-}
-
-/**
- * Parse Yaad Shrig response (key=value&key=value format)
- */
-function parseYaadResponse(response: string): Record<string, string> {
-  const result: Record<string, string> = {};
-  const pairs = response.split('&');
-
-  for (const pair of pairs) {
-    const [key, value] = pair.split('=');
-    if (key && value !== undefined) {
-      result[decodeURIComponent(key)] = decodeURIComponent(value);
-    }
-  }
-
-  return result;
 }
 
 /**

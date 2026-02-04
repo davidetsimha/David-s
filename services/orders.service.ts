@@ -27,26 +27,101 @@ export async function getOrderById(id: string): Promise<Order> {
   return data as Order;
 }
 
+import crypto from 'crypto';
+
+/**
+ * Validate pickup date server-side
+ */
+function validatePickupDate(
+  dateStr: string,
+  orderType: 'individual' | 'plateau',
+  minDaysAdvance: number
+): void {
+  const date = new Date(dateStr);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  // Not in the past
+  if (date < today) {
+    throw new Error('Date de retrait invalide (passée)');
+  }
+
+  // Not a Saturday (Shabbat)
+  if (date.getDay() === 6) {
+    throw new Error('Retrait impossible le samedi');
+  }
+
+  // Respect minimum advance days
+  const diffDays = Math.floor((date.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+  if (diffDays < minDaysAdvance) {
+    throw new Error(`Délai minimum non respecté (${minDaysAdvance} jours requis)`);
+  }
+
+  // Individual orders = only Friday
+  if (orderType === 'individual' && date.getDay() !== 5) {
+    throw new Error('Les commandes individuelles sont livrées uniquement le vendredi');
+  }
+}
+
 export async function createOrder(orderData: CreateOrderDTO): Promise<string> {
   const { items, ...orderInfo } = orderData;
+
+  // Generate idempotency key based on order content
+  const idempotencyKey = crypto
+    .createHash('sha256')
+    .update(JSON.stringify({
+      email: orderData.customer_email,
+      items: items.map(i => `${i.product_id}:${i.quantity}`).sort(),
+      date: orderData.pickup_date,
+    }))
+    .digest('hex')
+    .substring(0, 32);
+
+  // Check if order already exists (< 5 min)
+  const { data: existing } = await supabase
+    .from('orders')
+    .select('id')
+    .eq('idempotency_key', idempotencyKey)
+    .gte('created_at', new Date(Date.now() - 5 * 60 * 1000).toISOString())
+    .single();
+
+  if (existing) {
+    console.log('[Orders] Duplicate order detected, returning existing ID');
+    return existing.id;
+  }
+
+  // Validate pickup date server-side
+  // Note: min_days_advance is checked on frontend; here we use conservative defaults
+  if (orderData.pickup_date) {
+    const orderType = orderData.order_type || 'individual';
+    // Use 2 days minimum for plateau orders (conservative default)
+    const minDaysAdvance = orderType === 'plateau' ? 2 : 0;
+    validatePickupDate(orderData.pickup_date, orderType, minDaysAdvance);
+  }
+
   const totalAmount = items.reduce((sum, item) => sum + item.unit_price * item.quantity, 0);
 
   // Add delivery zone price if applicable
   let finalTotal = totalAmount;
   if (orderData.delivery_zone_id) {
-    const { data: zone } = await supabase
+    const { data: zone, error: zoneError } = await supabase
       .from('delivery_zones')
-      .select('price')
+      .select('price, active')
       .eq('id', orderData.delivery_zone_id)
       .single();
-    if (zone) {
-      finalTotal += Number(zone.price);
+
+    if (zoneError || !zone) {
+      throw new Error('Zone de livraison invalide ou supprimée');
     }
+    if (!zone.active) {
+      throw new Error('Zone de livraison non disponible');
+    }
+    finalTotal += Number(zone.price);
   }
 
   const { data: order, error: orderError } = await supabase
     .from('orders')
-    .insert({ ...orderInfo, total_amount: finalTotal, status: 'pending' })
+    .insert({ ...orderInfo, total_amount: finalTotal, status: 'pending', idempotency_key: idempotencyKey })
     .select('id, customer_name, total_amount, order_type, pickup_date')
     .single();
 

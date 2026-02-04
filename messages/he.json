@@ -266,6 +266,7 @@
     "paymentPendingMessage": "הזמנתך התקבלה. התשלום בתהליך עיבוד.",
     "welcomeBack": "שלום {name}!",
     "notYou": "לא את/ה?",
+    "noDeliveryZones": "המשלוח אינו זמין כרגע. אנא בחר איסוף מהחנות.",
     "errors": {
       "paymentInitFailed": "לא ניתן לאתחל את התשלום. אנא נסה שוב.",
       "networkError": "שגיאת חיבור. בדוק את החיבור לאינטרנט.",

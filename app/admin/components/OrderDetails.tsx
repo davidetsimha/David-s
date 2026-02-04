@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Textarea } from '@/components/ui/Textarea'
-import { MapPin, Phone, Mail, Package, Calendar, Clock, AlertTriangle, Check, X, MessageCircle } from 'lucide-react'
+import { MapPin, Phone, Mail, Package, Calendar, Clock, AlertTriangle, Check, X, MessageCircle, Link as LinkIcon, Loader2 } from 'lucide-react'
 import type { Order, OrderStatus, ConfirmationStatus } from '@/types'
 
 // Format phone number for WhatsApp (Israeli format)
@@ -77,6 +77,7 @@ export function OrderDetails({
   const [paymentLink, setPaymentLink] = useState('')
   const [adminNotes, setAdminNotes] = useState('')
   const [rejectReason, setRejectReason] = useState('')
+  const [isGeneratingLink, setIsGeneratingLink] = useState(false)
 
   // WhatsApp contact states
   const [lastAction, setLastAction] = useState<LastAction>(null)
@@ -104,6 +105,29 @@ export function OrderDetails({
         month: 'long',
       })
     : null
+
+  const handleGeneratePaymentLink = async () => {
+    setIsGeneratingLink(true)
+    try {
+      const response = await fetch('/api/payment/generate-link', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId: order.id }),
+      })
+
+      const data = await response.json()
+
+      if (data.success && data.paymentUrl) {
+        setPaymentLink(data.paymentUrl)
+      } else {
+        alert('Erreur: ' + (data.error || 'Impossible de generer le lien'))
+      }
+    } catch (error) {
+      alert('Erreur reseau')
+    } finally {
+      setIsGeneratingLink(false)
+    }
+  }
 
   const handleConfirm = () => {
     if (paymentLink && onConfirmPlateau) {
@@ -364,13 +388,30 @@ David's Patisserie`
         {isPendingConfirmation && showConfirmForm && (
           <div className="p-4 bg-green-50 rounded-lg space-y-4">
             <h4 className="font-medium text-green-900">Confirmer la commande</h4>
-            <Input
-              label="Lien de paiement"
-              value={paymentLink}
-              onChange={(e) => setPaymentLink(e.target.value)}
-              placeholder="https://..."
-              required
-            />
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">Lien de paiement</label>
+              <div className="flex gap-2">
+                <Input
+                  value={paymentLink}
+                  onChange={(e) => setPaymentLink(e.target.value)}
+                  placeholder="https://..."
+                  className="flex-1"
+                />
+                <Button
+                  variant="secondary"
+                  onClick={handleGeneratePaymentLink}
+                  disabled={isGeneratingLink}
+                  className="shrink-0"
+                >
+                  {isGeneratingLink ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <LinkIcon className="w-4 h-4" />
+                  )}
+                  <span className="ml-1">Generer</span>
+                </Button>
+              </div>
+            </div>
             <Textarea
               label="Note (optionnel)"
               value={adminNotes}

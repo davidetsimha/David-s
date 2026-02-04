@@ -238,8 +238,8 @@ export default function CheckoutPage() {
       }
 
       // For plateau orders: no payment, just redirect to confirmation
+      // Don't clear cart here - it will be cleared on the success page
       if (isPlateauOrder) {
-        clearCart();
         router.push(`/${locale}/boutique/checkout/success?order_id=${orderId}&type=plateau`);
         return;
       }
@@ -471,6 +471,15 @@ export default function CheckoutPage() {
                         </label>
                       ))}
                     </div>
+                  </div>
+                )}
+
+                {/* No delivery zones message */}
+                {deliveryMethod === 'delivery' && deliveryZones.length === 0 && (
+                  <div className="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-xl">
+                    <p className="text-sm text-amber-800">
+                      {t('checkout.noDeliveryZones')}
+                    </p>
                   </div>
                 )}
 

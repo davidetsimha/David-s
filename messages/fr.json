@@ -266,6 +266,7 @@
     "paymentPendingMessage": "Votre commande a été reçue. Le paiement est en cours de traitement.",
     "welcomeBack": "Bienvenue {name} !",
     "notYou": "Pas vous ?",
+    "noDeliveryZones": "La livraison n'est pas disponible actuellement. Veuillez choisir le retrait en boutique.",
     "errors": {
       "paymentInitFailed": "Impossible d'initialiser le paiement. Veuillez réessayer.",
       "networkError": "Erreur de connexion. Vérifiez votre internet.",

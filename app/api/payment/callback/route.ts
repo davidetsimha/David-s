@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { parseCallbackData, verifyTransaction } from '@/services/hyp.service';
+import { parseCallbackData, verifyTransaction, verifyCallbackSignature } from '@/services/hyp.service';
 import { createClient } from '@supabase/supabase-js';
 
 // Create a Supabase client for server-side operations
@@ -57,6 +57,13 @@ export async function POST(request: NextRequest) {
       result: callbackData.result,
     });
 
+    // Verify signature if present
+    const signature = callbackData.Sign || callbackData.sign || callbackData.signature;
+    if (signature && !verifyCallbackSignature(callbackData, signature)) {
+      console.error('[Payment/Callback] Invalid signature');
+      return NextResponse.json({ success: false, error: 'Invalid signature' }, { status: 403 });
+    }
+
     // Parse the callback data
     const paymentStatus = parseCallbackData(callbackData);
 
@@ -88,7 +95,50 @@ export async function POST(request: NextRequest) {
     const orderId = verifiedStatus.orderId || paymentStatus.orderId;
 
     if (orderId) {
-      const newStatus = verifiedStatus.status === 'approved' ? 'confirmed' : 'pending';
+      // Check for duplicate callback or already confirmed order
+      const { data: existingOrder } = await supabase
+        .from('orders')
+        .select('payment_transaction_id, status, total_amount')
+        .eq('id', orderId)
+        .single();
+
+      if (existingOrder?.payment_transaction_id === verifiedStatus.transactionId) {
+        console.log('[Payment/Callback] Callback already processed, ignoring');
+        return NextResponse.json({ success: true, message: 'Already processed' });
+      }
+
+      // Don't re-update an already confirmed order
+      if (existingOrder?.status === 'confirmed') {
+        console.log('[Payment/Callback] Order already confirmed, ignoring');
+        return NextResponse.json({ success: true, message: 'Already confirmed' });
+      }
+
+      // Verify that the paid amount matches the expected amount
+      if (existingOrder && verifiedStatus.amount) {
+        const expectedAmount = Number(existingOrder.total_amount);
+        const paidAmount = Number(verifiedStatus.amount);
+
+        // 0.01 tolerance for rounding
+        if (Math.abs(expectedAmount - paidAmount) > 0.01) {
+          console.error(`[Payment/Callback] Amount mismatch: expected ${expectedAmount}, received ${paidAmount}`);
+          // Mark as suspect but don't confirm
+          await supabase.from('orders').update({
+            payment_status: 'amount_mismatch',
+            payment_error_message: `Montant invalide: attendu ${expectedAmount}₪, payé ${paidAmount}₪`,
+          }).eq('id', orderId);
+          return NextResponse.json({ success: false, error: 'Amount mismatch' });
+        }
+      }
+
+      // Map status properly
+      let newStatus: string;
+      if (verifiedStatus.status === 'approved') {
+        newStatus = 'confirmed';
+      } else if (verifiedStatus.status === 'declined' || verifiedStatus.status === 'error') {
+        newStatus = 'payment_failed';
+      } else {
+        newStatus = 'pending';
+      }
 
       const updateData: Record<string, unknown> = {
         status: newStatus,
