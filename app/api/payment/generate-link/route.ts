@@ -11,29 +11,51 @@ function getSupabase() {
 
 export async function POST(request: NextRequest) {
   try {
-    const { orderId } = await request.json();
+    const body = await request.json();
+    const { orderId } = body;
+
+    console.log('[Payment/GenerateLink] Received request:', { body, orderId });
 
     if (!orderId) {
-      return NextResponse.json({ error: 'Missing orderId' }, { status: 400 });
+      return NextResponse.json({ error: 'Missing orderId', received: body }, { status: 400 });
     }
 
     const supabase = getSupabase();
 
-    // Get order details (without join to avoid .single() issues)
-    const { data: order, error } = await supabase
+    // First, try without .single() to see what we get
+    const { data: orders, error: listError } = await supabase
       .from('orders')
       .select('id, customer_name, customer_email, customer_phone, total_amount, order_type')
-      .eq('id', orderId)
-      .single();
+      .eq('id', orderId);
 
-    if (error) {
-      console.error('[Payment/GenerateLink] DB Error:', error);
-      return NextResponse.json({ error: 'Order not found', details: error.message }, { status: 404 });
+    console.log('[Payment/GenerateLink] Query result:', { orderId, orders, listError });
+
+    if (listError) {
+      return NextResponse.json({
+        error: 'Database error',
+        details: listError.message,
+        orderId,
+        hint: listError.hint
+      }, { status: 500 });
     }
 
-    if (!order) {
-      return NextResponse.json({ error: 'Order not found' }, { status: 404 });
+    if (!orders || orders.length === 0) {
+      return NextResponse.json({
+        error: 'Order not found',
+        orderId,
+        orderCount: orders?.length || 0
+      }, { status: 404 });
     }
+
+    if (orders.length > 1) {
+      return NextResponse.json({
+        error: 'Multiple orders found',
+        orderId,
+        orderCount: orders.length
+      }, { status: 500 });
+    }
+
+    const order = orders[0];
 
     // Verify this is a plateau order pending payment
     if (order.order_type !== 'plateau') {
