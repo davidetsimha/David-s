@@ -226,7 +226,6 @@ export async function createPaymentPage(
     params.append('J5', 'False');
     params.append('Coin', '1');
     params.append('Tash', '1');
-    params.append('Sign', 'True');
     params.append('UTF8', 'True');
     params.append('UTF8out', 'True');
     params.append('PageLang', langMap[request.language || 'he'] || 'HEB');
