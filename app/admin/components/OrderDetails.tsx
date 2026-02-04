@@ -106,27 +106,13 @@ export function OrderDetails({
       })
     : null
 
-  const handleGeneratePaymentLink = async () => {
-    setIsGeneratingLink(true)
-    try {
-      const response = await fetch('/api/payment/generate-link', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ orderId: order.id }),
-      })
-
-      const data = await response.json()
-
-      if (data.success && data.paymentUrl) {
-        setPaymentLink(data.paymentUrl)
-      } else {
-        alert('Erreur: ' + (data.error || 'Impossible de generer le lien'))
-      }
-    } catch (error) {
-      alert('Erreur reseau')
-    } finally {
-      setIsGeneratingLink(false)
-    }
+  const handleGeneratePaymentLink = () => {
+    // Generate redirect link that goes through our site (for proper referer)
+    const baseUrl = typeof window !== 'undefined'
+      ? window.location.origin
+      : 'https://www.davids-patisserie.co.il'
+    const redirectLink = `${baseUrl}/pay/${order.id}`
+    setPaymentLink(redirectLink)
   }
 
   const handleConfirm = () => {
