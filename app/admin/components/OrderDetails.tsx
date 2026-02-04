@@ -194,7 +194,7 @@ export function OrderDetails({
       if (lang === 'fr') {
         return `Bonjour ${customerName},
 
-Votre commande de plateau pour le ${pickupDateFormatted} a été confirmée ! 🎉
+Votre commande de plateau pour le ${pickupDateFormatted} a été confirmée !
 
 Voici le lien de paiement :
 ${savedPaymentLink}
@@ -206,7 +206,7 @@ David's Patisserie`
       } else {
         return `שלום ${customerName},
 
-ההזמנה שלך ל-${pickupDateFormatted} אושרה! 🎉
+ההזמנה שלך ל-${pickupDateFormatted} אושרה!
 
 קישור לתשלום:
 ${savedPaymentLink}
@@ -242,7 +242,7 @@ David's Patisserie`
       if (lang === 'fr') {
         return `Bonjour ${customerName},
 
-Votre commande pour le ${pickupDateFormatted}${timeSlot ? ` (${timeSlot})` : ''} est confirmée ! 🎉
+Votre commande pour le ${pickupDateFormatted}${timeSlot ? ` (${timeSlot})` : ''} est confirmée !
 
 Montant : ${totalAmount} ₪
 
@@ -251,7 +251,7 @@ David's Patisserie`
       } else {
         return `שלום ${customerName},
 
-ההזמנה שלך ל-${pickupDateFormatted}${timeSlot ? ` (${timeSlot})` : ''} אושרה! 🎉
+ההזמנה שלך ל-${pickupDateFormatted}${timeSlot ? ` (${timeSlot})` : ''} אושרה!
 
 סכום: ₪${totalAmount}
 
@@ -277,7 +277,7 @@ David's Patisserie`
     if (lang === 'fr') {
       return `Bonjour ${customerName},
 
-Votre commande de plateau pour le ${pickupDateFormatted} a été confirmée ! 🎉
+Votre commande de plateau pour le ${pickupDateFormatted} a été confirmée !
 
 Voici le lien de paiement :
 ${link}
@@ -289,7 +289,7 @@ David's Patisserie`
     } else {
       return `שלום ${customerName},
 
-ההזמנה שלך ל-${pickupDateFormatted} אושרה! 🎉
+ההזמנה שלך ל-${pickupDateFormatted} אושרה!
 
 קישור לתשלום:
 ${link}
