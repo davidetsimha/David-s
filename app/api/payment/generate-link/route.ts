@@ -62,8 +62,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Only plateau orders can use this endpoint' }, { status: 400 });
     }
 
-    // Generate signed payment link
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://davids-patisserie.vercel.app';
+    // Generate payment link - use the correct production URL
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.davids-patisserie.co.il';
 
     const response = await createPaymentPage({
       orderId: order.id,
