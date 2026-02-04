@@ -84,6 +84,7 @@ export function OrderDetails({
   const [whatsAppLanguage, setWhatsAppLanguage] = useState<WhatsAppLanguage | null>(null)
   const [savedPaymentLink, setSavedPaymentLink] = useState('')
   const [savedRejectReason, setSavedRejectReason] = useState('')
+  const [confirmLanguage, setConfirmLanguage] = useState<WhatsAppLanguage | null>(null)
 
   if (!order) return null
 
@@ -223,6 +224,45 @@ David's Patisserie`
     return `https://wa.me/${phone}?text=${message}`
   }
 
+  // WhatsApp message for pre-confirmation (when payment link is generated but not yet confirmed)
+  const getConfirmWhatsAppMessage = (lang: WhatsAppLanguage, link: string): string => {
+    const customerName = order.customer_name
+    const pickupDateFormatted = pickupDate || ''
+    const totalAmount = order.total_amount.toFixed(2)
+
+    if (lang === 'fr') {
+      return `Bonjour ${customerName},
+
+Votre commande de plateau pour le ${pickupDateFormatted} a été confirmée ! 🎉
+
+Voici le lien de paiement :
+${link}
+
+Montant : ${totalAmount} ₪
+
+À bientôt !
+David's Patisserie`
+    } else {
+      return `שלום ${customerName},
+
+ההזמנה שלך ל-${pickupDateFormatted} אושרה! 🎉
+
+קישור לתשלום:
+${link}
+
+סכום: ₪${totalAmount}
+
+להתראות!
+David's Patisserie`
+    }
+  }
+
+  const getConfirmWhatsAppUrl = (lang: WhatsAppLanguage, link: string): string => {
+    const phone = formatPhoneForWhatsApp(order.customer_phone)
+    const message = encodeURIComponent(getConfirmWhatsAppMessage(lang, link))
+    return `https://wa.me/${phone}?text=${message}`
+  }
+
   const handleClose = () => {
     setShowConfirmForm(false)
     setShowRejectForm(false)
@@ -234,6 +274,7 @@ David's Patisserie`
     setWhatsAppLanguage(null)
     setSavedPaymentLink('')
     setSavedRejectReason('')
+    setConfirmLanguage(null)
     onClose()
   }
 
@@ -398,7 +439,51 @@ David's Patisserie`
                 </Button>
               </div>
             </div>
+
+            {/* WhatsApp section - visible when payment link is generated */}
+            {paymentLink && (
+              <div className="p-3 bg-blue-50 rounded-lg space-y-3">
+                <p className="text-sm font-medium text-blue-900">Envoyer au client via WhatsApp:</p>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setConfirmLanguage('fr')}
+                    className={`flex-1 py-2 px-3 rounded-lg border text-sm font-medium transition-colors ${
+                      confirmLanguage === 'fr'
+                        ? 'bg-blue-100 border-blue-300 text-blue-800'
+                        : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                    }`}
+                  >
+                    🇫🇷 Français
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setConfirmLanguage('he')}
+                    className={`flex-1 py-2 px-3 rounded-lg border text-sm font-medium transition-colors ${
+                      confirmLanguage === 'he'
+                        ? 'bg-blue-100 border-blue-300 text-blue-800'
+                        : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                    }`}
+                  >
+                    🇮🇱 עברית
+                  </button>
+                </div>
+                {confirmLanguage && (
+                  <a
+                    href={getConfirmWhatsAppUrl(confirmLanguage, paymentLink)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-green-500 hover:bg-green-600 text-white font-medium rounded-lg transition-colors"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    Envoyer via WhatsApp
+                  </a>
+                )}
+              </div>
+            )}
+
             <Textarea
+              id="admin-notes"
               label="Note (optionnel)"
               value={adminNotes}
               onChange={(e) => setAdminNotes(e.target.value)}
@@ -430,6 +515,7 @@ David's Patisserie`
           <div className="p-4 bg-red-50 rounded-lg space-y-4">
             <h4 className="font-medium text-red-900">Refuser la commande</h4>
             <Textarea
+              id="reject-reason"
               label="Raison du refus"
               value={rejectReason}
               onChange={(e) => setRejectReason(e.target.value)}
