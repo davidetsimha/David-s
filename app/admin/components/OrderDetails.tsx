@@ -9,21 +9,65 @@ import { Textarea } from '@/components/ui/Textarea'
 import { MapPin, Phone, Mail, Package, Calendar, Clock, AlertTriangle, Check, X, MessageCircle, Link as LinkIcon, Loader2 } from 'lucide-react'
 import type { Order, OrderStatus, ConfirmationStatus } from '@/types'
 
-// Format phone number for WhatsApp (Israeli format)
+// Format phone number for WhatsApp (handles Israeli, French, US formats)
 function formatPhoneForWhatsApp(phone: string): string {
-  // Clean the number (remove spaces, dashes, parentheses)
-  let cleaned = phone.replace(/[\s\-\(\)]/g, '')
+  // Clean: remove spaces, dashes, parentheses, dots
+  let cleaned = phone.replace(/[\s\-\(\)\.]/g, '')
 
-  // If starts with +, remove the +
+  // Handle numbers already with country code
   if (cleaned.startsWith('+')) {
-    cleaned = cleaned.substring(1)
+    return cleaned.substring(1) // Remove + only
   }
 
-  // If starts with 0 (local Israeli format), replace with 972
+  // Handle 00 prefix (international format)
+  if (cleaned.startsWith('00')) {
+    return cleaned.substring(2) // Remove 00
+  }
+
+  // Handle numbers starting with country code without +
+  // Israeli: 972...
+  if (cleaned.startsWith('972')) {
+    return cleaned
+  }
+  // French: 33...
+  if (cleaned.startsWith('33')) {
+    return cleaned
+  }
+  // US: 1...
+  if (cleaned.startsWith('1') && cleaned.length === 11) {
+    return cleaned
+  }
+
+  // Local format detection (starts with 0)
   if (cleaned.startsWith('0')) {
-    cleaned = '972' + cleaned.substring(1)
+    // French mobile: 06xx, 07xx (10 digits)
+    if ((cleaned.startsWith('06') || cleaned.startsWith('07')) && cleaned.length === 10) {
+      return '33' + cleaned.substring(1)
+    }
+
+    // Israeli mobile: 05xx (10 digits)
+    // Could be French or Israeli - default to Israeli since business is in Israel
+    if (cleaned.startsWith('05') && cleaned.length === 10) {
+      return '972' + cleaned.substring(1)
+    }
+
+    // Other Israeli: 02, 03, 04, 08, 09 (landlines)
+    if (/^0[2-489]/.test(cleaned) && cleaned.length === 10) {
+      return '972' + cleaned.substring(1)
+    }
+
+    // French landlines: 01, 02, 03, 04, 05, 09 - remaining 0x likely Israeli
+    if (/^0[1-59]/.test(cleaned) && cleaned.length === 10) {
+      return '972' + cleaned.substring(1)
+    }
   }
 
+  // US: 10 digits starting with 2-9 (area code)
+  if (cleaned.length === 10 && /^[2-9]/.test(cleaned)) {
+    return '1' + cleaned
+  }
+
+  // Fallback: return as-is
   return cleaned
 }
 
