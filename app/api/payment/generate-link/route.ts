@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createSignedPaymentUrl } from '@/services/hyp.service';
+import { createPaymentPage } from '@/services/hyp.service';
 import { createClient } from '@supabase/supabase-js';
 
 function getSupabase() {
@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
     // Generate signed payment link
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://davids-patisserie.vercel.app';
 
-    const response = await createSignedPaymentUrl({
+    const response = await createPaymentPage({
       orderId: order.id,
       amount: Number(order.total_amount),
       currency: 'ILS',

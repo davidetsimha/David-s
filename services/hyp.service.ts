@@ -192,13 +192,62 @@ export async function createSignedPaymentUrl(
 
 /**
  * Create a payment page URL for Yaad Shrig
- * Now uses the secure APISign flow to avoid exposing PassP in client URLs
+ * Uses direct URL approach (simpler, works with all terminals)
  */
 export async function createPaymentPage(
   request: HypPaymentRequest
 ): Promise<HypPaymentResponse> {
-  // Use the secure APISign flow
-  return createSignedPaymentUrl(request);
+  const masof = process.env.HYP_TERMINAL_ID;
+  const passP = process.env.HYP_API_KEY;
+
+  if (!masof || !passP) {
+    throw new Error('Missing Hyp credentials in environment variables');
+  }
+
+  try {
+    const langMap: Record<string, string> = { he: 'HEB', en: 'ENG', fr: 'HEB' };
+
+    // Build the payment page URL with parameters
+    const params = new URLSearchParams();
+    params.append('action', 'pay');
+    params.append('Masof', masof);
+    params.append('PassP', passP);
+    params.append('Amount', request.amount.toFixed(2));
+    params.append('Currency', '1'); // 1 = ILS
+    params.append('Order', request.orderId);
+    params.append('Info', request.description.slice(0, 50));
+    params.append('ClientName', request.customer.name);
+    params.append('email', request.customer.email);
+    params.append('phone', request.customer.phone);
+    params.append('SuccessURL', request.successUrl);
+    params.append('ErrorURL', request.cancelUrl);
+    params.append('CancelURL', request.cancelUrl);
+    params.append('NotifyURL', request.callbackUrl);
+    params.append('J5', 'False');
+    params.append('Coin', '1');
+    params.append('Tash', '1');
+    params.append('Sign', 'True');
+    params.append('UTF8', 'True');
+    params.append('UTF8out', 'True');
+    params.append('PageLang', langMap[request.language || 'he'] || 'HEB');
+
+    const paymentUrl = `${YAAD_API_URL}?${params.toString()}`;
+
+    console.log('[Hyp] Payment page URL created for order:', request.orderId);
+
+    return {
+      success: true,
+      paymentPageUrl: paymentUrl,
+      transactionId: request.orderId,
+    };
+  } catch (error) {
+    console.error('[Hyp] Error creating payment page:', error);
+    return {
+      success: false,
+      errorCode: 'BUILD_ERROR',
+      errorMessage: error instanceof Error ? error.message : 'Failed to create payment URL',
+    };
+  }
 }
 
 /**
