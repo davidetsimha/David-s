@@ -19,10 +19,10 @@ export async function POST(request: NextRequest) {
 
     const supabase = getSupabase();
 
-    // Get order details
+    // Get order details (without join to avoid .single() issues)
     const { data: order, error } = await supabase
       .from('orders')
-      .select('*, items:order_items(*)')
+      .select('id, customer_name, customer_email, customer_phone, total_amount, order_type')
       .eq('id', orderId)
       .single();
 
