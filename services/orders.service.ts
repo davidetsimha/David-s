@@ -31,6 +31,8 @@ import crypto from 'crypto';
 
 /**
  * Validate pickup date server-side
+ * Note: This is a safety check. Frontend already validates dates.
+ * For plateau orders, we're lenient since they require admin confirmation.
  */
 function validatePickupDate(
   dateStr: string,
@@ -51,16 +53,20 @@ function validatePickupDate(
     throw new Error('Retrait impossible le samedi');
   }
 
-  // Respect minimum advance days
-  const diffDays = Math.floor((date.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-  if (diffDays < minDaysAdvance) {
-    throw new Error(`Délai minimum non respecté (${minDaysAdvance} jours requis)`);
-  }
+  // For individual orders only: check minimum advance and Friday requirement
+  if (orderType === 'individual') {
+    const diffDays = Math.floor((date.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+    if (minDaysAdvance > 0 && diffDays < minDaysAdvance) {
+      throw new Error(`Délai minimum non respecté (${minDaysAdvance} jours requis)`);
+    }
 
-  // Individual orders = only Friday
-  if (orderType === 'individual' && date.getDay() !== 5) {
-    throw new Error('Les commandes individuelles sont livrées uniquement le vendredi');
+    // Individual orders = only Friday
+    if (date.getDay() !== 5) {
+      throw new Error('Les commandes individuelles sont livrées uniquement le vendredi');
+    }
   }
+  // Plateau orders: no restrictions beyond basic checks (not past, not Saturday)
+  // Late orders are flagged via is_late_order field and handled by admin
 }
 
 export async function createOrder(orderData: CreateOrderDTO): Promise<string> {
@@ -78,24 +84,25 @@ export async function createOrder(orderData: CreateOrderDTO): Promise<string> {
     .substring(0, 32);
 
   // Check if order already exists (< 5 min)
-  const { data: existing } = await supabase
+  const { data: existingOrders } = await supabase
     .from('orders')
     .select('id')
     .eq('idempotency_key', idempotencyKey)
     .gte('created_at', new Date(Date.now() - 5 * 60 * 1000).toISOString())
-    .single();
+    .limit(1);
 
-  if (existing) {
+  if (existingOrders && existingOrders.length > 0) {
     console.log('[Orders] Duplicate order detected, returning existing ID');
-    return existing.id;
+    return existingOrders[0].id;
   }
 
   // Validate pickup date server-side
-  // Note: min_days_advance is checked on frontend; here we use conservative defaults
+  // Note: For plateau orders, min_days_advance is not enforced server-side
+  // since they require admin confirmation anyway (late orders are flagged)
   if (orderData.pickup_date) {
     const orderType = orderData.order_type || 'individual';
-    // Use 2 days minimum for plateau orders (conservative default)
-    const minDaysAdvance = orderType === 'plateau' ? 2 : 0;
+    // Only enforce min days for individual orders; plateau orders go through admin review
+    const minDaysAdvance = orderType === 'plateau' ? 0 : 0;
     validatePickupDate(orderData.pickup_date, orderType, minDaysAdvance);
   }
 
