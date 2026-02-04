@@ -76,6 +76,14 @@ function formatDate(date: Date, locale: string): string {
   });
 }
 
+// Format date to YYYY-MM-DD without timezone conversion
+function formatDateToYYYYMMDD(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 export default function CheckoutPage() {
   const router = useRouter();
   const locale = useLocale();
@@ -216,7 +224,7 @@ export default function CheckoutPage() {
           ? `${deliveryAddress.street}, ${deliveryAddress.city}${deliveryAddress.postalCode ? ' ' + deliveryAddress.postalCode : ''}`
           : undefined,
         delivery_zone_id: deliveryMethod === 'delivery' && selectedZone ? selectedZone.id : undefined,
-        pickup_date: pickupDate.toISOString().split('T')[0],
+        pickup_date: formatDateToYYYYMMDD(pickupDate),
         pickup_time_slot: pickupTimeSlot,
         order_type: isPlateauOrder ? 'plateau' : 'individual',
         confirmation_status: isPlateauOrder ? 'pending_confirmation' : 'not_required',
