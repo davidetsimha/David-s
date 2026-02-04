@@ -8,9 +8,9 @@ const intlMiddleware = createMiddleware(routing);
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Skip i18n for admin routes - admin is not internationalized
-  if (pathname.startsWith('/admin')) {
-    // Only handle Supabase session for admin routes
+  // Skip i18n for admin and pay routes - not internationalized
+  if (pathname.startsWith('/admin') || pathname.startsWith('/pay')) {
+    // Only handle Supabase session for these routes
     return updateSession(request);
   }
 
