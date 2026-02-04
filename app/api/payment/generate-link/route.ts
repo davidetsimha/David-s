@@ -26,7 +26,12 @@ export async function POST(request: NextRequest) {
       .eq('id', orderId)
       .single();
 
-    if (error || !order) {
+    if (error) {
+      console.error('[Payment/GenerateLink] DB Error:', error);
+      return NextResponse.json({ error: 'Order not found', details: error.message }, { status: 404 });
+    }
+
+    if (!order) {
       return NextResponse.json({ error: 'Order not found' }, { status: 404 });
     }
 
