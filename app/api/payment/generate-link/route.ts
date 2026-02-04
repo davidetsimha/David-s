@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
       orderId: order.id,
       amount: Number(order.total_amount),
       currency: 'ILS',
-      description: `Plateau ${order.id.slice(0, 8)}`,
+      description: `Commande plateau`,
       customer: {
         name: order.customer_name,
         email: order.customer_email,
