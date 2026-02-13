@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createPaymentPage } from '@/services/hyp.service';
+import { createSignedPaymentUrl } from '@/services/hyp.service';
 import { createClient } from '@supabase/supabase-js';
 
 function getSupabase() {
@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
     // Generate payment link - use the correct production URL
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.davids-patisserie.co.il';
 
-    const response = await createPaymentPage({
+    const response = await createSignedPaymentUrl({
       orderId: order.id,
       amount: Number(order.total_amount),
       currency: 'ILS',

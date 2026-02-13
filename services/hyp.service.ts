@@ -97,8 +97,9 @@ export async function createSignedPaymentUrl(
 ): Promise<HypPaymentResponse> {
   const masof = process.env.HYP_TERMINAL_ID;
   const passP = process.env.HYP_API_KEY;
+  const signKey = process.env.HYP_SIGN_KEY;
 
-  if (!masof || !passP) {
+  if (!masof || !passP || !signKey) {
     throw new Error('Missing Hyp credentials');
   }
 
@@ -110,7 +111,7 @@ export async function createSignedPaymentUrl(
     const signParams = new URLSearchParams();
     signParams.append('action', 'APISign');
     signParams.append('What', 'SIGN');
-    signParams.append('KEY', passP);
+    signParams.append('KEY', signKey);
     signParams.append('Masof', masof);
     signParams.append('PassP', passP);
     signParams.append('Amount', request.amount.toFixed(2));

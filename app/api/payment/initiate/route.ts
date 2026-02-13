@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createPaymentPage, type HypPaymentRequest } from '@/services/hyp.service';
+import { createSignedPaymentUrl, type HypPaymentRequest } from '@/services/hyp.service';
 
 export interface InitiatePaymentBody {
   orderId: string;
@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
     console.log('[Payment/Initiate] Creating payment for order:', body.orderId);
 
     // Call Hyp API to create payment page
-    const result = await createPaymentPage(paymentRequest);
+    const result = await createSignedPaymentUrl(paymentRequest);
 
     if (result.success && result.paymentPageUrl) {
       console.log('[Payment/Initiate] Payment page created successfully');
