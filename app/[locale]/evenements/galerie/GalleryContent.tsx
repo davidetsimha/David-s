@@ -120,14 +120,8 @@ export function GalleryContent({ creations }: GalleryContentProps) {
                     alt={isHebrew ? creation.title_he : creation.title_fr}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent
                     opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="absolute inset-x-0 bottom-0 p-4 translate-y-4 group-hover:translate-y-0
-                    opacity-0 group-hover:opacity-100 transition-all duration-300">
-                    <h3 className="text-white font-medium">
-                      {isHebrew ? creation.title_he : creation.title_fr}
-                    </h3>
-                  </div>
                 </button>
               ))}
             </div>
@@ -214,10 +208,7 @@ function Lightbox({ images, currentIndex, onClose, onPrev, onNext, isHebrew }: L
           className="max-w-full max-h-[80vh] object-contain"
         />
         <div className="mt-4 text-center">
-          <h3 className="text-white text-lg font-medium">
-            {isHebrew ? current.title_he : current.title_fr}
-          </h3>
-          <p className="text-white/50 text-sm mt-1">
+          <p className="text-white/50 text-sm">
             {currentIndex + 1} / {images.length}
           </p>
         </div>

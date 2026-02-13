@@ -42,7 +42,7 @@ export function EventsHomeContent() {
           </h1>
 
           <p className="text-lg md:text-xl text-cream-100/90 max-w-2xl mx-auto mb-8">
-            {t('events.subtitle', { defaultValue: "Buffet désert, Bar/Bat Mitzvah, Brit Mila et célébrations sur mesure avec une pâtisserie d'exception" })}
+            {t('events.subtitle', { defaultValue: "Buffet dessert, Bar/Bat Mitzvah, Brit Mila et célébrations sur mesure avec une pâtisserie d'exception" })}
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

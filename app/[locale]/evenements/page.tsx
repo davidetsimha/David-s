@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 
   const descriptions: Record<string, string> = {
-    fr: 'Service traiteur haut de gamme pour vos evenements: buffet desert, Bar/Bat Mitzvah, Brit Mila. Patisserie artisanale sous supervision Badatz Beit Yossef a Jerusalem.',
+    fr: 'Service traiteur haut de gamme pour vos evenements: buffet dessert, Bar/Bat Mitzvah, Brit Mila. Patisserie artisanale sous supervision Badatz Beit Yossef a Jerusalem.',
     he: 'שירותי קייטרינג יוקרתיים לאירועים: בופה מתוק, בר/בת מצווה, ברית מילה. קונדיטוריה בוטיק בהשגחת בד"ץ בית יוסף בירושלים.',
   };
 

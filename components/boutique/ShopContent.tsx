@@ -1,10 +1,8 @@
 'use client';
 
-import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Calendar, ShoppingBag, Truck } from 'lucide-react';
-import { ProductFilters } from './ProductFilters';
-import { ProductGrid } from './ProductGrid';
+import { ProductSection } from './ProductSection';
 import { useCartStore } from '@/stores/cartStore';
 import type { Product, Category } from '@/types';
 
@@ -15,15 +13,12 @@ interface ShopContentProps {
 
 export function ShopContent({ initialProducts, categories }: ShopContentProps) {
   const t = useTranslations();
-  const [categoryId, setCategoryId] = useState<string>();
   const { totalItems, openCart } = useCartStore();
 
   const cartCount = totalItems();
 
-  // Filter products client-side based on selected category
-  const filteredProducts = categoryId
-    ? initialProducts.filter((p) => p.category_id === categoryId)
-    : initialProducts;
+  const shabbatProducts = initialProducts.filter((p) => p.product_type === 'individual');
+  const semaineProducts = initialProducts.filter((p) => p.product_type === 'plateau');
 
   return (
     <>
@@ -44,29 +39,26 @@ export function ShopContent({ initialProducts, categories }: ShopContentProps) {
         </div>
       )}
 
-      {/* Products Section */}
-      <section className="py-12 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="mb-8">
-            <h2 className="font-display text-2xl md:text-3xl text-stone-900 mb-2">
-              {t('shop.productsTitle')}
-            </h2>
-            <p className="text-stone-500">
-              {t('shop.productsSubtitle')}
-            </p>
-          </div>
+      {/* Shabbat Section */}
+      <ProductSection
+        variant="shabbat"
+        products={shabbatProducts}
+        categories={categories}
+      />
 
-          <ProductFilters
-            categories={categories}
-            selectedId={categoryId}
-            onSelect={setCategoryId}
-          />
-
-          <div className="mt-8">
-            <ProductGrid products={filteredProducts} isLoading={false} />
-          </div>
+      {/* Separator */}
+      {shabbatProducts.length > 0 && semaineProducts.length > 0 && (
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="h-px bg-gradient-to-r from-transparent via-stone-300 to-transparent" />
         </div>
-      </section>
+      )}
+
+      {/* Semaine Section */}
+      <ProductSection
+        variant="semaine"
+        products={semaineProducts}
+        categories={categories}
+      />
 
       {/* Info Section */}
       <section className="py-12 px-4 bg-cream-100/50">

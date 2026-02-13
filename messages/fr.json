@@ -67,7 +67,7 @@
     "viewProducts": "Voir tous les produits",
     "splitEvents": "Événements",
     "splitEventsSubtitle": "Traiteur & Réceptions",
-    "splitEventsDesc": "Buffet désert pour mariage, brunch halavi pour bar mitsva et buffet bat mitsva ou tout autre événement",
+    "splitEventsDesc": "Buffet dessert pour mariage, brunch halavi pour Bar Mitzvah et buffet Bat Mitzvah ou tout autre événement",
     "splitShop": "Boutique",
     "splitShopSubtitle": "Commandez pour Chabbat",
     "splitShopDesc": "Pâtisserie française sur Jérusalem",
@@ -79,7 +79,7 @@
     "subtitle": "Pâtisseries fraîches préparées pour votre Chabbat"
   },
   "shop": {
-    "title": "Boutique Chabbat",
+    "title": "Notre Boutique",
     "subtitle": "Pâtisserie française sur Jérusalem",
     "orderBefore": "Commandez avant jeudi minuit",
     "freeDelivery": "Livraison Jérusalem",
@@ -88,6 +88,18 @@
     "viewCart": "Voir le panier",
     "productsTitle": "Nos Produits",
     "productsSubtitle": "Sélectionnez vos favoris pour ce Chabbat",
+    "sections": {
+      "shabbat": {
+        "title": "Commande Chabat",
+        "subtitle": "Retrait le vendredi — Commandez avant jeudi minuit",
+        "badge": "Retrait ven."
+      },
+      "semaine": {
+        "title": "Commande Semaine",
+        "subtitle": "Sur commande — Minimum quelques jours à l'avance",
+        "badge": "Sur commande"
+      }
+    },
     "howTo": {
       "orderTitle": "Commandez",
       "orderDesc": "Passez votre commande avant jeudi minuit pour une livraison vendredi",
@@ -135,7 +147,7 @@
   "events": {
     "badge": "Traiteur & Réceptions",
     "title": "Créons ensemble votre événement",
-    "subtitle": "Buffet désert, Bar/Bat Mitzvah, Brit Mila et célébrations sur mesure avec une pâtisserie d'exception",
+    "subtitle": "Buffet dessert, Bar/Bat Mitzvah, Brit Mila et célébrations sur mesure avec une pâtisserie d'exception",
     "requestQuote": "Demander un devis",
     "viewGallery": "Voir la galerie",
     "typesTitle": "Nous accompagnons tous vos événements",
@@ -296,7 +308,7 @@
     "noResults": "Aucune création dans cette catégorie",
     "filter": {
       "all": "Toutes",
-      "wedding": "Buffet désert",
+      "wedding": "Buffet dessert",
       "bar_mitzvah": "Bar Mitzvah",
       "bat_mitzvah": "Bat Mitzvah",
       "brit": "Brit Mila",
@@ -415,16 +427,16 @@
     }
   },
   "accessibility": {
-    "title": "Accessibilit\u00e9",
+    "title": "Accessibilité",
     "close": "Fermer",
     "fontSize": "Agrandir le texte",
-    "highContrast": "Contraste \u00e9lev\u00e9",
+    "highContrast": "Contraste élevé",
     "grayscale": "Niveaux de gris",
     "underlineLinks": "Souligner les liens",
     "readableFont": "Police lisible",
-    "stopAnimations": "Arr\u00eater les animations",
+    "stopAnimations": "Arrêter les animations",
     "largeCursor": "Grand curseur",
-    "reset": "R\u00e9initialiser"
+    "reset": "Réinitialiser"
   },
   "orderHistory": {
     "title": "Mes commandes",
