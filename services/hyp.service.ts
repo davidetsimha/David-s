@@ -137,7 +137,7 @@ export async function createSignedPaymentUrl(
     const signText = await signResponse.text();
     const signResult = parseYaadResponse(signText);
 
-    if (signResult.CCode !== '0' || !signResult.signature) {
+    if (!signResult.signature) {
       console.error('[Hyp] APISign failed:', signResult);
       return {
         success: false,
