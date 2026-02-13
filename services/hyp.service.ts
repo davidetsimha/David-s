@@ -114,7 +114,6 @@ export async function createSignedPaymentUrl(
     signParams.append('Masof', masof);
     signParams.append('PassP', passP);
     signParams.append('Amount', request.amount.toFixed(2));
-    signParams.append('Currency', '1'); // ILS
     signParams.append('Order', request.orderId);
     signParams.append('Info', request.description.slice(0, 50));
     signParams.append('ClientName', request.customer.name);
@@ -152,7 +151,6 @@ export async function createSignedPaymentUrl(
     clientParams.append('Masof', masof);
     // NO PassP here!
     clientParams.append('Amount', request.amount.toFixed(2));
-    clientParams.append('Currency', '1');
     clientParams.append('Order', request.orderId);
     clientParams.append('Info', request.description.slice(0, 50));
     clientParams.append('ClientName', request.customer.name);
@@ -213,7 +211,6 @@ export async function createPaymentPage(
     params.append('Masof', masof);
     params.append('PassP', passP);
     params.append('Amount', request.amount.toFixed(2));
-    params.append('Currency', '1'); // 1 = ILS
     params.append('Order', request.orderId);
     params.append('Info', request.description.slice(0, 50));
     params.append('ClientName', request.customer.name);
@@ -226,7 +223,6 @@ export async function createPaymentPage(
     params.append('J5', 'False');
     params.append('Coin', '1');
     params.append('Tash', '1');
-    params.append('Sign', 'True');
     params.append('MoreData', 'True');
     params.append('UTF8', 'True');
     params.append('UTF8out', 'True');
