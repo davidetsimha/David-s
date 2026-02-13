@@ -8,6 +8,7 @@ import { Footer } from '@/components/layout/Footer';
 import { MobileMenu } from '@/components/layout/MobileMenu';
 import { CartDrawer } from '@/components/cart/CartDrawer';
 import { ClientLayout } from '@/components/layout/ClientLayout';
+import { AccessibilityWidget } from '@/components/layout/AccessibilityWidget';
 
 type Props = {
   children: React.ReactNode;
@@ -75,6 +76,7 @@ export default async function LocaleLayout({ children, params }: Props) {
             <CartDrawer />
             <main>{children}</main>
             <Footer />
+            <AccessibilityWidget />
           </ClientLayout>
         </NextIntlClientProvider>
       </body>

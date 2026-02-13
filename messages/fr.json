@@ -412,6 +412,18 @@
       "hebrew": "עברית"
     }
   },
+  "accessibility": {
+    "title": "Accessibilit\u00e9",
+    "close": "Fermer",
+    "fontSize": "Agrandir le texte",
+    "highContrast": "Contraste \u00e9lev\u00e9",
+    "grayscale": "Niveaux de gris",
+    "underlineLinks": "Souligner les liens",
+    "readableFont": "Police lisible",
+    "stopAnimations": "Arr\u00eater les animations",
+    "largeCursor": "Grand curseur",
+    "reset": "R\u00e9initialiser"
+  },
   "orderHistory": {
     "title": "Mes commandes",
     "enterEmail": "Entrez votre email pour voir vos commandes",

@@ -412,6 +412,18 @@
       "hebrew": "עברית"
     }
   },
+  "accessibility": {
+    "title": "נגישות",
+    "close": "סגור",
+    "fontSize": "הגדלת טקסט",
+    "highContrast": "ניגודיות גבוהות",
+    "grayscale": "גוני אפור",
+    "underlineLinks": "הדגשת קישורים",
+    "readableFont": "גופן קריא",
+    "stopAnimations": "עצירת אנימציות",
+    "largeCursor": "סמן גדול",
+    "reset": "איפוס"
+  },
   "orderHistory": {
     "title": "ההזמנות שלי",
     "enterEmail": "הזינו את האימייל שלכם כדי לראות את ההזמנות",
