@@ -37,7 +37,7 @@ export function FormulasSection() {
 
   const formulas = allFormulas.filter((f) => f.time_slot === activeSlot);
 
-  const whatsappNumber = '972587495876';
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '972587495876';
   const getWhatsappLink = (formula: EventFormula) => {
     const formulaName = isHebrew ? formula.name_he : formula.name_fr;
     const message = encodeURIComponent(
