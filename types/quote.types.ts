@@ -2,7 +2,8 @@ export type EventType =
   | 'bar_mitzvah'
   | 'bat_mitzvah'
   | 'brit'
-  | 'private_party';
+  | 'private_party'
+  | 'other';
 
 export type QuoteStatus =
   | 'new'

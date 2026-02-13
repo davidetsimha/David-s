@@ -70,7 +70,7 @@
     "splitEventsDesc": "Buffet désert pour mariage, brunch halavi pour bar mitsva et buffet bat mitsva ou tout autre événement",
     "splitShop": "Boutique",
     "splitShopSubtitle": "Commandez pour Chabbat",
-    "splitShopDesc": "Pâtisseries & délices livrés chez vous",
+    "splitShopDesc": "Pâtisserie française sur Jérusalem",
     "scrollDown": "Défiler"
   },
   "shabbat": {
@@ -80,7 +80,7 @@
   },
   "shop": {
     "title": "Boutique Chabbat",
-    "subtitle": "Pâtisseries et délices artisanaux livrés chez vous à Jérusalem",
+    "subtitle": "Pâtisserie française sur Jérusalem",
     "orderBefore": "Commandez avant jeudi minuit",
     "freeDelivery": "Livraison Jérusalem",
     "freshProducts": "Produits frais",
@@ -109,13 +109,15 @@
       "bar_mitzvah": "Bar Mitzvah",
       "bat_mitzvah": "Bat Mitzvah",
       "brit": "Brit Mila",
-      "private_party": "Fête privée"
+      "private_party": "Fête privée",
+      "other": "Autre"
     },
     "eventDesc": {
       "bar_mitzvah": "Célébrer ce moment",
       "bat_mitzvah": "Un jour spécial",
       "brit": "Accueillir la vie",
-      "private_party": "Vos événements"
+      "private_party": "Vos événements",
+      "other": "Dites-nous en plus"
     },
     "quoteForm": {
       "title": "Demander un devis",

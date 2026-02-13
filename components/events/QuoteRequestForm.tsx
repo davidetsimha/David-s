@@ -13,7 +13,7 @@ const schema = z.object({
   name: z.string().min(2),
   email: z.string().email(),
   phone: z.string().min(9),
-  event_type: z.enum(['bar_mitzvah', 'bat_mitzvah', 'brit', 'private_party']),
+  event_type: z.enum(['bar_mitzvah', 'bat_mitzvah', 'brit', 'private_party', 'other']),
   event_date: z.string().min(1),
   guest_count: z.coerce.number().min(1),
   message: z.string().optional(),
@@ -45,6 +45,7 @@ export function QuoteRequestForm({ preselectedType }: QuoteRequestFormProps) {
     { value: 'bat_mitzvah', label: t('receptions.eventTypes.bat_mitzvah') },
     { value: 'brit', label: t('receptions.eventTypes.brit') },
     { value: 'private_party', label: t('receptions.eventTypes.private_party') },
+    { value: 'other', label: t('receptions.eventTypes.other') },
   ];
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {

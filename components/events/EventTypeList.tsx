@@ -6,6 +6,7 @@ import {
   Baby,
   PartyPopper,
   Sparkles,
+  HelpCircle,
   type LucideIcon,
 } from 'lucide-react';
 import type { EventType } from '@/types';
@@ -39,6 +40,12 @@ const EVENT_TYPES: Array<{
     icon: PartyPopper,
     titleKey: 'receptions.eventTypes.private_party',
     descKey: 'receptions.eventDesc.private_party',
+  },
+  {
+    type: 'other',
+    icon: HelpCircle,
+    titleKey: 'receptions.eventTypes.other',
+    descKey: 'receptions.eventDesc.other',
   },
 ];
 

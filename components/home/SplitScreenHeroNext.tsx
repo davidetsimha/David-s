@@ -163,7 +163,7 @@ export function SplitScreenHero() {
         side="right"
         title={t('home.splitShop') || 'Boutique'}
         subtitle={t('home.splitShopSubtitle') || 'Commandez pour Chabbat'}
-        description={t('home.splitShopDesc') || 'Pâtisseries & délices livrés chez vous'}
+        description={t('home.splitShopDesc') || 'Pâtisserie française sur Jérusalem'}
         image="/images/boutique-hero.jpg"
         href={`/${locale}/boutique`}
         cta={t('home.orderBtn') || 'Commander pour Chabbat'}

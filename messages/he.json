@@ -70,7 +70,7 @@
     "splitEventsDesc": "חתונות, בר מצווה ואירועים בהתאמה אישית",
     "splitShop": "חנות",
     "splitShopSubtitle": "הזמינו לשבת",
-    "splitShopDesc": "חלות, מאפים ופינוקים עד הבית",
+    "splitShopDesc": "קונדיטוריה צרפתית בירושלים",
     "scrollDown": "גלול"
   },
   "shabbat": {
@@ -80,7 +80,7 @@
   },
   "shop": {
     "title": "חנות שבת",
-    "subtitle": "חלות, מאפים ופינוקים אומנותיים עד הבית בירושלים",
+    "subtitle": "קונדיטוריה צרפתית בירושלים",
     "orderBefore": "הזמינו עד חמישי בחצות",
     "freeDelivery": "משלוח בירושלים",
     "freshProducts": "מוצרים טריים",
@@ -109,13 +109,15 @@
       "bar_mitzvah": "בר מצווה",
       "bat_mitzvah": "בת מצווה",
       "brit": "ברית מילה",
-      "private_party": "מסיבה פרטית"
+      "private_party": "מסיבה פרטית",
+      "other": "אחר"
     },
     "eventDesc": {
       "bar_mitzvah": "חגיגת הרגע",
       "bat_mitzvah": "יום מיוחד",
       "brit": "קבלת פני החיים",
-      "private_party": "האירועים שלכם"
+      "private_party": "האירועים שלכם",
+      "other": "ספרו לנו עוד"
     },
     "quoteForm": {
       "title": "בקשת הצעת מחיר",
