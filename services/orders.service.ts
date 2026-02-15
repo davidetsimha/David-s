@@ -57,20 +57,23 @@ function validatePickupDate(
     throw new Error('Retrait impossible le samedi');
   }
 
-  // For individual orders only: check minimum advance and Friday requirement
+  const diffDays = Math.floor((date.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+
   if (orderType === 'individual') {
-    const diffDays = Math.floor((date.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+    // Individual: check minimum advance and Friday requirement
     if (minDaysAdvance > 0 && diffDays < minDaysAdvance) {
       throw new Error(`Délai minimum non respecté (${minDaysAdvance} jours requis)`);
     }
 
-    // Individual orders = only Friday
     if (date.getDay() !== 5) {
       throw new Error('Les commandes individuelles sont livrées uniquement le vendredi');
     }
+  } else {
+    // Plateau: enforce minimum 1 day (24h) advance for weekday pickup
+    if (minDaysAdvance > 0 && diffDays < minDaysAdvance) {
+      throw new Error(`Délai minimum non respecté (${minDaysAdvance} jour(s) requis)`);
+    }
   }
-  // Plateau orders: no restrictions beyond basic checks (not past, not Saturday)
-  // Late orders are flagged via is_late_order field and handled by admin
 }
 
 export async function createOrder(orderData: CreateOrderDTO): Promise<string> {
@@ -101,12 +104,10 @@ export async function createOrder(orderData: CreateOrderDTO): Promise<string> {
   }
 
   // Validate pickup date server-side
-  // Note: For plateau orders, min_days_advance is not enforced server-side
-  // since they require admin confirmation anyway (late orders are flagged)
   if (orderData.pickup_date) {
     const orderType = orderData.order_type || 'individual';
-    // Only enforce min days for individual orders; plateau orders go through admin review
-    const minDaysAdvance = orderType === 'plateau' ? 0 : 0;
+    // Plateau: minimum 1 day (24h) advance; individual: from product or 0
+    const minDaysAdvance = orderType === 'plateau' ? 1 : 0;
     validatePickupDate(orderData.pickup_date, orderType, minDaysAdvance);
   }
 

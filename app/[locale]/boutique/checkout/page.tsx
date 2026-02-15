@@ -44,9 +44,9 @@ function getAvailablePickupDates(isIndividual: boolean, minDaysAdvance: number =
       lastFriday.setDate(lastFriday.getDate() + 1);
     }
   } else {
-    // Plateau: any day, min X days advance, next 3 weeks
+    // Plateau: any day, min X days advance (24h = 1 day in week), next 3 weeks
     const minDate = new Date(today);
-    minDate.setDate(minDate.getDate() + Math.max(minDaysAdvance, 2));
+    minDate.setDate(minDate.getDate() + Math.max(minDaysAdvance, 1));
 
     for (let i = 0; i < 21; i++) {
       const date = new Date(minDate);
@@ -166,7 +166,8 @@ export default function CheckoutPage() {
       const dayOfWeek = today.getDay();
       return dayOfWeek >= 4 && diffDays <= 1;
     } else {
-      return diffDays < minDaysAdvance;
+      const effectiveMin = Math.max(minDaysAdvance, 1);
+      return diffDays < effectiveMin;
     }
   }, [pickupDate, isIndividualOrder, minDaysAdvance]);
 
@@ -523,7 +524,7 @@ export default function CheckoutPage() {
                 <p className="text-sm text-stone-500 mb-4">
                   {isIndividualOrder
                     ? t('checkout.individualNote')
-                    : t('checkout.plateauMinDays', { days: minDaysAdvance })
+                    : t('checkout.plateauMinDays', { days: Math.max(minDaysAdvance, 1) })
                   }
                 </p>
 
