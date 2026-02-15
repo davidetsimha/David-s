@@ -12,13 +12,13 @@ export function AboutContent() {
       <div className="bg-white rounded-2xl shadow-sm border border-gold-100 p-8 md:p-12">
         {/* Chef Photo and Name */}
         <div className="flex flex-col items-center mb-10">
-          <div className="w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden border-4 border-gold-200 shadow-lg mb-6">
+          <div className="w-52 h-52 md:w-64 md:h-64 rounded-full overflow-hidden border-4 border-gold-200 shadow-lg mb-6">
             <Image
               src="/images/david-chef.jpg"
               alt={t('chefName')}
-              width={224}
-              height={224}
-              className="w-full h-full object-cover"
+              width={256}
+              height={256}
+              className="w-full h-full object-cover object-[center_28%]"
             />
           </div>
           <h2 className="font-display text-2xl md:text-3xl text-gold-700 text-center">
