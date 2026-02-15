@@ -35,3 +35,4 @@ photos-extracted/
 *.pdf
 .next
 .env*.local
+tsconfig.tsbuildinfo
