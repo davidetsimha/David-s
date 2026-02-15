@@ -44,9 +44,15 @@ export function AboutContent() {
 
       {/* Certification Badge */}
       <div className="mt-8 text-center">
-        <div className="inline-flex items-center gap-2 px-6 py-3 bg-cream-100 rounded-full border border-gold-200/50">
+        <a
+          href="/images/hashgaha.png"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-cream-100 rounded-full border border-gold-200/50 cursor-pointer hover:bg-cream-200 transition-colors"
+          aria-label={t('gallery.openImage', { name: tFooter('certification') })}
+        >
           <span className="text-gold-700 font-medium">{tFooter('certification')}</span>
-        </div>
+        </a>
       </div>
     </>
   );

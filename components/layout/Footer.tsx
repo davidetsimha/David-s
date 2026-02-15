@@ -29,9 +29,15 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
           <div>
             <h3 className="font-display text-xl md:text-2xl text-gold-400 mb-4">David's</h3>
-            <p className="text-cream-200 text-sm leading-relaxed mb-4">
+            <a
+              href="/images/hashgaha.png"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-cream-200 text-sm leading-relaxed mb-4 block hover:text-gold-400 transition-colors cursor-pointer"
+              aria-label={t('gallery.openImage', { name: t('footer.certification') })}
+            >
               {t('footer.certification')}
-            </p>
+            </a>
             <p className="text-cream-200 text-sm">{t('footer.delivery')}</p>
           </div>
 

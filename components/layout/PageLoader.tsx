@@ -138,12 +138,16 @@ export function PageLoader({ onComplete }: PageLoaderProps) {
         </div>
 
         {/* Tagline */}
-        <p
-          className="mt-6 text-sm text-gold-600/70 tracking-wider animate-split-reveal"
+        <a
+          href="/images/hashgaha.png"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-6 text-sm text-gold-600/70 tracking-wider animate-split-reveal hover:text-gold-600 transition-colors cursor-pointer"
           style={{ animationDelay: '1.4s' }}
+          aria-label={t('gallery.openImage', { name: t('footer.certification') })}
         >
           {t('footer.certification')}
-        </p>
+        </a>
       </div>
     </div>
   );
