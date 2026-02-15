@@ -17,6 +17,15 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
 
   const isLoginPage = pathname === '/admin/login'
 
+  // Register service worker for push notifications
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch((err) => {
+        console.error('Service Worker registration failed:', err)
+      })
+    }
+  }, [])
+
   useEffect(() => {
     const supabase = createClient()
 
