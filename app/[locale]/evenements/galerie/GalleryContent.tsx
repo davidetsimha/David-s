@@ -7,18 +7,10 @@ import { Camera, X } from 'lucide-react';
 const CATEGORY_IDS = ['all', 'wedding', 'bar_mitzvah', 'bat_mitzvah', 'brit', 'event'] as const;
 type CategoryId = (typeof CATEGORY_IDS)[number];
 
-interface Creation {
-  id: string;
-  title_fr: string;
-  title_he: string;
-  description_fr: string | null;
-  description_he: string | null;
-  image_url: string;
-  event_type?: string;
-}
+import type { GalleryImage } from './galleryData';
 
 interface GalleryContentProps {
-  creations: Creation[];
+  creations: GalleryImage[];
 }
 
 export function GalleryContent({ creations }: GalleryContentProps) {
@@ -145,7 +137,7 @@ export function GalleryContent({ creations }: GalleryContentProps) {
 }
 
 interface LightboxProps {
-  images: Creation[];
+  images: GalleryImage[];
   currentIndex: number;
   onClose: () => void;
   onPrev: () => void;

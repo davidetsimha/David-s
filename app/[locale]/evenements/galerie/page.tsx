@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
-import { getTranslations } from 'next-intl/server';
-import { createClient } from '@/lib/supabase/server';
 import { GalleryContent } from './GalleryContent';
+import { GALLERY_IMAGES } from './galleryData';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -9,7 +8,6 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: 'gallery' });
 
   const titles: Record<string, string> = {
     fr: "Galerie Événements | David's Pâtisserie",
@@ -39,33 +37,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-interface Creation {
-  id: string;
-  title_fr: string;
-  title_he: string;
-  description_fr: string | null;
-  description_he: string | null;
-  image_url: string;
-  event_type?: string;
-}
-
-async function getCreations(): Promise<Creation[]> {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from('creations')
-    .select('*')
-    .order('sort_order', { ascending: true });
-
-  if (error) {
-    console.error('Error fetching creations:', error);
-    return [];
-  }
-
-  return data || [];
-}
-
 export default async function EventsGalleryPage() {
-  const creations = await getCreations();
-
-  return <GalleryContent creations={creations} />;
+  return <GalleryContent creations={GALLERY_IMAGES} />;
 }
