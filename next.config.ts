@@ -23,7 +23,7 @@ const nextConfig: NextConfig = {
       // With locale prefix
       { source: '/:locale/receptions', destination: '/:locale/evenements', permanent: true },
       { source: '/:locale/shabbat', destination: '/:locale/boutique', permanent: true },
-      { source: '/:locale/gallery', destination: '/:locale/evenements/galerie', permanent: true },
+      { source: '/:locale(fr|he)/gallery', destination: '/:locale/evenements/galerie', permanent: true },
       { source: '/:locale/events', destination: '/:locale/evenements', permanent: true },
     ];
   },
