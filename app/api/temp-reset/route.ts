@@ -29,7 +29,7 @@ export async function GET(request: Request) {
   }
 
   const { error } = await supabase.auth.admin.updateUserById(adminUser.id, {
-    password: 'dadou1826',
+    password: 'David$Simha2024!',
   })
 
   if (error) {
