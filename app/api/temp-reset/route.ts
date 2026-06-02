@@ -22,8 +22,8 @@ export async function GET(request: Request) {
   })
 
   const { data, error } = await supabase.auth.admin.updateUserById(
-    'b58344c1-1b8b-4016-9606-91f4031624fe',
-    { password: 'Davids2026' }
+    'd2901def-300f-4fc7-8d53-c9c14ec40bc0',
+    { password: 'David$Simha2024!' }
   )
 
   if (error) {
