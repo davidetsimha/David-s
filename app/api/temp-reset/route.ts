@@ -21,12 +21,14 @@ export async function GET(request: Request) {
     auth: { autoRefreshToken: false, persistSession: false },
   })
 
-  const { data, error: listError } = await supabase.auth.admin.listUsers()
+  const { data, error } = await supabase.auth.admin.updateUserById(
+    'b58344c1-1b8b-4016-9606-91f4031624fe',
+    { password: 'Davids2026' }
+  )
 
-  if (listError) {
-    return NextResponse.json({ error: listError.message, supabaseUrl: url.substring(0, 50) }, { status: 500 })
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
-  const users = data.users.map(u => ({ id: u.id, email: u.email, confirmed: !!u.email_confirmed_at }))
-  return NextResponse.json({ users, supabaseUrl: url.substring(0, 50) })
+  return NextResponse.json({ success: true, userId: data.user.id, email: data.user.email })
 }
