@@ -32,7 +32,7 @@ const CATEGORIES: { value: GalleryCategory; label: string }[] = [
 const schema = z.object({
   alt_fr: z.string().min(1, 'Description FR requise'),
   alt_he: z.string().min(1, 'Description HE requise'),
-  category: z.enum(['receptions', 'products']),
+  category: z.enum(['wedding', 'bar_mitzvah', 'bat_mitzvah', 'brit', 'event', 'receptions', 'products']),
   image_url: z.string().min(1, "L'image est requise"),
 })
 
