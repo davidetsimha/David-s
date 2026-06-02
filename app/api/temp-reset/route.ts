@@ -10,11 +10,16 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { auth: { autoRefreshToken: false, persistSession: false } }
-  )
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+
+  if (!url || !serviceKey) {
+    return NextResponse.json({ error: 'Missing env vars', url: !!url, serviceKey: !!serviceKey }, { status: 500 })
+  }
+
+  const supabase = createClient(url, serviceKey, {
+    auth: { autoRefreshToken: false, persistSession: false },
+  })
 
   const { data: users } = await supabase.auth.admin.listUsers()
   const adminUser = users?.users?.find(u => u.email === 'admin@davids-patisserie.com')
