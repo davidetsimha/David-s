@@ -15,6 +15,7 @@ import {
   Users,
   MapPin,
   UtensilsCrossed,
+  Images,
   type LucideIcon
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
@@ -44,6 +45,7 @@ const navGroups: NavGroup[] = [
     items: [
       { href: '/admin/products', icon: Package, label: 'Produits' },
       { href: '/admin/formulas', icon: UtensilsCrossed, label: 'Formules' },
+      { href: '/admin/gallery', icon: Images, label: 'Galerie' },
     ],
   },
   {

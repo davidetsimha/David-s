@@ -1,4 +1,11 @@
-export type GalleryCategory = 'receptions' | 'products';
+export type GalleryCategory =
+  | 'receptions'
+  | 'products'
+  | 'wedding'
+  | 'bar_mitzvah'
+  | 'bat_mitzvah'
+  | 'brit'
+  | 'event';
 
 export interface GalleryImage {
   id: string;

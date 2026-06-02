@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { GalleryContent } from './GalleryContent';
-import { GALLERY_IMAGES } from './galleryData';
+import { createClient } from '@/lib/supabase/server';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -38,5 +38,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function EventsGalleryPage() {
-  return <GalleryContent creations={GALLERY_IMAGES} />;
+  const supabase = await createClient();
+  const { data: images } = await supabase
+    .from('gallery_images')
+    .select('*')
+    .order('sort_order', { ascending: true });
+
+  return <GalleryContent images={images ?? []} />;
 }

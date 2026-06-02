@@ -3,17 +3,16 @@
 import { useState, useCallback } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { Camera, X } from 'lucide-react';
+import type { GalleryImage } from '@/types/gallery.types';
 
 const CATEGORY_IDS = ['all', 'wedding', 'bar_mitzvah', 'bat_mitzvah', 'brit', 'event'] as const;
 type CategoryId = (typeof CATEGORY_IDS)[number];
 
-import type { GalleryImage } from './galleryData';
-
 interface GalleryContentProps {
-  creations: GalleryImage[];
+  images: GalleryImage[];
 }
 
-export function GalleryContent({ creations }: GalleryContentProps) {
+export function GalleryContent({ images }: GalleryContentProps) {
   const t = useTranslations();
   const locale = useLocale();
   const isHebrew = locale === 'he';
@@ -21,30 +20,24 @@ export function GalleryContent({ creations }: GalleryContentProps) {
   const [selectedCategory, setSelectedCategory] = useState<CategoryId>('all');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
-  // Filter creations by category (when event_type field exists)
-  const filteredCreations = selectedCategory === 'all'
-    ? creations
-    : creations.filter(c => c.event_type === selectedCategory);
+  const filtered = selectedCategory === 'all'
+    ? images
+    : images.filter(i => i.category === selectedCategory);
 
-  const openLightbox = useCallback((index: number) => {
-    setLightboxIndex(index);
-  }, []);
-
-  const closeLightbox = useCallback(() => {
-    setLightboxIndex(null);
-  }, []);
+  const openLightbox = useCallback((index: number) => setLightboxIndex(index), []);
+  const closeLightbox = useCallback(() => setLightboxIndex(null), []);
 
   const goToPrev = useCallback(() => {
     setLightboxIndex(i =>
-      i !== null ? (i - 1 + filteredCreations.length) % filteredCreations.length : null
+      i !== null ? (i - 1 + filtered.length) % filtered.length : null
     );
-  }, [filteredCreations.length]);
+  }, [filtered.length]);
 
   const goToNext = useCallback(() => {
     setLightboxIndex(i =>
-      i !== null ? (i + 1) % filteredCreations.length : null
+      i !== null ? (i + 1) % filtered.length : null
     );
-  }, [filteredCreations.length]);
+  }, [filtered.length]);
 
   return (
     <div className="min-h-screen bg-cream-50">
@@ -57,11 +50,9 @@ export function GalleryContent({ creations }: GalleryContentProps) {
               {t('gallery.badge')}
             </span>
           </div>
-
           <h1 className="font-display text-4xl md:text-5xl text-stone-900 mb-4">
             {t('gallery.title')}
           </h1>
-
           <p className="text-lg text-stone-600 max-w-2xl mx-auto">
             {t('gallery.subtitle')}
           </p>
@@ -91,25 +82,23 @@ export function GalleryContent({ creations }: GalleryContentProps) {
       {/* Gallery Grid */}
       <section className="px-4 py-12">
         <div className="max-w-6xl mx-auto">
-          {filteredCreations.length === 0 ? (
+          {filtered.length === 0 ? (
             <div className="text-center py-16">
               <Camera className="w-12 h-12 mx-auto text-stone-300 mb-4" />
-              <p className="text-stone-500">
-                {t('gallery.noResults')}
-              </p>
+              <p className="text-stone-500">{t('gallery.noResults')}</p>
             </div>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {filteredCreations.map((creation, index) => (
+              {filtered.map((image, index) => (
                 <button
-                  key={creation.id}
+                  key={image.id}
                   onClick={() => openLightbox(index)}
                   className="group relative aspect-[3/4] bg-cream-200 rounded-xl overflow-hidden
                     shadow-sm hover:shadow-lg transition-shadow duration-300"
                 >
                   <img
-                    src={creation.image_url}
-                    alt={isHebrew ? creation.title_he : creation.title_fr}
+                    src={image.image_url}
+                    alt={isHebrew ? image.alt_he : image.alt_fr}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent
@@ -121,10 +110,9 @@ export function GalleryContent({ creations }: GalleryContentProps) {
         </div>
       </section>
 
-      {/* Lightbox */}
       {lightboxIndex !== null && (
         <Lightbox
-          images={filteredCreations}
+          images={filtered}
           currentIndex={lightboxIndex}
           onClose={closeLightbox}
           onPrev={goToPrev}
@@ -148,7 +136,6 @@ interface LightboxProps {
 function Lightbox({ images, currentIndex, onClose, onPrev, onNext, isHebrew }: LightboxProps) {
   const current = images[currentIndex];
 
-  // Handle keyboard navigation
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Escape') onClose();
     if (e.key === 'ArrowLeft') onPrev();
@@ -161,48 +148,28 @@ function Lightbox({ images, currentIndex, onClose, onPrev, onNext, isHebrew }: L
       onKeyDown={handleKeyDown}
       tabIndex={0}
     >
-      {/* Close button */}
-      <button
-        onClick={onClose}
-        className="absolute top-4 right-4 p-2 text-white/70 hover:text-white transition-colors z-10"
-        aria-label="Close"
-      >
+      <button onClick={onClose} className="absolute top-4 right-4 p-2 text-white/70 hover:text-white transition-colors z-10">
         <X className="w-8 h-8" />
       </button>
-
-      {/* Navigation - Previous */}
-      <button
-        onClick={onPrev}
-        className="absolute left-4 p-2 text-white/70 hover:text-white transition-colors z-10"
-        aria-label="Previous image"
-      >
+      <button onClick={onPrev} className="absolute left-4 p-2 text-white/70 hover:text-white transition-colors z-10">
         <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
         </svg>
       </button>
-
-      {/* Navigation - Next */}
-      <button
-        onClick={onNext}
-        className="absolute right-4 p-2 text-white/70 hover:text-white transition-colors z-10"
-        aria-label="Next image"
-      >
+      <button onClick={onNext} className="absolute right-4 p-2 text-white/70 hover:text-white transition-colors z-10">
         <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
         </svg>
       </button>
-
-      {/* Image */}
       <div className="max-w-5xl max-h-[80vh] px-16">
         <img
           src={current.image_url}
-          alt={isHebrew ? current.title_he : current.title_fr}
+          alt={isHebrew ? current.alt_he : current.alt_fr}
           className="max-w-full max-h-[80vh] object-contain"
         />
         <div className="mt-4 text-center">
-          <p className="text-white/50 text-sm">
-            {currentIndex + 1} / {images.length}
-          </p>
+          <p className="text-white/70 text-sm">{isHebrew ? current.alt_he : current.alt_fr}</p>
+          <p className="text-white/40 text-xs mt-1">{currentIndex + 1} / {images.length}</p>
         </div>
       </div>
     </div>

@@ -35,6 +35,26 @@ export async function createGalleryImage(image: CreateGalleryImageDTO): Promise<
   return data;
 }
 
+export type UpdateGalleryImageDTO = {
+  image_url?: string;
+  alt_fr?: string;
+  alt_he?: string;
+  category?: GalleryCategory;
+  sort_order?: number;
+};
+
+export async function updateGalleryImage(id: string, data: UpdateGalleryImageDTO): Promise<GalleryImage> {
+  const { data: updated, error } = await supabase
+    .from('gallery_images')
+    .update(data)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return updated;
+}
+
 export async function deleteGalleryImage(id: string): Promise<void> {
   const { error } = await supabase
     .from('gallery_images')

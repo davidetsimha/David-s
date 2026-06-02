@@ -3,8 +3,10 @@ import { queryKeys } from '@/config/queryClient';
 import {
   getGalleryImages,
   createGalleryImage,
+  updateGalleryImage,
   deleteGalleryImage,
   type CreateGalleryImageDTO,
+  type UpdateGalleryImageDTO,
 } from '@/services/gallery.service';
 import type { GalleryCategory } from '@/types';
 
@@ -22,6 +24,17 @@ export function useCreateGalleryImage() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: CreateGalleryImageDTO) => createGalleryImage(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.gallery.all });
+    },
+  });
+}
+
+export function useUpdateGalleryImage() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: UpdateGalleryImageDTO }) =>
+      updateGalleryImage(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.gallery.all });
     },
