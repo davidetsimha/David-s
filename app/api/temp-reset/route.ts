@@ -24,12 +24,17 @@ export async function GET(request: Request) {
   // ID from auth.users SQL query
   const adminUserId = 'b58344c1-1b8b-4016-9606-91f4031624fe'
 
-  const { error } = await supabase.auth.admin.updateUserById(adminUserId, {
-    password: 'David$Simha2024!',
-  })
+  try {
+    const { error } = await supabase.auth.admin.updateUserById(adminUserId, {
+      password: 'David$Simha2024!',
+    })
 
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    if (error) {
+      return NextResponse.json({ error: error.message, supabaseUrl: url.substring(0, 40) }, { status: 500 })
+    }
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e)
+    return NextResponse.json({ error: 'fetch exception', detail: msg, supabaseUrl: url.substring(0, 40) }, { status: 500 })
   }
 
   return NextResponse.json({ success: true, message: 'Password updated. Delete this file now.' })
