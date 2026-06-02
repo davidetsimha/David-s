@@ -21,14 +21,10 @@ export async function GET(request: Request) {
     auth: { autoRefreshToken: false, persistSession: false },
   })
 
-  const { data: users } = await supabase.auth.admin.listUsers()
-  const adminUser = users?.users?.find(u => u.email === 'admin@davids-patisserie.com')
+  // ID from auth.users SQL query
+  const adminUserId = 'b58344c1-1b8b-4016-9606-91f4031624fe'
 
-  if (!adminUser) {
-    return NextResponse.json({ error: 'User not found' }, { status: 404 })
-  }
-
-  const { error } = await supabase.auth.admin.updateUserById(adminUser.id, {
+  const { error } = await supabase.auth.admin.updateUserById(adminUserId, {
     password: 'David$Simha2024!',
   })
 
