@@ -21,21 +21,12 @@ export async function GET(request: Request) {
     auth: { autoRefreshToken: false, persistSession: false },
   })
 
-  // ID from auth.users SQL query
-  const adminUserId = 'b58344c1-1b8b-4016-9606-91f4031624fe'
+  const { data, error: listError } = await supabase.auth.admin.listUsers()
 
-  try {
-    const { error } = await supabase.auth.admin.updateUserById(adminUserId, {
-      password: 'Davids2026',
-    })
-
-    if (error) {
-      return NextResponse.json({ error: error.message, supabaseUrl: url.substring(0, 40) }, { status: 500 })
-    }
-  } catch (e: unknown) {
-    const msg = e instanceof Error ? e.message : String(e)
-    return NextResponse.json({ error: 'fetch exception', detail: msg, supabaseUrl: url.substring(0, 40) }, { status: 500 })
+  if (listError) {
+    return NextResponse.json({ error: listError.message, supabaseUrl: url.substring(0, 50) }, { status: 500 })
   }
 
-  return NextResponse.json({ success: true, message: 'Password updated. Delete this file now.', supabaseUrl: url.substring(0, 50) })
+  const users = data.users.map(u => ({ id: u.id, email: u.email, confirmed: !!u.email_confirmed_at }))
+  return NextResponse.json({ users, supabaseUrl: url.substring(0, 50) })
 }
