@@ -37,5 +37,5 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'fetch exception', detail: msg, supabaseUrl: url.substring(0, 40) }, { status: 500 })
   }
 
-  return NextResponse.json({ success: true, message: 'Password updated. Delete this file now.' })
+  return NextResponse.json({ success: true, message: 'Password updated. Delete this file now.', supabaseUrl: url.substring(0, 50) })
 }
