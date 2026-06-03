@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { Calendar, ShoppingBag, Truck, Clock } from 'lucide-react';
 import { ProductSection } from './ProductSection';
@@ -15,16 +16,22 @@ export function ShopContent({ initialProducts, categories }: ShopContentProps) {
   const t = useTranslations();
   const { totalItems, openCart } = useCartStore();
 
-  const cartCount = totalItems();
+  // Pattern identique au Header : 0 côté serveur pour éviter le mismatch
+  // Zustand localStorage vs rendu SSR
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+
+  const cartCount = mounted ? totalItems() : 0;
 
   const shabbatProducts = initialProducts.filter((p) => p.product_type === 'individual');
   const semaineProducts = initialProducts.filter((p) => p.product_type === 'plateau');
 
-  // Urgence Chabbat
-  const dayOfWeek = new Date().getDay();
+  // new Date() côté serveur peut diverger du client (fuseau horaire / timing)
+  // → calculé uniquement après le montage
+  const dayOfWeek = mounted ? new Date().getDay() : 0;
   const daysUntilFriday = ((5 - dayOfWeek + 7) % 7) || 7;
-  const isLastNight = dayOfWeek === 4 && new Date().getHours() >= 18;
-  const showUrgency = daysUntilFriday <= 3 || isLastNight;
+  const isLastNight = mounted && dayOfWeek === 4 && new Date().getHours() >= 18;
+  const showUrgency = mounted && (daysUntilFriday <= 3 || isLastNight);
 
   return (
     <>

@@ -10,6 +10,7 @@ import { CartDrawer } from '@/components/cart/CartDrawer';
 import { ClientLayout } from '@/components/layout/ClientLayout';
 import { AccessibilityWidget } from '@/components/layout/AccessibilityWidget';
 import { WhatsAppFloatButton } from '@/components/layout/WhatsAppFloatButton';
+import { BoutiqueFloatButton } from '@/components/layout/BoutiqueFloatButton';
 
 type Props = {
   children: React.ReactNode;
@@ -75,6 +76,7 @@ export default async function LocaleLayout({ children, params }: Props) {
         <main>{children}</main>
         <Footer />
         <AccessibilityWidget />
+        <BoutiqueFloatButton />
         <WhatsAppFloatButton />
       </ClientLayout>
     </NextIntlClientProvider>
