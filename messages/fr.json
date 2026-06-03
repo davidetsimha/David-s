@@ -462,15 +462,15 @@
   "testimonials": {
     "badge": "Avis Google",
     "title": "Ils nous font confiance",
-    "name1": "Sarah K.",
-    "text1": "Les pâtisseries du Chabbat sont un régal chaque semaine. Livraison toujours à l'heure, produits d'une fraîcheur incomparable !",
-    "date1": "Il y a 2 semaines",
-    "name2": "Moshé L.",
-    "text2": "Bar-Mitzvah mémorable grâce à David-S. Des créations exceptionnelles qui ont émerveillé tous nos invités.",
-    "date2": "Il y a 1 mois",
-    "name3": "Rachel B.",
-    "text3": "Qualité incomparable, ingrédients frais et service impeccable. Le meilleur de la pâtisserie française à Jérusalem.",
-    "date3": "Il y a 3 semaines"
+    "name1": "Noémie E.",
+    "text1": "Depuis 3 ans déjà je commande ma pièce montée pour Ytro uniquement chez David's Pâtisserie, elle rencontre à chaque fois un très grand succès. La crème pâtissière est onctueuse et légère, les choux sont parfaits, le caramel se croque avec envie. Ma belle famille israélienne qui ne connait que les choux a l'israelienne attendent la Seoudat Ytro avec impatience.",
+    "date1": "2026-03-01",
+    "name2": "Judith B.",
+    "text2": "Un régal !! Je n'habite pas à Jérusalem et je viens à chaque fois spécialement pour me faire kiffe le chabat vraiment le meilleur, ultra raffiné en dirait pas du tout le goût de parve !!",
+    "date2": "2026-03-03",
+    "name3": "Ethel C.",
+    "text3": "Les biscuits et gâteaux sont de très haute qualité, délicieux et beaux, et valent vraiment leur prix. Ils ont le même goût qu'en France, et il est rare qu'on parvienne à faire de telles choses en Israël. Je recommande vivement et j'en suis très satisfaite. Je n'hésiterai pas à en acheter à nouveau.",
+    "date3": "2025-05-13"
   },
   "orderHistory": {
     "title": "Mes commandes",
