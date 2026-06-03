@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { locales, localeDirections, type Locale } from '@/i18n/config';
+import { locales, type Locale } from '@/i18n/config';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { MobileMenu } from '@/components/layout/MobileMenu';
@@ -65,23 +65,18 @@ export default async function LocaleLayout({ children, params }: Props) {
   }
 
   const messages = await getMessages();
-  const dir = localeDirections[locale as Locale];
 
   return (
-    <html lang={locale} dir={dir} suppressHydrationWarning>
-      <body>
-        <NextIntlClientProvider messages={messages}>
-          <ClientLayout>
-            <Header />
-            <MobileMenu />
-            <CartDrawer />
-            <main>{children}</main>
-            <Footer />
-            <AccessibilityWidget />
-            <WhatsAppFloatButton />
-          </ClientLayout>
-        </NextIntlClientProvider>
-      </body>
-    </html>
+    <NextIntlClientProvider messages={messages}>
+      <ClientLayout>
+        <Header />
+        <MobileMenu />
+        <CartDrawer />
+        <main>{children}</main>
+        <Footer />
+        <AccessibilityWidget />
+        <WhatsAppFloatButton />
+      </ClientLayout>
+    </NextIntlClientProvider>
   );
 }
