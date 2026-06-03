@@ -6,6 +6,7 @@ import Image from 'next/image';
 export function AboutContent() {
   const t = useTranslations('about');
   const tFooter = useTranslations('footer');
+  const tGallery = useTranslations('gallery');
 
   return (
     <>
@@ -49,7 +50,7 @@ export function AboutContent() {
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 px-6 py-3 bg-cream-100 rounded-full border border-gold-200/50 cursor-pointer hover:bg-cream-200 transition-colors"
-          aria-label={t('gallery.openImage', { name: tFooter('certification') })}
+          aria-label={tGallery('openImage', { name: tFooter('certification') })}
         >
           <span className="text-gold-700 font-medium">{tFooter('certification')}</span>
         </a>
