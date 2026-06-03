@@ -36,3 +36,5 @@ photos-extracted/
 .next
 .env*.local
 tsconfig.tsbuildinfo
+
+.claude/
