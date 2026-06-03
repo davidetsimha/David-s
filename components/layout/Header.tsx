@@ -25,24 +25,28 @@ export function Header() {
   const { toggleMobileMenu } = useUIStore();
   const { totalItems, openCart } = useCartStore();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   // Remove locale prefix from pathname for comparison
   const pathWithoutLocale = pathname.replace(`/${locale}`, '') || '/';
   const isHomePage = pathWithoutLocale === '/';
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
     const handleScroll = () => {
-      // Use higher threshold for homepage (100px) vs other pages (20px)
       const threshold = isHomePage ? 100 : 20;
       setIsScrolled(window.scrollY > threshold);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
-    // Check initial scroll position
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isHomePage]);
 
-  const itemCount = totalItems();
+  // 0 côté serveur (pas de localStorage) → pas de badge → pas de mismatch
+  const itemCount = mounted ? totalItems() : 0;
 
   // Header is visible when: not on homepage OR scrolled past threshold
   const isHeaderVisible = !isHomePage || isScrolled;
