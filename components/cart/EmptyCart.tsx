@@ -29,7 +29,7 @@ export function EmptyCart() {
       </p>
 
       <Link
-        href={ROUTES.RECEPTIONS}
+        href={ROUTES.SHOP}
         onClick={closeCart}
         className="inline-flex items-center gap-2 px-6 py-3
           bg-gold-500 text-white font-medium rounded-lg

@@ -3,9 +3,11 @@
 import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import Image from 'next/image';
-import { Plus, Minus, ShoppingBag, ImageOff, Calendar, Clock, AlertCircle } from 'lucide-react';
+import Link from 'next/link';
+import { Plus, Minus, ShoppingBag, ImageOff, Calendar, Clock, AlertCircle, CheckCircle } from 'lucide-react';
 import { useCartStore } from '@/stores/cartStore';
 import { Modal } from '@/components/ui/Modal';
+import { ROUTES } from '@/config/routes';
 import type { Product } from '@/types';
 
 interface ProductCardProps {
@@ -18,6 +20,7 @@ export function ProductCard({ product }: ProductCardProps) {
   const { addItem, getItemQuantity, updateQuantity, lastValidationError, clearValidationError } = useCartStore();
   const [imgError, setImgError] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const quantity = getItemQuantity(product.id);
@@ -28,7 +31,6 @@ export function ProductCard({ product }: ProductCardProps) {
     currency: 'ILS',
   }).format(product.price);
 
-  // Product type badges
   const isIndividual = product.product_type === 'individual';
   const isPlateau = product.product_type === 'plateau';
   const requiresConfirmation = product.requires_confirmation;
@@ -42,6 +44,9 @@ export function ProductCard({ product }: ProductCardProps) {
         setShowError(false);
         clearValidationError();
       }, 4000);
+    } else {
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 2000);
     }
   };
   const handleInc = () => updateQuantity(product.id, quantity + 1);
@@ -49,7 +54,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
   return (
     <article className="group bg-white rounded-2xl border border-cream-200 overflow-hidden hover:shadow-lg hover:border-gold-200 transition-all duration-200 relative">
-      {/* Mixed cart error toast */}
+      {/* Error toast */}
       {showError && lastValidationError?.message && (
         <div className="absolute top-2 left-2 right-2 z-20 p-3 bg-red-50 border border-red-200 rounded-lg shadow-lg animate-in fade-in slide-in-from-top-2">
           <div className="flex items-start gap-2">
@@ -58,6 +63,7 @@ export function ProductCard({ product }: ProductCardProps) {
           </div>
         </div>
       )}
+
 
       {/* Image - Clickable to open modal */}
       <div
@@ -101,10 +107,17 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
 
         {!product.available && (
-          <div className="absolute inset-0 bg-stone-900/50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-stone-900/55 flex flex-col items-center justify-center gap-2">
             <span className="text-white font-medium text-sm">
               {t('common.unavailable')}
             </span>
+            <Link
+              href={ROUTES.CONTACT}
+              onClick={(e) => e.stopPropagation()}
+              className="text-xs text-cream-200 underline hover:text-white transition-colors"
+            >
+              {t('products.notifyMe')}
+            </Link>
           </div>
         )}
       </div>
@@ -114,11 +127,25 @@ export function ProductCard({ product }: ProductCardProps) {
         <h3 className="font-display text-lg text-stone-900 mb-1 truncate">
           {name}
         </h3>
-        <p className="text-gold-600 font-semibold mb-4">{price}</p>
+        <p className="text-gold-600 font-semibold mb-2">{price}</p>
+
+        {/* Description snippet */}
+        {description && (
+          <p className="text-stone-500 text-xs mb-3 line-clamp-2 leading-relaxed">
+            {description}
+          </p>
+        )}
 
         {/* Cart Controls */}
         {product.available && (
-          quantity === 0 ? (
+          showSuccess && quantity > 0 ? (
+            /* Confirmation inline — visible là où l'utilisateur regarde */
+            <div className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl
+              bg-green-50 border border-green-200 text-green-700 animate-fade-in">
+              <CheckCircle className="w-4 h-4 flex-shrink-0" />
+              <span className="text-sm font-medium">{t('cart.itemAdded')}</span>
+            </div>
+          ) : quantity === 0 ? (
             <button
               onClick={handleAdd}
               className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-gold-500 text-white font-medium hover:bg-gold-600 transition-colors"
@@ -149,7 +176,6 @@ export function ProductCard({ product }: ProductCardProps) {
       {/* Product Detail Modal */}
       <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)} size="lg">
         <div className="flex flex-col md:flex-row gap-6">
-          {/* Image */}
           <div className="md:w-1/2 relative aspect-square">
             {product.image_url && !imgError ? (
               <Image
@@ -166,13 +192,10 @@ export function ProductCard({ product }: ProductCardProps) {
             )}
           </div>
 
-          {/* Details */}
           <div className="md:w-1/2 flex flex-col">
-            {/* Name & Price */}
             <h2 className="font-display text-2xl text-stone-900 mb-2">{name}</h2>
             <p className="text-2xl text-gold-600 font-semibold mb-4">{price}</p>
 
-            {/* Badges */}
             <div className="flex flex-wrap gap-2 mb-4">
               {isIndividual && (
                 <span className="inline-flex items-center gap-1 px-3 py-1.5 bg-blue-500/90 text-white text-sm font-medium rounded-full">
@@ -193,14 +216,12 @@ export function ProductCard({ product }: ProductCardProps) {
               )}
             </div>
 
-            {/* Description */}
             {description && (
               <p className="text-stone-600 leading-relaxed mb-6 flex-1">
                 {description}
               </p>
             )}
 
-            {/* Cart Controls */}
             {product.available ? (
               <div className="mt-auto">
                 {quantity === 0 ? (

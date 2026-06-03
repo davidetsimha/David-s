@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { Calendar, ShoppingBag, Truck } from 'lucide-react';
+import { Calendar, ShoppingBag, Truck, Clock } from 'lucide-react';
 import { ProductSection } from './ProductSection';
 import { useCartStore } from '@/stores/cartStore';
 import type { Product, Category } from '@/types';
@@ -20,21 +20,43 @@ export function ShopContent({ initialProducts, categories }: ShopContentProps) {
   const shabbatProducts = initialProducts.filter((p) => p.product_type === 'individual');
   const semaineProducts = initialProducts.filter((p) => p.product_type === 'plateau');
 
+  // Urgence Chabbat
+  const dayOfWeek = new Date().getDay();
+  const daysUntilFriday = ((5 - dayOfWeek + 7) % 7) || 7;
+  const isLastNight = dayOfWeek === 4 && new Date().getHours() >= 18;
+  const showUrgency = daysUntilFriday <= 3 || isLastNight;
+
   return (
     <>
       {/* Cart Banner (if items in cart) */}
       {cartCount > 0 && (
-        <div className="bg-bronze-500 text-white py-3 px-4">
+        <div className="sticky top-0 z-30 bg-gold-500 text-white py-3 px-4 shadow-md">
           <div className="max-w-6xl mx-auto flex items-center justify-between">
-            <span className="text-sm">
-              {cartCount} {t('shop.cartItems')}
+            <span className="text-sm flex items-center gap-2">
+              <ShoppingBag className="w-4 h-4 animate-bounce" />
+              <strong>{cartCount}</strong> {t('shop.cartItems')}
             </span>
             <button
               onClick={() => openCart()}
-              className="text-sm font-medium underline underline-offset-2 hover:no-underline"
+              className="text-sm font-semibold bg-white/20 px-4 py-1.5
+                rounded-full hover:bg-white/30 transition-colors"
             >
-              {t('shop.viewCart')}
+              {t('shop.viewCart')} →
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Urgency Banner */}
+      {showUrgency && (
+        <div className={`px-4 py-3 ${isLastNight ? 'bg-red-50 border-b border-red-200' : 'bg-amber-50 border-b border-amber-200'}`}>
+          <div className="max-w-6xl mx-auto flex items-center gap-3">
+            <Clock className={`w-5 h-5 flex-shrink-0 ${isLastNight ? 'text-red-500' : 'text-amber-600'}`} />
+            <p className={`text-sm font-medium ${isLastNight ? 'text-red-800' : 'text-amber-800'}`}>
+              {isLastNight
+                ? t('shop.urgency.lastChance')
+                : t('shop.urgency.daysLeft', { days: daysUntilFriday })}
+            </p>
           </div>
         </div>
       )}

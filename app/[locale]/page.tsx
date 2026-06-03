@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { SplitScreenHero } from '@/components/home/SplitScreenHeroNext';
+import { HomeBoutiqueTeaser } from '@/components/home/HomeBoutiqueTeaser';
+import { HomeTestimonials } from '@/components/home/HomeTestimonials';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -54,8 +56,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default function HomePage() {
   return (
-    <main className="h-screen overflow-hidden">
+    <main>
       <SplitScreenHero />
+      <HomeBoutiqueTeaser />
+      <HomeTestimonials />
     </main>
   );
 }
