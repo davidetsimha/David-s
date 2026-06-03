@@ -302,7 +302,7 @@ html.a11y-large-cursor * {
     animation: floatLogo 3s ease-in-out infinite;
   }
 
-  /* Split-screen hover effect */
+  /* Split-screen hover effect (desktop) */
   .split-section {
     flex: 1;
     transition: flex 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -326,5 +326,20 @@ html.a11y-large-cursor * {
 
   .split-section:hover .split-content {
     transform: scale(1.02);
+  }
+
+  /* Mobile : boutique en premier, plus grande (double-class = spécificité 0-2-0 > 0-1-0) */
+  @media (max-width: 767px) {
+    .split-section.split-mobile-primary {
+      flex: 2;
+      order: -1;
+    }
+    /* Pas de hover animation sur mobile (touch) */
+    .split-section:hover {
+      flex: inherit;
+    }
+    .split-section:hover .split-content {
+      transform: none;
+    }
   }
 }
