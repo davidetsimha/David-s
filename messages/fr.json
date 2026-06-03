@@ -71,7 +71,22 @@
     "splitShop": "Boutique",
     "splitShopSubtitle": "Commandez pour Chabbat",
     "splitShopDesc": "Pâtisserie française sur Jérusalem",
-    "scrollDown": "Défiler"
+    "scrollDown": "Voir la boutique",
+    "urgency": {
+      "daysLeft": "Plus que {days} jour(s) avant Chabbat - commandez maintenant !",
+      "lastNight": "Dernier soir ! Commandes Chabbat avant minuit.",
+      "orderNow": "Commandez pour ce Chabbat →"
+    },
+    "teaser": {
+      "title": "Commander pour ce Chabbat",
+      "subtitle": "Pâtisseries fraîches préparées le vendredi matin, livrées à temps pour votre table de Chabbat.",
+      "kosher": "100 % Casher",
+      "feature1": "Fraîcheur garantie",
+      "feature2": "Livraison Jérusalem",
+      "feature3": "Supervision stricte",
+      "cta": "Voir la boutique",
+      "deadline": "Commandes acceptées jusqu'au jeudi minuit"
+    }
   },
   "shabbat": {
     "title": "Commandes Chabbat",
@@ -86,17 +101,21 @@
     "freshProducts": "Produits frais",
     "cartItems": "article(s) dans votre panier",
     "viewCart": "Voir le panier",
+    "urgency": {
+      "daysLeft": "Plus que {days} jour(s) avant Chabbat - commandez avant qu'il ne soit trop tard !",
+      "lastChance": "Dernier soir ! Commandes Chabbat acceptées avant minuit uniquement."
+    },
     "productsTitle": "Nos Produits",
     "productsSubtitle": "Sélectionnez vos favoris pour ce Chabbat",
     "sections": {
       "shabbat": {
         "title": "Commande Chabat",
-        "subtitle": "Retrait le vendredi — Commandez avant jeudi minuit",
+        "subtitle": "Retrait le vendredi - Commandez avant jeudi minuit",
         "badge": "Retrait ven."
       },
       "semaine": {
         "title": "Commande Semaine",
-        "subtitle": "Sur commande — Minimum quelques jours à l'avance",
+        "subtitle": "Sur commande - Minimum quelques jours à l'avance",
         "badge": "Sur commande"
       }
     },
@@ -200,7 +219,8 @@
     "fridayPickup": "Retrait vendredi",
     "minDays": "{days}j min.",
     "onOrder": "Sur commande",
-    "confirmationRequired": "Confirmation requise"
+    "confirmationRequired": "Confirmation requise",
+    "notifyMe": "Me prévenir du retour"
   },
   "cart": {
     "title": "Votre Panier",
@@ -218,7 +238,8 @@
     "deliveryCalculated": "Calculé à la caisse",
     "total": "Total",
     "itemRemoved": "Article supprimé",
-    "viewMoreProducts": "Voir plus de produits"
+    "viewMoreProducts": "Voir plus de produits",
+    "itemAdded": "Ajouté au panier"
   },
   "checkout": {
     "title": "Finaliser la commande",
@@ -414,7 +435,7 @@
       "paragraph3": "À son arrivée en Israël, David et sa famille ont réalisé leur rêve d'ouvrir David's Patisserie - un espace où il peut exprimer sa créativité et offrir aux gens une expérience authentique.",
       "paragraph4": "Son approche mélange les traditions de la pâtisserie française avec une perspective moderne, généreuse et pleine d'âme. Il est reconnu pour ses éclairs au café et sa crème pâtissière riche et veloutée. La fraîcheur est le vrai secret de ses créations."
     },
-    "signature": "— David Azoulay, Chef Pâtissier"
+    "signature": "- David Azoulay, Chef Pâtissier"
   },
   "admin": {
     "whatsapp": {
@@ -437,6 +458,19 @@
     "stopAnimations": "Arrêter les animations",
     "largeCursor": "Grand curseur",
     "reset": "Réinitialiser"
+  },
+  "testimonials": {
+    "badge": "Avis Google",
+    "title": "Ils nous font confiance",
+    "name1": "Sarah K.",
+    "text1": "Les pâtisseries du Chabbat sont un régal chaque semaine. Livraison toujours à l'heure, produits d'une fraîcheur incomparable !",
+    "date1": "Il y a 2 semaines",
+    "name2": "Moshé L.",
+    "text2": "Bar-Mitzvah mémorable grâce à David-S. Des créations exceptionnelles qui ont émerveillé tous nos invités.",
+    "date2": "Il y a 1 mois",
+    "name3": "Rachel B.",
+    "text3": "Qualité incomparable, ingrédients frais et service impeccable. Le meilleur de la pâtisserie française à Jérusalem.",
+    "date3": "Il y a 3 semaines"
   },
   "orderHistory": {
     "title": "Mes commandes",
