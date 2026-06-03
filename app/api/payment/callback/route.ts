@@ -7,7 +7,10 @@ function getSupabaseAdmin() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-  // Fall back to anon key if service key not available
+  if (!serviceKey) {
+    // CRITIQUE : sans service key, Supabase RLS bloque les UPDATE → commande reste pending
+    console.error('[Payment/Callback] SUPABASE_SERVICE_ROLE_KEY manquante ! Les updates seront bloquées par RLS.');
+  }
   const key = serviceKey || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   if (!url || !key) {
@@ -102,7 +105,13 @@ export async function POST(request: NextRequest) {
         .eq('id', orderId)
         .single();
 
-      if (existingOrder?.payment_transaction_id === verifiedStatus.transactionId) {
+      // Vérification de doublon : seulement si les deux IDs sont non-null et identiques.
+      // BUG CORRIGÉ : null === null était vrai → le 1er callback était rejeté à tort.
+      if (
+        existingOrder?.payment_transaction_id
+        && verifiedStatus.transactionId
+        && existingOrder.payment_transaction_id === verifiedStatus.transactionId
+      ) {
         console.log('[Payment/Callback] Callback already processed, ignoring');
         return NextResponse.json({ success: true, message: 'Already processed' });
       }
