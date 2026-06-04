@@ -150,7 +150,7 @@ export default function AdminGalleryPage() {
                       <p className="text-xs text-gray-600 truncate">{image.alt_fr}</p>
                       <p className="text-xs text-gray-400 truncate" dir="rtl">{image.alt_he}</p>
                     </div>
-                    <div className="absolute top-2 end-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="absolute top-2 end-2 flex gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                       <button
                         onClick={() => openEdit(image)}
                         className="p-1.5 bg-white rounded-lg shadow text-gray-600 hover:text-gold-600 transition-colors"
