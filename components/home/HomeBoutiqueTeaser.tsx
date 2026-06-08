@@ -65,19 +65,33 @@ export function HomeBoutiqueTeaser() {
           ))}
         </div>
 
-        {/* Main CTA */}
-        <Link
-          href={`/${locale}/boutique`}
-          className="inline-flex items-center gap-3 px-10 py-4
-            bg-gold-500 text-white font-semibold text-lg rounded-xl
-            shadow-xl shadow-gold-500/30
-            hover:bg-gold-400 hover:shadow-2xl hover:shadow-gold-500/40
-            hover:-translate-y-0.5
-            transition-all duration-300"
-        >
-          <ShoppingBag className="w-5 h-5" />
-          {t('home.teaser.cta')}
-        </Link>
+        {/* CTAs */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Link
+            href={`/${locale}/boutique`}
+            className="inline-flex items-center gap-3 px-10 py-4
+              bg-gold-500 text-white font-semibold text-lg rounded-xl
+              shadow-xl shadow-gold-500/30
+              hover:bg-gold-400 hover:shadow-2xl hover:shadow-gold-500/40
+              hover:-translate-y-0.5
+              transition-all duration-300"
+          >
+            <ShoppingBag className="w-5 h-5" />
+            {t('home.teaser.cta')}
+          </Link>
+
+          <Link
+            href={`/${locale}/boutique?tab=semaine`}
+            className="inline-flex items-center gap-3 px-8 py-4
+              border-2 border-stone-400/50 text-stone-300 font-semibold text-base rounded-xl
+              hover:border-bronze-400 hover:text-bronze-300
+              hover:-translate-y-0.5
+              transition-all duration-300"
+          >
+            <Clock className="w-5 h-5" />
+            {t('home.teaser.ctaWeek')}
+          </Link>
+        </div>
 
         <p className="mt-4 text-stone-500 text-xs">
           {t('home.teaser.deadline')}

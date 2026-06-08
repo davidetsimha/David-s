@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { useTranslations, useLocale } from 'next-intl'
 import { ChevronDown, ShoppingBag } from 'lucide-react'
 
@@ -13,6 +14,8 @@ interface SplitSectionProps {
   video?: string
   href: string
   cta: string
+  secondaryHref?: string
+  secondaryCta?: string
   side: 'left' | 'right'
   delay?: number
   prominent?: boolean
@@ -27,14 +30,20 @@ function SplitSection({
   video,
   href,
   cta,
+  secondaryHref,
+  secondaryCta,
   side,
   delay = 0,
   prominent = false,
   badge,
 }: SplitSectionProps) {
+  const router = useRouter()
   return (
-    <Link
-      href={href}
+    <div
+      role="link"
+      tabIndex={0}
+      onClick={() => router.push(href)}
+      onKeyDown={(e) => e.key === 'Enter' && router.push(href)}
       className={[
         'split-section relative overflow-hidden group cursor-pointer',
         prominent ? 'split-mobile-primary' : '',
@@ -117,21 +126,42 @@ function SplitSection({
 
         {/* CTA */}
         {prominent ? (
-          /* Boutique — bouton gold solide, plus grand sur mobile */
-          <span className="inline-flex items-center gap-2
-            px-7 py-3 md:px-8 md:py-3.5
-            bg-gold-500 text-white font-semibold tracking-wider uppercase
-            text-sm rounded-sm shadow-lg shadow-gold-500/40
-            group-hover:bg-gold-400 group-hover:shadow-xl group-hover:shadow-gold-500/50
-            transition-all duration-300">
-            <ShoppingBag className="w-4 h-4 md:hidden" />
-            {cta}
-            <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
-              fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </span>
+          /* Boutique — bouton gold solide + bouton secondaire semaine */
+          <div className="flex flex-col items-center gap-3">
+            <span className="inline-flex items-center gap-2
+              px-7 py-3 md:px-8 md:py-3.5
+              bg-gold-500 text-white font-semibold tracking-wider uppercase
+              text-sm rounded-sm shadow-lg shadow-gold-500/40
+              group-hover:bg-gold-400 group-hover:shadow-xl group-hover:shadow-gold-500/50
+              transition-all duration-300">
+              <ShoppingBag className="w-4 h-4 md:hidden" />
+              {cta}
+              <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                  d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </span>
+            {secondaryHref && secondaryCta && (
+              <Link
+                href={secondaryHref}
+                onClick={(e) => { e.stopPropagation(); }}
+                className="inline-flex items-center gap-2
+                  px-6 py-2.5
+                  border border-cream-100/60 text-cream-100/85
+                  font-medium tracking-wider uppercase text-xs
+                  hover:bg-white/10 hover:border-white hover:text-white
+                  transition-all duration-300 rounded-sm"
+              >
+                {secondaryCta}
+                <svg className="w-3 h-3 transition-transform duration-300 hover:translate-x-1"
+                  fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                    d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
+            )}
+          </div>
         ) : (
           /* Événements — outline discret */
           <span className="inline-flex items-center gap-2
@@ -159,7 +189,7 @@ function SplitSection({
         w-12 h-12 border-b-2 ${side === 'left' ? 'border-l-2' : 'border-r-2'}
         ${prominent ? 'border-gold-400/50' : 'border-gold-400/30'} pointer-events-none
         opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-    </Link>
+    </div>
   )
 }
 
@@ -207,6 +237,8 @@ export function SplitScreenHero() {
         image="/images/boutique-hero.jpg"
         href={`/${locale}/boutique`}
         cta={t('home.orderBtn') || 'Commander pour Chabbat'}
+        secondaryHref={`/${locale}/boutique?tab=semaine`}
+        secondaryCta={t('home.teaser.ctaWeek') || 'Boutique de la Semaine'}
         delay={0.15}
       />
 

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import Image from 'next/image';
+import { Suspense } from 'react';
 import { ShoppingBag, Truck } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { ShopContent } from '@/components/boutique';
@@ -104,10 +105,12 @@ export default async function BoutiquePage({ params }: Props) {
       </section>
 
       {/* Client-side interactive content */}
-      <ShopContent
-        initialProducts={products}
-        categories={categories}
-      />
+      <Suspense>
+        <ShopContent
+          initialProducts={products}
+          categories={categories}
+        />
+      </Suspense>
     </div>
   );
 }

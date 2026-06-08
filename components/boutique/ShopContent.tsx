@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { Calendar, ShoppingBag, Truck, Clock } from 'lucide-react';
 import { ProductSection } from './ProductSection';
@@ -16,10 +17,12 @@ type ActiveTab = 'shabbat' | 'semaine';
 
 export function ShopContent({ initialProducts, categories }: ShopContentProps) {
   const t = useTranslations();
+  const searchParams = useSearchParams();
   const { totalItems, openCart } = useCartStore();
-  const [activeTab, setActiveTab] = useState<ActiveTab>('shabbat');
+  const initialTab: ActiveTab = searchParams.get('tab') === 'semaine' ? 'semaine' : 'shabbat';
+  const [activeTab, setActiveTab] = useState<ActiveTab>(initialTab);
   const [isAnimating, setIsAnimating] = useState(false);
-  const prevTab = useRef<ActiveTab>('shabbat');
+  const prevTab = useRef<ActiveTab>(initialTab);
 
   // Pattern identique au Header : 0 côté serveur pour éviter le mismatch
   const [mounted, setMounted] = useState(false);
