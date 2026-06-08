@@ -11,6 +11,7 @@ import { ClientLayout } from '@/components/layout/ClientLayout';
 import { AccessibilityWidget } from '@/components/layout/AccessibilityWidget';
 import { WhatsAppFloatButton } from '@/components/layout/WhatsAppFloatButton';
 import { BoutiqueFloatButton } from '@/components/layout/BoutiqueFloatButton';
+import NextTopLoader from 'nextjs-toploader';
 
 type Props = {
   children: React.ReactNode;
@@ -69,6 +70,7 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <NextIntlClientProvider messages={messages}>
+      <NextTopLoader color="#c9a84c" height={3} showSpinner={false} />
       <ClientLayout>
         <Header />
         <MobileMenu />
