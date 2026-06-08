@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import { Calendar, ShoppingBag, Truck, Clock } from 'lucide-react';
 import { ProductSection } from './ProductSection';
@@ -12,12 +12,16 @@ interface ShopContentProps {
   categories: Category[];
 }
 
+type ActiveTab = 'shabbat' | 'semaine';
+
 export function ShopContent({ initialProducts, categories }: ShopContentProps) {
   const t = useTranslations();
   const { totalItems, openCart } = useCartStore();
+  const [activeTab, setActiveTab] = useState<ActiveTab>('shabbat');
+  const [isAnimating, setIsAnimating] = useState(false);
+  const prevTab = useRef<ActiveTab>('shabbat');
 
   // Pattern identique au Header : 0 côté serveur pour éviter le mismatch
-  // Zustand localStorage vs rendu SSR
   const [mounted, setMounted] = useState(false);
   useEffect(() => { setMounted(true); }, []);
 
@@ -26,16 +30,22 @@ export function ShopContent({ initialProducts, categories }: ShopContentProps) {
   const shabbatProducts = initialProducts.filter((p) => p.product_type === 'individual');
   const semaineProducts = initialProducts.filter((p) => p.product_type === 'plateau');
 
-  // new Date() côté serveur peut diverger du client (fuseau horaire / timing)
-  // → calculé uniquement après le montage
   const dayOfWeek = mounted ? new Date().getDay() : 0;
   const daysUntilFriday = ((5 - dayOfWeek + 7) % 7) || 7;
   const isLastNight = mounted && dayOfWeek === 4 && new Date().getHours() >= 18;
   const showUrgency = mounted && (daysUntilFriday <= 3 || isLastNight);
 
+  const handleTabChange = (tab: ActiveTab) => {
+    if (tab === activeTab || isAnimating) return;
+    prevTab.current = activeTab;
+    setIsAnimating(true);
+    setActiveTab(tab);
+    setTimeout(() => setIsAnimating(false), 400);
+  };
+
   return (
     <>
-      {/* Cart Banner (if items in cart) */}
+      {/* Cart Banner */}
       {cartCount > 0 && (
         <div className="sticky top-0 z-30 bg-gold-500 text-white py-3 px-4 shadow-md">
           <div className="max-w-6xl mx-auto flex items-center justify-between">
@@ -68,26 +78,65 @@ export function ShopContent({ initialProducts, categories }: ShopContentProps) {
         </div>
       )}
 
-      {/* Shabbat Section */}
-      <ProductSection
-        variant="shabbat"
-        products={shabbatProducts}
-        categories={categories}
-      />
-
-      {/* Separator */}
-      {shabbatProducts.length > 0 && semaineProducts.length > 0 && (
+      {/* Tab Navigation */}
+      <div className="sticky top-0 z-20 bg-white border-b border-stone-200 shadow-sm">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="h-px bg-gradient-to-r from-transparent via-stone-300 to-transparent" />
-        </div>
-      )}
+          <div className="flex relative">
+            {/* Sliding underline indicator */}
+            <div
+              className="absolute bottom-0 h-0.5 w-1/2 bg-gold-500 transition-transform duration-400 ease-in-out"
+              style={{ transform: activeTab === 'semaine' ? 'translateX(100%)' : 'translateX(0%)' }}
+            />
 
-      {/* Semaine Section */}
-      <ProductSection
-        variant="semaine"
-        products={semaineProducts}
-        categories={categories}
-      />
+            <button
+              onClick={() => handleTabChange('shabbat')}
+              className={`flex-1 flex items-center justify-center gap-2 py-4 text-sm font-semibold transition-colors duration-200
+                ${activeTab === 'shabbat' ? 'text-gold-600' : 'text-stone-400 hover:text-stone-600'}`}
+            >
+              <Calendar className="w-4 h-4" />
+              Commandes Chabbat
+            </button>
+
+            <button
+              onClick={() => handleTabChange('semaine')}
+              className={`flex-1 flex items-center justify-center gap-2 py-4 text-sm font-semibold transition-colors duration-200
+                ${activeTab === 'semaine' ? 'text-gold-600' : 'text-stone-400 hover:text-stone-600'}`}
+            >
+              <Clock className="w-4 h-4" />
+              Commandes Semaine
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Sliding content */}
+      <div className="overflow-hidden">
+        <div
+          className="flex w-[200%] transition-transform duration-400 ease-in-out"
+          style={{
+            transform: activeTab === 'semaine' ? 'translateX(-50%)' : 'translateX(0%)',
+            transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+          }}
+        >
+          {/* Shabbat panel */}
+          <div className="w-1/2">
+            <ProductSection
+              variant="shabbat"
+              products={shabbatProducts}
+              categories={categories}
+            />
+          </div>
+
+          {/* Semaine panel */}
+          <div className="w-1/2">
+            <ProductSection
+              variant="semaine"
+              products={semaineProducts}
+              categories={categories}
+            />
+          </div>
+        </div>
+      </div>
 
       {/* Info Section */}
       <section className="py-12 px-4 bg-cream-100/50">
