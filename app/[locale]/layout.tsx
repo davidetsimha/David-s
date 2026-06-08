@@ -70,7 +70,7 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <NextIntlClientProvider messages={messages}>
-      <NextTopLoader color="#c9a84c" height={3} showSpinner={false} />
+      <NextTopLoader color="#c9a962" height={4} showSpinner={false} shadow="0 0 10px #c9a962, 0 0 5px #c9a962" />
       <ClientLayout>
         <Header />
         <MobileMenu />
