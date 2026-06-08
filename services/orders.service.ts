@@ -4,7 +4,7 @@ import type { Order, OrderStatus, CreateOrderDTO, ConfirmationStatus } from '../
 export async function getOrders(status?: OrderStatus): Promise<Order[]> {
   let query = supabase
     .from('orders')
-    .select('*, items:order_items(*)')
+    .select('*, items:order_items(*), delivery_zone:delivery_zones(*)')
     .order('created_at', { ascending: false });
 
   if (status) {
@@ -19,7 +19,7 @@ export async function getOrders(status?: OrderStatus): Promise<Order[]> {
 export async function getOrderById(id: string): Promise<Order> {
   const { data, error } = await supabase
     .from('orders')
-    .select('*, items:order_items(*)')
+    .select('*, items:order_items(*), delivery_zone:delivery_zones(*)')
     .eq('id', id)
     .single();
 

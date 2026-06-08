@@ -159,6 +159,7 @@ export default function AdminOrders() {
                   {activeTab === 'pending_confirmation' && (
                     <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Retrait</th>
                   )}
+                  <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Mode</th>
                   <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Statut</th>
                   <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Total</th>
                   <th className="w-12"></th>

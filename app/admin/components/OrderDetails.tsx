@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Textarea } from '@/components/ui/Textarea'
-import { MapPin, Phone, Mail, Package, Calendar, Clock, AlertTriangle, Check, X, MessageCircle, Link as LinkIcon, Loader2 } from 'lucide-react'
+import { MapPin, Phone, Mail, Package, Calendar, Clock, AlertTriangle, Check, X, MessageCircle, Link as LinkIcon, Loader2, Truck } from 'lucide-react'
 import type { Order, OrderStatus, ConfirmationStatus } from '@/types'
 
 // Format phone number for WhatsApp (handles Israeli, French, US formats)
@@ -135,6 +135,9 @@ export function OrderDetails({
   const nextStatus = statusActions[order.status]
   const isPlateau = order.order_type === 'plateau'
   const isPendingConfirmation = order.confirmation_status === 'pending_confirmation'
+  const isDelivery = order.delivery_type === 'delivery'
+  const deliveryFee = isDelivery && order.delivery_zone ? order.delivery_zone.price : 0
+  const itemsSubtotal = order.total_amount - deliveryFee
 
   const date = new Date(order.created_at).toLocaleDateString('fr-FR', {
     weekday: 'long',
@@ -334,6 +337,11 @@ David's Patisserie`
                 Plateau
               </span>
             )}
+            {isDelivery && (
+              <span className="text-xs px-2 py-1 bg-purple-100 text-purple-700 rounded-full font-medium flex items-center gap-1">
+                <Truck className="w-3 h-3" /> Livraison
+              </span>
+            )}
             {order.is_late_order && (
               <span className="text-xs px-2 py-1 bg-red-100 text-red-700 rounded-full font-medium flex items-center gap-1">
                 <AlertTriangle className="w-3 h-3" /> Commande tardive
@@ -415,13 +423,9 @@ David's Patisserie`
             <Phone className="w-4 h-4" /> {order.customer_phone}
           </div>
           {order.delivery_address && (
-            <div className="flex items-center gap-2 text-sm text-gray-600">
-              <MapPin className="w-4 h-4" /> {order.delivery_address}
-            </div>
-          )}
-          {order.delivery_zone && (
-            <div className="text-sm text-gray-600">
-              Zone: {order.delivery_zone.name_fr} ({order.delivery_zone.price} ILS)
+            <div className="flex items-start gap-2 text-sm text-gray-600">
+              <MapPin className="w-4 h-4 mt-0.5 shrink-0" />
+              <span>{order.delivery_address}</span>
             </div>
           )}
         </div>
@@ -440,6 +444,26 @@ David's Patisserie`
                 <span className="font-medium">{(item.unit_price * item.quantity).toFixed(2)} ₪</span>
               </div>
             ))}
+            {isDelivery && deliveryFee > 0 && (
+              <>
+                <div className="flex justify-between py-2 border-b border-gray-100 text-sm text-gray-500">
+                  <span>Sous-total articles</span>
+                  <span>{itemsSubtotal.toFixed(2)} ₪</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-purple-100 text-sm">
+                  <span className="flex items-center gap-1.5 text-purple-700 font-medium">
+                    <Truck className="w-3.5 h-3.5" />
+                    Frais de livraison
+                    {order.delivery_zone && (
+                      <span className="text-xs text-purple-500 font-normal">
+                        ({order.delivery_zone.name_fr})
+                      </span>
+                    )}
+                  </span>
+                  <span className="font-medium text-purple-700">{deliveryFee.toFixed(2)} ₪</span>
+                </div>
+              </>
+            )}
             <div className="flex justify-between pt-2 font-semibold">
               <span>Total</span>
               <span className="text-gold-600">{order.total_amount.toFixed(2)} ₪</span>

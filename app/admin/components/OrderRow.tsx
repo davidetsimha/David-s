@@ -1,7 +1,7 @@
 'use client'
 
 import { Badge } from '@/components/ui/Badge'
-import { Eye, Calendar, Clock } from 'lucide-react'
+import { Eye, Calendar, Clock, Truck, Store } from 'lucide-react'
 import type { Order } from '@/types'
 
 interface OrderRowProps {
@@ -27,6 +27,7 @@ export function OrderRow({ order, onView, showPickupDate }: OrderRowProps) {
 
   const isPlateau = order.order_type === 'plateau'
   const isPendingConfirmation = order.confirmation_status === 'pending_confirmation'
+  const isDelivery = order.delivery_type === 'delivery'
 
   return (
     <tr className={`hover:bg-gray-50/50 transition-colors ${isPendingConfirmation ? 'bg-amber-50/30' : ''}`}>
@@ -69,6 +70,17 @@ export function OrderRow({ order, onView, showPickupDate }: OrderRowProps) {
           )}
         </td>
       )}
+      <td className="px-4 py-4">
+        {isDelivery ? (
+          <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded-full bg-purple-100 text-purple-700">
+            <Truck className="w-3 h-3" /> Livraison
+          </span>
+        ) : (
+          <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded-full bg-stone-100 text-stone-600">
+            <Store className="w-3 h-3" /> Retrait
+          </span>
+        )}
+      </td>
       <td className="px-4 py-4">
         <Badge status={order.status}>{order.status}</Badge>
       </td>
