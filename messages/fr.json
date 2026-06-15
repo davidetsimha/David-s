@@ -276,7 +276,7 @@
     "helpMessage": "Si vous avez rencontré un problème, n'hésitez pas à nous contacter.",
     "success": {
       "title": "Commande confirmée!",
-      "message": "Merci pour votre commande. Vous recevrez un email de confirmation."
+      "message": "Votre commande a bien été prise en compte. À bientôt !"
     },
     "cancel": {
       "title": "Commande annulée",
