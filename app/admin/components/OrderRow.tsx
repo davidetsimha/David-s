@@ -32,7 +32,7 @@ export function OrderRow({ order, onView, showPickupDate }: OrderRowProps) {
   return (
     <tr className={`hover:bg-gray-50/50 transition-colors ${isPendingConfirmation ? 'bg-amber-50/30' : ''}`}>
       <td className="px-4 py-4">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <span className="font-mono text-sm text-gray-500">#{order.id.slice(0, 8)}</span>
           {isPlateau && (
             <span className="text-xs px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded font-medium">
@@ -45,16 +45,42 @@ export function OrderRow({ order, onView, showPickupDate }: OrderRowProps) {
             </span>
           )}
         </div>
+        <div className="md:hidden mt-2 space-y-1">
+          <p className="text-sm font-medium text-gray-900">{order.customer_name}</p>
+          <p className="text-xs text-gray-500">{order.customer_email}</p>
+          <p className="text-xs text-gray-500">{date}</p>
+          <div className="flex items-center gap-2 pt-0.5 flex-wrap">
+            {isDelivery ? (
+              <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full bg-purple-100 text-purple-700">
+                <Truck className="w-3 h-3" /> Livraison
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full bg-stone-100 text-stone-600">
+                <Store className="w-3 h-3" /> Retrait
+              </span>
+            )}
+            {showPickupDate && pickupDate && (
+              <span className="inline-flex items-center gap-1 text-xs text-gray-600">
+                <Calendar className="w-3 h-3" /> {pickupDate}
+                {order.pickup_time_slot && (
+                  <span className="flex items-center gap-0.5">
+                    <Clock className="w-3 h-3" /> {order.pickup_time_slot}
+                  </span>
+                )}
+              </span>
+            )}
+          </div>
+        </div>
       </td>
-      <td className="px-4 py-4">
+      <td className="px-4 py-4 hidden md:table-cell">
         <div>
           <p className="font-medium text-gray-900">{order.customer_name}</p>
           <p className="text-sm text-gray-500">{order.customer_email}</p>
         </div>
       </td>
-      <td className="px-4 py-4 text-sm text-gray-600">{date}</td>
+      <td className="px-4 py-4 text-sm text-gray-600 hidden md:table-cell">{date}</td>
       {showPickupDate && (
-        <td className="px-4 py-4">
+        <td className="px-4 py-4 hidden sm:table-cell">
           {pickupDate ? (
             <div className="flex items-center gap-2 text-sm">
               <Calendar className="w-4 h-4 text-gray-400" />
@@ -70,7 +96,7 @@ export function OrderRow({ order, onView, showPickupDate }: OrderRowProps) {
           )}
         </td>
       )}
-      <td className="px-4 py-4">
+      <td className="px-4 py-4 hidden sm:table-cell">
         {isDelivery ? (
           <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded-full bg-purple-100 text-purple-700">
             <Truck className="w-3 h-3" /> Livraison

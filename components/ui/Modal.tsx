@@ -72,7 +72,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
     if (!open) return null;
 
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="fixed inset-0 z-50 flex items-center justify-center sm:p-4">
         {/* Backdrop */}
         <div
           className="absolute inset-0 bg-gray-900/40 backdrop-blur-[2px] animate-fade-in"
@@ -92,8 +92,9 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
           aria-labelledby={title ? 'modal-title' : undefined}
           aria-describedby={description ? 'modal-description' : undefined}
           className={`
-            relative z-10 w-full max-h-[90vh] overflow-hidden
-            bg-white rounded-xl shadow-elevated
+            relative z-10 w-full overflow-hidden
+            h-[100dvh] sm:h-auto sm:max-h-[90vh]
+            bg-white sm:rounded-xl shadow-elevated
             flex flex-col
             animate-scale-in
             ${sizes[size]}

@@ -1,8 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { ShoppingBag, Clock, AlertCircle } from 'lucide-react'
+import { ShoppingBag, Clock, AlertCircle, Eye, Truck, Store, Calendar } from 'lucide-react'
 import { Card } from '@/components/ui/Card'
+import { Badge } from '@/components/ui/Badge'
 import { OrderRow } from '../components/OrderRow'
 import { OrderDetails } from '../components/OrderDetails'
 import { Spinner } from '@/components/ui/Spinner'
@@ -89,33 +90,35 @@ export default function AdminOrders() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 p-1 bg-gray-100 rounded-lg w-fit overflow-x-auto">
-        {tabs.map((tab) => (
-          <button
-            key={tab.label}
-            onClick={() => setActiveTab(tab.tab)}
-            className={`
-              px-4 py-2 text-sm font-medium rounded-md transition-all whitespace-nowrap
-              flex items-center gap-2
-              ${activeTab === tab.tab
-                ? 'bg-white text-gray-900 shadow-soft'
-                : 'text-gray-600 hover:text-gray-900'
-              }
-              ${tab.tab === 'pending_confirmation' && counts.pendingConfirmation > 0
-                ? 'text-amber-600'
-                : ''
-              }
-            `}
-          >
-            {tab.icon}
-            {tab.label}
-            {tab.tab === 'pending_confirmation' && counts.pendingConfirmation > 0 && (
-              <span className="bg-amber-100 text-amber-700 text-xs font-bold px-2 py-0.5 rounded-full">
-                {counts.pendingConfirmation}
-              </span>
-            )}
-          </button>
-        ))}
+      <div className="overflow-x-auto">
+        <div className="flex gap-1 p-1 bg-gray-100 rounded-lg w-max">
+          {tabs.map((tab) => (
+            <button
+              key={tab.label}
+              onClick={() => setActiveTab(tab.tab)}
+              className={`
+                px-4 py-2 text-sm font-medium rounded-md transition-all whitespace-nowrap
+                flex items-center gap-2
+                ${activeTab === tab.tab
+                  ? 'bg-white text-gray-900 shadow-soft'
+                  : 'text-gray-600 hover:text-gray-900'
+                }
+                ${tab.tab === 'pending_confirmation' && counts.pendingConfirmation > 0
+                  ? 'text-amber-600'
+                  : ''
+                }
+              `}
+            >
+              {tab.icon}
+              {tab.label}
+              {tab.tab === 'pending_confirmation' && counts.pendingConfirmation > 0 && (
+                <span className="bg-amber-100 text-amber-700 text-xs font-bold px-2 py-0.5 rounded-full">
+                  {counts.pendingConfirmation}
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Orders Table */}
@@ -149,34 +152,112 @@ export default function AdminOrders() {
             </p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-gray-100">
-                  <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Commande</th>
-                  <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Client</th>
-                  <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
-                  {activeTab === 'pending_confirmation' && (
-                    <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Retrait</th>
-                  )}
-                  <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Mode</th>
-                  <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Statut</th>
-                  <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Total</th>
-                  <th className="w-12"></th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-50">
-                {displayedOrders?.map((order) => (
-                  <OrderRow
+          <>
+            {/* Mobile: carte par commande */}
+            <div className="md:hidden divide-y divide-gray-100">
+              {displayedOrders?.map((order) => {
+                const date = new Date(order.created_at).toLocaleDateString('fr-FR', {
+                  day: 'numeric', month: 'short', year: 'numeric',
+                })
+                const pickupDate = order.pickup_date
+                  ? new Date(order.pickup_date).toLocaleDateString('fr-FR', {
+                      weekday: 'short', day: 'numeric', month: 'short',
+                    })
+                  : null
+                const isDelivery = order.delivery_type === 'delivery'
+                const isPendingConf = order.confirmation_status === 'pending_confirmation'
+
+                return (
+                  <div
                     key={order.id}
-                    order={order}
-                    onView={setSelectedOrder}
-                    showPickupDate={activeTab === 'pending_confirmation'}
-                  />
-                ))}
-              </tbody>
-            </table>
-          </div>
+                    className={`p-4 ${isPendingConf ? 'bg-amber-50/30' : ''}`}
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <span className="font-mono text-sm text-gray-500">#{order.id.slice(0, 8)}</span>
+                        {order.order_type === 'plateau' && (
+                          <span className="text-xs px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded font-medium">Plateau</span>
+                        )}
+                        {order.is_late_order && (
+                          <span className="text-xs px-1.5 py-0.5 bg-red-100 text-red-700 rounded font-medium">Tardive</span>
+                        )}
+                      </div>
+                      <button
+                        onClick={() => setSelectedOrder(order)}
+                        className="p-1.5 rounded-lg text-gray-400 hover:text-gold-600 hover:bg-gold-50 transition-colors shrink-0"
+                      >
+                        <Eye className="w-5 h-5" />
+                      </button>
+                    </div>
+
+                    <div className="mt-2 space-y-0.5">
+                      <p className="font-medium text-gray-900">{order.customer_name}</p>
+                      <p className="text-sm text-gray-500">{order.customer_email}</p>
+                      <p className="text-sm text-gray-500">{date}</p>
+                    </div>
+
+                    <div className="mt-3 flex items-center justify-between gap-2 flex-wrap">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        {isDelivery ? (
+                          <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full bg-purple-100 text-purple-700">
+                            <Truck className="w-3 h-3" /> Livraison
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full bg-stone-100 text-stone-600">
+                            <Store className="w-3 h-3" /> Retrait
+                          </span>
+                        )}
+                        <Badge status={order.status}>{order.status}</Badge>
+                      </div>
+                      <span className="font-semibold text-gray-900">{order.total_amount.toFixed(2)} ILS</span>
+                    </div>
+
+                    {activeTab === 'pending_confirmation' && pickupDate && (
+                      <div className="mt-2 flex items-center gap-1.5 text-sm text-blue-700 bg-blue-50 rounded-lg px-3 py-2">
+                        <Calendar className="w-4 h-4 shrink-0" />
+                        <span>{pickupDate}</span>
+                        {order.pickup_time_slot && (
+                          <span className="flex items-center gap-1 ml-1">
+                            <Clock className="w-3.5 h-3.5" /> {order.pickup_time_slot}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+
+            {/* Desktop: tableau */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-gray-100">
+                    <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Commande</th>
+                    <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Client</th>
+                    <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
+                    {activeTab === 'pending_confirmation' && (
+                      <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Retrait</th>
+                    )}
+                    <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Mode</th>
+                    <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Statut</th>
+                    <th className="text-start px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Total</th>
+                    <th className="w-12"></th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-50">
+                  {displayedOrders?.map((order) => (
+                    <OrderRow
+                      key={order.id}
+                      order={order}
+                      onView={setSelectedOrder}
+                      showPickupDate={activeTab === 'pending_confirmation'}
+                    />
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </Card>
 
