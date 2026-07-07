@@ -1,4 +1,5 @@
-import { type HTMLAttributes, forwardRef, useEffect, useRef, useCallback, type ReactNode } from 'react';
+import { type HTMLAttributes, forwardRef, useEffect, useRef, useState, useCallback, type ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 
 type ModalSize = 'sm' | 'md' | 'lg' | 'xl';
@@ -23,6 +24,11 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
   ({ open, onClose, title, description, size = 'md', footer, className = '', children, ...props }, ref) => {
     const modalRef = useRef<HTMLDivElement>(null);
     const previousActiveElement = useRef<HTMLElement | null>(null);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+      setMounted(true);
+    }, []);
 
     const handleKeyDown = useCallback((e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -69,9 +75,9 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
       }
     }, [open, handleKeyDown]);
 
-    if (!open) return null;
+    if (!open || !mounted) return null;
 
-    return (
+    return createPortal(
       <div className="fixed inset-0 z-50 flex items-center justify-center sm:p-4">
         {/* Backdrop */}
         <div
@@ -150,7 +156,8 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
             </div>
           )}
         </div>
-      </div>
+      </div>,
+      document.body
     );
   }
 );
