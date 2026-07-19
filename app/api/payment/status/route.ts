@@ -59,9 +59,14 @@ export async function GET(request: NextRequest): Promise<NextResponse<PaymentSta
 
     if (order.status === 'confirmed' || order.payment_status === 'approved') {
       paymentStatus = 'confirmed';
-    } else if (order.payment_status === 'declined' || order.payment_status === 'error') {
+    } else if (
+      order.payment_status === 'declined'
+      || order.payment_status === 'error'
+      || order.payment_status === 'amount_mismatch'
+    ) {
       paymentStatus = 'failed';
     }
+    // 'verification_pending' falls through to the 'pending' default - still waiting, not failed.
 
     return NextResponse.json({
       success: true,

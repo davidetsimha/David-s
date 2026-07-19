@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Modal } from '@/components/ui/Modal'
 import { Badge } from '@/components/ui/Badge'
+import { PaymentBadge } from '@/components/ui/PaymentBadge'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Textarea } from '@/components/ui/Textarea'
@@ -330,8 +331,13 @@ David's Patisserie`
       <div className="space-y-6">
         {/* Status badges */}
         <div className="flex items-center justify-between flex-wrap gap-2">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <Badge status={order.status}>{statusLabels[order.status]}</Badge>
+            <PaymentBadge
+              paymentStatus={order.payment_status}
+              paymentTransactionId={order.payment_transaction_id}
+              orderType={order.order_type}
+            />
             {isPlateau && (
               <span className="text-xs px-2 py-1 bg-amber-100 text-amber-700 rounded-full font-medium">
                 Plateau
@@ -408,6 +414,40 @@ David's Patisserie`
                 >
                   {order.payment_link.substring(0, 40)}...
                 </a>
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* Payment details */}
+        {(order.payment_status || order.payment_transaction_id) && (
+          <div
+            className={`p-3 rounded-lg text-sm space-y-1 ${
+              order.payment_status === 'approved'
+                ? 'bg-emerald-50 text-emerald-800'
+                : order.payment_status === 'declined'
+                  || order.payment_status === 'error'
+                  || order.payment_status === 'amount_mismatch'
+                  ? 'bg-red-50 text-red-800'
+                  : 'bg-amber-50 text-amber-800'
+            }`}
+          >
+            <p className="font-medium">Paiement en ligne</p>
+            {order.payment_transaction_id && (
+              <p>Transaction : {order.payment_transaction_id}</p>
+            )}
+            {order.payment_card_brand && (
+              <p>
+                Carte : {order.payment_card_brand}
+                {order.payment_card_mask ? ` •••• ${order.payment_card_mask}` : ''}
+              </p>
+            )}
+            {order.payment_error_message && (
+              <p>Erreur : {order.payment_error_message}</p>
+            )}
+            {order.payment_updated_at && (
+              <p className="opacity-75">
+                Mis à jour le {new Date(order.payment_updated_at).toLocaleString('fr-FR')}
               </p>
             )}
           </div>
@@ -693,18 +733,26 @@ David's Patisserie`
           nextStatus &&
           !showConfirmForm &&
           !showRejectForm && (
-            <Button
-              onClick={() => {
-                onStatusChange(order.id, nextStatus)
-                // Show WhatsApp section for individual orders when confirming
-                if (!isPlateau && nextStatus === 'confirmed') {
-                  setLastAction('individual_confirmed')
-                }
-              }}
-              className="w-full"
-            >
-              Marquer comme {statusLabels[nextStatus]}
-            </Button>
+            <div className="space-y-2">
+              {!isPlateau && nextStatus === 'confirmed' && order.payment_status !== 'approved' && (
+                <div className="flex items-start gap-2 p-3 bg-amber-50 text-amber-800 rounded-lg text-sm">
+                  <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
+                  <span>Paiement non confirmé — vérifiez avant de confirmer la commande.</span>
+                </div>
+              )}
+              <Button
+                onClick={() => {
+                  onStatusChange(order.id, nextStatus)
+                  // Show WhatsApp section for individual orders when confirming
+                  if (!isPlateau && nextStatus === 'confirmed') {
+                    setLastAction('individual_confirmed')
+                  }
+                }}
+                className="w-full"
+              >
+                Marquer comme {statusLabels[nextStatus]}
+              </Button>
+            </div>
           )
         )}
       </div>

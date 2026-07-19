@@ -38,3 +38,6 @@ photos-extracted/
 tsconfig.tsbuildinfo
 
 .claude/
+
+# Supabase CLI local link cache
+supabase/.temp/

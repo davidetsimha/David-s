@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { ShoppingBag, Clock, AlertCircle, Eye, Truck, Store, Calendar } from 'lucide-react'
 import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
+import { PaymentBadge } from '@/components/ui/PaymentBadge'
 import { OrderRow } from '../components/OrderRow'
 import { OrderDetails } from '../components/OrderDetails'
 import { Spinner } from '@/components/ui/Spinner'
@@ -208,6 +209,12 @@ export default function AdminOrders() {
                           </span>
                         )}
                         <Badge status={order.status}>{order.status}</Badge>
+                        <PaymentBadge
+                          paymentStatus={order.payment_status}
+                          paymentTransactionId={order.payment_transaction_id}
+                          orderType={order.order_type}
+                          size="sm"
+                        />
                       </div>
                       <span className="font-semibold text-gray-900">{order.total_amount.toFixed(2)} ILS</span>
                     </div>

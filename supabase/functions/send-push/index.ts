@@ -14,10 +14,16 @@ const corsHeaders = {
 
 interface PushPayload {
   orderId: string;
-  customerName: string;
-  totalAmount: number;
-  orderType: string;
+  customerName?: string;
+  totalAmount?: number;
+  orderType?: string;
   pickupDate?: string;
+  // Optional overrides: when provided, these are used as-is instead of the
+  // "new order" title/body built from customerName/totalAmount/orderType.
+  // Used for admin alerts (e.g. a payment that needs manual attention).
+  title?: string;
+  body?: string;
+  requireInteraction?: boolean;
 }
 
 interface PushSubscription {
@@ -57,14 +63,15 @@ serve(async (req) => {
 
     // Parse request body
     const payload: PushPayload = await req.json();
-    const { orderId, customerName, totalAmount, orderType, pickupDate } = payload;
+    const { orderId, customerName, totalAmount, orderType, pickupDate, title, body, requireInteraction } = payload;
 
-    // Build notification content
-    const notificationTitle = orderType === 'plateau'
+    // Build notification content: explicit title/body (admin alerts) take priority,
+    // otherwise fall back to the "new order" content built from order fields.
+    const notificationTitle = title ?? (orderType === 'plateau'
       ? 'Nouvelle commande plateau !'
-      : 'Nouvelle commande';
+      : 'Nouvelle commande');
 
-    const notificationBody = `${customerName} - ${totalAmount.toFixed(2)} ILS${
+    const notificationBody = body ?? `${customerName} - ${(totalAmount ?? 0).toFixed(2)} ILS${
       pickupDate ? ` - Retrait: ${pickupDate}` : ''
     }`;
 
@@ -76,7 +83,7 @@ serve(async (req) => {
       url: `/admin/orders`,
       orderId: orderId,
       tag: `order-${orderId}`,
-      requireInteraction: orderType === 'plateau',
+      requireInteraction: requireInteraction ?? orderType === 'plateau',
       actions: [
         { action: 'view', title: 'Voir' },
         { action: 'dismiss', title: 'Ignorer' },

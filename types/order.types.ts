@@ -3,7 +3,13 @@ export type DeliveryType = 'delivery' | 'pickup';
 export type OrderType = 'individual' | 'plateau';
 export type ConfirmationStatus = 'not_required' | 'pending_confirmation' | 'confirmed' | 'rejected';
 
-export type PaymentStatus = 'pending' | 'approved' | 'declined' | 'error';
+export type PaymentStatus =
+  | 'pending'
+  | 'approved'
+  | 'declined'
+  | 'error'
+  | 'amount_mismatch'
+  | 'verification_pending';
 
 export interface Order {
   id: string;

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { parseCallbackData, verifyTransaction, verifyCallbackSignature } from '@/services/hyp.service';
 import { createClient } from '@supabase/supabase-js';
+import type { HypTransactionStatus } from '@/services/hyp.service';
 
 // Create a Supabase client for server-side operations
 function getSupabaseAdmin() {
@@ -20,20 +21,235 @@ function getSupabaseAdmin() {
   return createClient(url, key);
 }
 
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 /**
- * Handle IPN (Instant Payment Notification) callback from Hyp/CreditGuard
- *
- * CreditGuard sends payment status updates to this endpoint.
- * We need to:
- * 1. Parse the callback data
- * 2. Verify the transaction with CreditGuard API
- * 3. Update the order status in our database
+ * Notify admins (via the existing web-push channel) that a payment needs manual attention.
+ * Best-effort only: failures here must never block the callback response to Yaad.
  */
+async function notifyAdminsPaymentIssue(orderId: string, title: string, body: string): Promise<void> {
+  try {
+    const supabase = getSupabaseAdmin();
+    const { error } = await supabase.functions.invoke('send-push', {
+      body: { orderId, title, body, requireInteraction: true },
+    });
+    if (error) {
+      console.error('[Payment/Callback] Admin alert push failed:', error);
+    }
+  } catch (err) {
+    console.error('[Payment/Callback] Admin alert push threw:', err);
+  }
+}
+
+/**
+ * Re-check the transaction with Yaad's own API, retrying once if the failure
+ * looks transient (network error) rather than a definitive answer from the gateway.
+ */
+async function verifyWithRetry(transactionId: string): Promise<{
+  verification: HypTransactionStatus;
+  transientFailure: boolean;
+}> {
+  let verification = await verifyTransaction(transactionId);
+
+  if (!verification.success && verification.errorCode === 'NETWORK_ERROR') {
+    await sleep(500);
+    verification = await verifyTransaction(transactionId);
+  }
+
+  const transientFailure = !verification.success && verification.errorCode === 'NETWORK_ERROR';
+  return { verification, transientFailure };
+}
+
+/**
+ * Handle IPN (Instant Payment Notification) callback from Hyp/Yaad Shrig.
+ *
+ * Yaad sends payment status updates to this endpoint. We:
+ * 1. Reject anything without a valid signature (the signature covers Id/CCode/Amount/Order,
+ *    so a valid signature already authenticates the core fields).
+ * 2. Cross-check with Yaad's getTransInfo API for extra assurance, with one retry for
+ *    transient network failures.
+ * 3. Update the order's payment_status (and status, for approved payments) in the DB.
+ */
+async function processPaymentCallback(callbackData: Record<string, string>) {
+  console.log('[Payment/Callback] Callback data received:', {
+    transactionId: callbackData.tranId || callbackData.txId || callbackData.Id,
+    orderId: callbackData.uniqueid || callbackData.Order,
+    result: callbackData.result || callbackData.CCode,
+  });
+
+  // Signature is mandatory: an absent signature is no longer treated as "trust it anyway".
+  const signature = callbackData.Sign || callbackData.sign || callbackData.signature;
+  if (!signature || !verifyCallbackSignature(callbackData, signature)) {
+    console.error('[Payment/Callback] Missing or invalid signature - rejecting callback');
+    return NextResponse.json({ success: false, error: 'Invalid signature' }, { status: 403 });
+  }
+
+  // Signature-authenticated data (Id, CCode, Amount, Order, Fild1-3 are covered by the signature).
+  const paymentStatus = parseCallbackData(callbackData);
+
+  if (!paymentStatus.orderId && !paymentStatus.transactionId) {
+    console.error('[Payment/Callback] No order or transaction ID in callback');
+    return NextResponse.json(
+      { success: false, error: 'Missing order or transaction ID' },
+      { status: 400 }
+    );
+  }
+
+  const orderId = paymentStatus.orderId;
+  if (!orderId) {
+    return NextResponse.json({ success: false, error: 'Missing order ID' }, { status: 400 });
+  }
+
+  const supabase = getSupabaseAdmin();
+
+  // Re-check with Yaad's own API as a second, independent confirmation.
+  let verifiedStatus: HypTransactionStatus = paymentStatus;
+  let transientVerificationFailure = false;
+
+  if (paymentStatus.transactionId) {
+    const { verification, transientFailure } = await verifyWithRetry(paymentStatus.transactionId);
+    transientVerificationFailure = transientFailure;
+    if (verification.success) {
+      verifiedStatus = verification;
+    }
+  }
+
+  if (transientVerificationFailure) {
+    console.error('[Payment/Callback] Could not verify transaction with Yaad after retry:', paymentStatus.transactionId);
+    await supabase
+      .from('orders')
+      .update({
+        payment_status: 'verification_pending',
+        payment_transaction_id: paymentStatus.transactionId,
+        payment_updated_at: new Date().toISOString(),
+      })
+      .eq('id', orderId);
+
+    await notifyAdminsPaymentIssue(
+      orderId,
+      'Vérification paiement échouée',
+      `Commande #${orderId.slice(0, 8)} : impossible de vérifier le paiement auprès de Yaad, nouvelle tentative en cours.`
+    );
+
+    // Non-200 so Yaad's own IPN retry mechanism redelivers this callback later.
+    return NextResponse.json(
+      { success: false, error: 'Verification pending, please retry' },
+      { status: 502 }
+    );
+  }
+
+  // Check for duplicate callback or already confirmed order
+  const { data: existingOrder } = await supabase
+    .from('orders')
+    .select('payment_transaction_id, status, total_amount')
+    .eq('id', orderId)
+    .single();
+
+  // Vérification de doublon : seulement si les deux IDs sont non-null et identiques.
+  if (
+    existingOrder?.payment_transaction_id
+    && verifiedStatus.transactionId
+    && existingOrder.payment_transaction_id === verifiedStatus.transactionId
+  ) {
+    console.log('[Payment/Callback] Callback already processed, ignoring');
+    return NextResponse.json({ success: true, message: 'Already processed' });
+  }
+
+  // Don't re-update an already confirmed order
+  if (existingOrder?.status === 'confirmed') {
+    console.log('[Payment/Callback] Order already confirmed, ignoring');
+    return NextResponse.json({ success: true, message: 'Already confirmed' });
+  }
+
+  // Verify that the paid amount matches the expected amount
+  if (existingOrder && verifiedStatus.amount) {
+    const expectedAmount = Number(existingOrder.total_amount);
+    const paidAmount = Number(verifiedStatus.amount);
+
+    // 0.01 tolerance for rounding
+    if (Math.abs(expectedAmount - paidAmount) > 0.01) {
+      console.error(`[Payment/Callback] Amount mismatch: expected ${expectedAmount}, received ${paidAmount}`);
+      await supabase.from('orders').update({
+        payment_status: 'amount_mismatch',
+        payment_transaction_id: verifiedStatus.transactionId,
+        payment_error_message: `Montant invalide: attendu ${expectedAmount}₪, payé ${paidAmount}₪`,
+        payment_updated_at: new Date().toISOString(),
+      }).eq('id', orderId);
+
+      await notifyAdminsPaymentIssue(
+        orderId,
+        'Montant de paiement incorrect',
+        `Commande #${orderId.slice(0, 8)} : attendu ${expectedAmount}₪, payé ${paidAmount}₪.`
+      );
+
+      return NextResponse.json({ success: false, error: 'Amount mismatch' });
+    }
+  }
+
+  // Map status: only 'approved' moves the order forward. Declines/errors are recorded
+  // on payment_status only - order.status stays 'pending' (it's a fact about the
+  // payment, not a new order lifecycle stage; the order can still be confirmed later
+  // via a manual/cash/WhatsApp flow).
+  const updateData: Record<string, unknown> = {
+    payment_transaction_id: verifiedStatus.transactionId,
+    payment_auth_code: verifiedStatus.authCode,
+    payment_card_mask: verifiedStatus.cardMask,
+    payment_card_brand: verifiedStatus.cardBrand,
+    payment_status: verifiedStatus.status,
+    payment_updated_at: new Date().toISOString(),
+  };
+
+  if (verifiedStatus.status === 'approved') {
+    updateData.status = 'confirmed';
+  } else {
+    updateData.payment_error_code = verifiedStatus.errorCode;
+    updateData.payment_error_message = verifiedStatus.errorMessage;
+  }
+
+  const { error: updateError } = await supabase
+    .from('orders')
+    .update(updateData)
+    .eq('id', orderId);
+
+  if (updateError) {
+    console.error('[Payment/Callback] Error updating order:', updateError);
+    await notifyAdminsPaymentIssue(
+      orderId,
+      'Erreur mise à jour commande',
+      `Commande #${orderId.slice(0, 8)} : le paiement a été traité mais la mise à jour en base a échoué. Vérification manuelle requise.`
+    );
+  } else {
+    console.log(`[Payment/Callback] Order ${orderId} payment_status updated to: ${verifiedStatus.status}`);
+  }
+
+  if (verifiedStatus.status === 'declined' || verifiedStatus.status === 'error') {
+    await notifyAdminsPaymentIssue(
+      orderId,
+      'Paiement refusé',
+      `Commande #${orderId.slice(0, 8)} : paiement ${verifiedStatus.status === 'declined' ? 'refusé' : 'en erreur'}.`
+    );
+  }
+
+  // Send confirmation email for approved payments
+  if (verifiedStatus.status === 'approved') {
+    sendPaymentConfirmationEmail(orderId).catch(console.error);
+  }
+
+  // Yaad expects a 200 response to confirm receipt (for all resolved outcomes).
+  return NextResponse.json({
+    success: true,
+    received: true,
+    orderId,
+    status: verifiedStatus.status,
+  });
+}
+
 export async function POST(request: NextRequest) {
   try {
-    console.log('[Payment/Callback] Received IPN callback');
+    console.log('[Payment/Callback] Received IPN callback (POST)');
 
-    // Parse the incoming data (can be form-urlencoded or JSON)
     const contentType = request.headers.get('content-type') || '';
     let callbackData: Record<string, string> = {};
 
@@ -46,7 +262,6 @@ export async function POST(request: NextRequest) {
       const jsonData = await request.json();
       callbackData = jsonData;
     } else {
-      // Try to parse as form data by default
       const text = await request.text();
       const params = new URLSearchParams(text);
       params.forEach((value, key) => {
@@ -54,145 +269,10 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    console.log('[Payment/Callback] Callback data received:', {
-      transactionId: callbackData.tranId || callbackData.txId,
-      orderId: callbackData.uniqueid,
-      result: callbackData.result,
-    });
-
-    // Verify signature if present
-    const signature = callbackData.Sign || callbackData.sign || callbackData.signature;
-    if (signature && !verifyCallbackSignature(callbackData, signature)) {
-      console.error('[Payment/Callback] Invalid signature');
-      return NextResponse.json({ success: false, error: 'Invalid signature' }, { status: 403 });
-    }
-
-    // Parse the callback data
-    const paymentStatus = parseCallbackData(callbackData);
-
-    if (!paymentStatus.orderId && !paymentStatus.transactionId) {
-      console.error('[Payment/Callback] No order or transaction ID in callback');
-      return NextResponse.json(
-        { success: false, error: 'Missing order or transaction ID' },
-        { status: 400 }
-      );
-    }
-
-    // Optionally verify with CreditGuard API for extra security
-    let verifiedStatus = paymentStatus;
-    if (paymentStatus.transactionId) {
-      try {
-        const verification = await verifyTransaction(paymentStatus.transactionId);
-        if (verification.success) {
-          verifiedStatus = verification;
-          console.log('[Payment/Callback] Transaction verified:', verification.status);
-        }
-      } catch (verifyError) {
-        // Log but continue - callback data should be sufficient
-        console.warn('[Payment/Callback] Could not verify transaction:', verifyError);
-      }
-    }
-
-    // Update order status in database
-    const supabase = getSupabaseAdmin();
-    const orderId = verifiedStatus.orderId || paymentStatus.orderId;
-
-    if (orderId) {
-      // Check for duplicate callback or already confirmed order
-      const { data: existingOrder } = await supabase
-        .from('orders')
-        .select('payment_transaction_id, status, total_amount')
-        .eq('id', orderId)
-        .single();
-
-      // Vérification de doublon : seulement si les deux IDs sont non-null et identiques.
-      // BUG CORRIGÉ : null === null était vrai → le 1er callback était rejeté à tort.
-      if (
-        existingOrder?.payment_transaction_id
-        && verifiedStatus.transactionId
-        && existingOrder.payment_transaction_id === verifiedStatus.transactionId
-      ) {
-        console.log('[Payment/Callback] Callback already processed, ignoring');
-        return NextResponse.json({ success: true, message: 'Already processed' });
-      }
-
-      // Don't re-update an already confirmed order
-      if (existingOrder?.status === 'confirmed') {
-        console.log('[Payment/Callback] Order already confirmed, ignoring');
-        return NextResponse.json({ success: true, message: 'Already confirmed' });
-      }
-
-      // Verify that the paid amount matches the expected amount
-      if (existingOrder && verifiedStatus.amount) {
-        const expectedAmount = Number(existingOrder.total_amount);
-        const paidAmount = Number(verifiedStatus.amount);
-
-        // 0.01 tolerance for rounding
-        if (Math.abs(expectedAmount - paidAmount) > 0.01) {
-          console.error(`[Payment/Callback] Amount mismatch: expected ${expectedAmount}, received ${paidAmount}`);
-          // Mark as suspect but don't confirm
-          await supabase.from('orders').update({
-            payment_status: 'amount_mismatch',
-            payment_error_message: `Montant invalide: attendu ${expectedAmount}₪, payé ${paidAmount}₪`,
-          }).eq('id', orderId);
-          return NextResponse.json({ success: false, error: 'Amount mismatch' });
-        }
-      }
-
-      // Map status properly
-      let newStatus: string;
-      if (verifiedStatus.status === 'approved') {
-        newStatus = 'confirmed';
-      } else if (verifiedStatus.status === 'declined' || verifiedStatus.status === 'error') {
-        newStatus = 'payment_failed';
-      } else {
-        newStatus = 'pending';
-      }
-
-      const updateData: Record<string, unknown> = {
-        status: newStatus,
-        payment_transaction_id: verifiedStatus.transactionId,
-        payment_auth_code: verifiedStatus.authCode,
-        payment_card_mask: verifiedStatus.cardMask,
-        payment_card_brand: verifiedStatus.cardBrand,
-        payment_status: verifiedStatus.status,
-        payment_updated_at: new Date().toISOString(),
-      };
-
-      if (verifiedStatus.status !== 'approved') {
-        updateData.payment_error_code = verifiedStatus.errorCode;
-        updateData.payment_error_message = verifiedStatus.errorMessage;
-      }
-
-      const { error: updateError } = await supabase
-        .from('orders')
-        .update(updateData)
-        .eq('id', orderId);
-
-      if (updateError) {
-        console.error('[Payment/Callback] Error updating order:', updateError);
-        // Don't fail - CreditGuard expects 200 response
-      } else {
-        console.log(`[Payment/Callback] Order ${orderId} updated to status: ${newStatus}`);
-      }
-
-      // Send confirmation email for approved payments
-      if (verifiedStatus.status === 'approved') {
-        // Trigger email notification (async, don't wait)
-        sendPaymentConfirmationEmail(orderId).catch(console.error);
-      }
-    }
-
-    // CreditGuard expects a 200 response to confirm receipt
-    return NextResponse.json({
-      success: true,
-      received: true,
-      orderId,
-      status: verifiedStatus.status,
-    });
+    return await processPaymentCallback(callbackData);
   } catch (error) {
     console.error('[Payment/Callback] Error processing callback:', error);
-    // Return 200 anyway to prevent CreditGuard from retrying
+    // Return 200 anyway to prevent Yaad from retrying on our own bug
     return NextResponse.json({
       success: false,
       received: true,
@@ -202,61 +282,32 @@ export async function POST(request: NextRequest) {
 }
 
 /**
- * Handle GET requests (for testing or status checks)
+ * Handle GET requests. Some Yaad terminal configurations deliver the IPN via GET
+ * instead of POST - this now goes through the exact same verification path as POST
+ * (signature required, gateway re-check, idempotency, amount check) instead of the
+ * previous unauthenticated shortcut.
  */
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
 
-  // If there are callback parameters, process them
-  if (searchParams.has('tranId') || searchParams.has('uniqueid') || searchParams.has('result')) {
+  if (searchParams.has('tranId') || searchParams.has('uniqueid') || searchParams.has('result') || searchParams.has('Order')) {
     const callbackData: Record<string, string> = {};
     searchParams.forEach((value, key) => {
       callbackData[key] = value;
     });
 
-    // Convert to POST handler
-    const response = await handleCallbackData(callbackData);
-    return response;
+    try {
+      return await processPaymentCallback(callbackData);
+    } catch (error) {
+      console.error('[Payment/Callback] Error processing GET callback:', error);
+      return NextResponse.json({ success: false, received: true, error: 'Processing error' });
+    }
   }
 
   return NextResponse.json({
     success: true,
     message: 'Payment callback endpoint is active',
   });
-}
-
-async function handleCallbackData(callbackData: Record<string, string>) {
-  try {
-    const paymentStatus = parseCallbackData(callbackData);
-    const orderId = paymentStatus.orderId;
-
-    if (orderId) {
-      const supabase = getSupabaseAdmin();
-      const newStatus = paymentStatus.status === 'approved' ? 'confirmed' : 'pending';
-
-      await supabase
-        .from('orders')
-        .update({
-          status: newStatus,
-          payment_transaction_id: paymentStatus.transactionId,
-          payment_status: paymentStatus.status,
-          payment_updated_at: new Date().toISOString(),
-        })
-        .eq('id', orderId);
-    }
-
-    return NextResponse.json({
-      success: true,
-      received: true,
-      orderId,
-      status: paymentStatus.status,
-    });
-  } catch {
-    return NextResponse.json({
-      success: false,
-      received: true,
-    });
-  }
 }
 
 /**

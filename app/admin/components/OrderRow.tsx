@@ -1,6 +1,7 @@
 'use client'
 
 import { Badge } from '@/components/ui/Badge'
+import { PaymentBadge } from '@/components/ui/PaymentBadge'
 import { Eye, Calendar, Clock, Truck, Store } from 'lucide-react'
 import type { Order } from '@/types'
 
@@ -70,6 +71,14 @@ export function OrderRow({ order, onView, showPickupDate }: OrderRowProps) {
               </span>
             )}
           </div>
+          <div className="pt-1">
+            <PaymentBadge
+              paymentStatus={order.payment_status}
+              paymentTransactionId={order.payment_transaction_id}
+              orderType={order.order_type}
+              size="sm"
+            />
+          </div>
         </div>
       </td>
       <td className="px-4 py-4 hidden md:table-cell">
@@ -108,7 +117,15 @@ export function OrderRow({ order, onView, showPickupDate }: OrderRowProps) {
         )}
       </td>
       <td className="px-4 py-4">
-        <Badge status={order.status}>{order.status}</Badge>
+        <div className="flex flex-col gap-1.5 items-start">
+          <Badge status={order.status}>{order.status}</Badge>
+          <PaymentBadge
+            paymentStatus={order.payment_status}
+            paymentTransactionId={order.payment_transaction_id}
+            orderType={order.order_type}
+            size="sm"
+          />
+        </div>
       </td>
       <td className="px-4 py-4 font-medium text-gray-900">
         {order.total_amount.toFixed(2)} ILS
