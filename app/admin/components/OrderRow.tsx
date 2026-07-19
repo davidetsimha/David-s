@@ -74,7 +74,6 @@ export function OrderRow({ order, onView, showPickupDate }: OrderRowProps) {
           <div className="pt-1">
             <PaymentBadge
               paymentStatus={order.payment_status}
-              paymentTransactionId={order.payment_transaction_id}
               orderType={order.order_type}
               size="sm"
             />
@@ -121,7 +120,6 @@ export function OrderRow({ order, onView, showPickupDate }: OrderRowProps) {
           <Badge status={order.status}>{order.status}</Badge>
           <PaymentBadge
             paymentStatus={order.payment_status}
-            paymentTransactionId={order.payment_transaction_id}
             orderType={order.order_type}
             size="sm"
           />

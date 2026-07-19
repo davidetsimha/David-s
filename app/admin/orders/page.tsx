@@ -211,7 +211,6 @@ export default function AdminOrders() {
                         <Badge status={order.status}>{order.status}</Badge>
                         <PaymentBadge
                           paymentStatus={order.payment_status}
-                          paymentTransactionId={order.payment_transaction_id}
                           orderType={order.order_type}
                           size="sm"
                         />

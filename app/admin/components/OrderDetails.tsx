@@ -335,7 +335,6 @@ David's Patisserie`
             <Badge status={order.status}>{statusLabels[order.status]}</Badge>
             <PaymentBadge
               paymentStatus={order.payment_status}
-              paymentTransactionId={order.payment_transaction_id}
               orderType={order.order_type}
             />
             {isPlateau && (

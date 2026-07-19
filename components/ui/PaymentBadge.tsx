@@ -3,7 +3,6 @@ import type { OrderType, PaymentStatus } from '@/types'
 
 interface PaymentBadgeProps {
   paymentStatus?: PaymentStatus | null
-  paymentTransactionId?: string | null
   orderType: OrderType
   size?: 'sm' | 'md'
 }
@@ -13,7 +12,7 @@ const sizes = {
   md: 'px-2.5 py-1 text-xs',
 }
 
-export function PaymentBadge({ paymentStatus, paymentTransactionId, orderType, size = 'md' }: PaymentBadgeProps) {
+export function PaymentBadge({ paymentStatus, orderType, size = 'md' }: PaymentBadgeProps) {
   // Plateau orders are paid out-of-band (WhatsApp payment link) - no payment_status
   // yet is expected, not a bug, so no badge.
   if (orderType === 'plateau' && !paymentStatus) {
@@ -23,7 +22,7 @@ export function PaymentBadge({ paymentStatus, paymentTransactionId, orderType, s
   const sizeClass = sizes[size]
   const base = `inline-flex items-center gap-1.5 rounded-full font-medium border ${sizeClass}`
 
-  if (paymentStatus === 'approved' && paymentTransactionId) {
+  if (paymentStatus === 'approved') {
     return (
       <span className={`${base} bg-emerald-50 text-emerald-700 border-emerald-200/60`}>
         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" aria-hidden="true" />
@@ -59,7 +58,7 @@ export function PaymentBadge({ paymentStatus, paymentTransactionId, orderType, s
     )
   }
 
-  // null / 'pending' with no transaction id: normal mid-checkout / not-yet-paid state
+  // null / 'pending': normal mid-checkout / not-yet-paid state
   return (
     <span className={`${base} bg-gray-50 text-gray-500 border-gray-200/60`}>
       <span className="w-1.5 h-1.5 rounded-full bg-gray-400" aria-hidden="true" />
