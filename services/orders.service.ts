@@ -111,6 +111,26 @@ export async function createOrder(orderData: CreateOrderDTO): Promise<string> {
     validatePickupDate(orderData.pickup_date, orderType, minDaysAdvance);
   }
 
+  // Re-check availability server-side: a product can have been disabled by the
+  // admin after the customer added it to their (persisted) cart.
+  const productIds = items.map((item) => item.product_id);
+  const { data: products, error: productsError } = await supabase
+    .from('products')
+    .select('id, available')
+    .in('id', productIds);
+
+  if (productsError) throw productsError;
+
+  const unavailable = items.filter((item) => {
+    const product = products?.find((p) => p.id === item.product_id);
+    return !product || !product.available;
+  });
+
+  if (unavailable.length > 0) {
+    const names = unavailable.map((item) => item.product_name_fr).join(', ');
+    throw new Error(`Ces produits ne sont plus disponibles : ${names}`);
+  }
+
   const totalAmount = items.reduce((sum, item) => sum + item.unit_price * item.quantity, 0);
 
   // Add delivery zone price if applicable
@@ -144,16 +164,14 @@ export async function createOrder(orderData: CreateOrderDTO): Promise<string> {
 
   if (itemsError) throw itemsError;
 
-  // Send push notification for plateau orders
-  if (orderInfo.order_type === 'plateau') {
-    sendPushNotification({
-      orderId: order.id,
-      customerName: order.customer_name,
-      totalAmount: order.total_amount,
-      orderType: order.order_type,
-      pickupDate: order.pickup_date,
-    }).catch(console.error); // Don't block order creation if push fails
-  }
+  // Notify admins of every new order, not just plateau ones.
+  sendPushNotification({
+    orderId: order.id,
+    customerName: order.customer_name,
+    totalAmount: order.total_amount,
+    orderType: order.order_type,
+    pickupDate: order.pickup_date,
+  }).catch(console.error); // Don't block order creation if push fails
 
   return order.id;
 }

@@ -66,10 +66,14 @@ async function verifyWithRetry(transactionId: string): Promise<{
  * Handle IPN (Instant Payment Notification) callback from Hyp/Yaad Shrig.
  *
  * Yaad sends payment status updates to this endpoint. We:
- * 1. Reject anything without a valid signature (the signature covers Id/CCode/Amount/Order,
- *    so a valid signature already authenticates the core fields).
- * 2. Cross-check with Yaad's getTransInfo API for extra assurance, with one retry for
- *    transient network failures.
+ * 1. If a signature is present, it must be valid (the signature covers
+ *    Id/CCode/Amount/Order) - an invalid signature means tampering, reject outright.
+ *    Yaad's IPN does not always include a signature though, so its absence alone is
+ *    not treated as tampering - see step 2.
+ * 2. Independently re-check with Yaad's own getTransInfo API using our own secret
+ *    credentials (Masof/PassP). This is the authoritative check: it doesn't depend on
+ *    Yaad echoing a signature back to us, so it still confirms genuinely approved
+ *    payments even when no Sign field was sent. One retry for transient network failures.
  * 3. Update the order's payment_status (and status, for approved payments) in the DB.
  */
 async function processPaymentCallback(callbackData: Record<string, string>) {
@@ -79,14 +83,20 @@ async function processPaymentCallback(callbackData: Record<string, string>) {
     result: callbackData.result || callbackData.CCode,
   });
 
-  // Signature is mandatory: an absent signature is no longer treated as "trust it anyway".
+  // A signature that IS present must be valid - that's a sign of tampering, reject outright.
+  // A signature that's simply absent is common for this gateway/terminal config and is not
+  // by itself proof of tampering; we fall back to server-to-server verification below instead
+  // of blindly trusting the callback body.
   const signature = callbackData.Sign || callbackData.sign || callbackData.signature;
-  if (!signature || !verifyCallbackSignature(callbackData, signature)) {
-    console.error('[Payment/Callback] Missing or invalid signature - rejecting callback');
+  const signatureValid = !!signature && verifyCallbackSignature(callbackData, signature);
+  if (signature && !signatureValid) {
+    console.error('[Payment/Callback] Invalid signature - rejecting callback');
     return NextResponse.json({ success: false, error: 'Invalid signature' }, { status: 403 });
   }
+  if (!signature) {
+    console.warn('[Payment/Callback] No signature on callback - relying on Yaad server-to-server verification');
+  }
 
-  // Signature-authenticated data (Id, CCode, Amount, Order, Fild1-3 are covered by the signature).
   const paymentStatus = parseCallbackData(callbackData);
 
   if (!paymentStatus.orderId && !paymentStatus.transactionId) {
@@ -102,9 +112,17 @@ async function processPaymentCallback(callbackData: Record<string, string>) {
     return NextResponse.json({ success: false, error: 'Missing order ID' }, { status: 400 });
   }
 
+  // Without a valid signature, we can only trust a status independently confirmed by
+  // Yaad's own API - never the callback body as-is.
+  if (!signatureValid && !paymentStatus.transactionId) {
+    console.error('[Payment/Callback] No signature and no transaction ID to verify against Yaad - rejecting');
+    return NextResponse.json({ success: false, error: 'Cannot verify callback' }, { status: 403 });
+  }
+
   const supabase = getSupabaseAdmin();
 
-  // Re-check with Yaad's own API as a second, independent confirmation.
+  // Re-check with Yaad's own API as an independent confirmation, authoritative whenever
+  // the callback itself isn't signed.
   let verifiedStatus: HypTransactionStatus = paymentStatus;
   let transientVerificationFailure = false;
 
@@ -113,6 +131,13 @@ async function processPaymentCallback(callbackData: Record<string, string>) {
     transientVerificationFailure = transientFailure;
     if (verification.success) {
       verifiedStatus = verification;
+    } else if (!signatureValid) {
+      // Unsigned callback AND Yaad's own API couldn't confirm it - definitive failure,
+      // not just "declined" (which the signed-callback path would still be fine using).
+      if (!transientFailure) {
+        console.error('[Payment/Callback] Unsigned callback could not be confirmed via Yaad API:', paymentStatus.transactionId);
+        return NextResponse.json({ success: false, error: 'Cannot verify callback' }, { status: 403 });
+      }
     }
   }
 

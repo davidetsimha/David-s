@@ -293,7 +293,8 @@ export default function CheckoutPage() {
       }
     } catch (error) {
       console.error('Order/Payment error:', error);
-      setPaymentError(t('checkout.errors.networkError'));
+      const message = error instanceof Error ? error.message : '';
+      setPaymentError(message || t('checkout.errors.networkError'));
       setIsSubmitting(false);
       submissionRef.current = false;
     }

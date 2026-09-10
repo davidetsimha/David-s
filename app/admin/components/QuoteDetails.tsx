@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/Button'
 import { Textarea } from '@/components/ui/Textarea'
 import { Phone, Mail, Calendar, Users, MessageSquare, FileText } from 'lucide-react'
 import { useUpdateQuoteNotes } from '@/hooks/useQuotes'
+import { getWhatsAppUrl } from '@/lib/whatsapp'
 import type { QuoteRequest, QuoteStatus } from '@/types'
 
 interface QuoteDetailsProps {
@@ -78,8 +79,22 @@ export function QuoteDetails({ quote, open, onClose, onStatusChange }: QuoteDeta
           <div className="flex items-center gap-2 text-sm text-gray-600">
             <Mail className="w-4 h-4" /> {quote.email}
           </div>
-          <div className="flex items-center gap-2 text-sm text-gray-600">
-            <Phone className="w-4 h-4" /> {quote.phone}
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2 text-sm text-gray-600">
+              <Phone className="w-4 h-4" /> {quote.phone}
+            </div>
+            <a
+              href={getWhatsAppUrl(
+                quote.phone,
+                `Bonjour ${quote.name}, je vous contacte au sujet de votre demande de devis pour votre ${eventLabels[quote.event_type] || quote.event_type}.`
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-green-500 hover:bg-green-600 text-white text-xs font-medium rounded-lg transition-colors shrink-0"
+            >
+              <MessageSquare className="w-3.5 h-3.5" />
+              Contacter par WhatsApp
+            </a>
           </div>
         </div>
 
