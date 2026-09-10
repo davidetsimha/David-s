@@ -114,7 +114,7 @@ export async function listImages(folder: string): Promise<string[]> {
     }
 
     return data
-      .filter(item => !item.id.endsWith('/')) // Exclure les dossiers
+      .filter(item => item.id !== null) // Exclure les dossiers (id null pour un dossier)
       .map(item => {
         const { data: urlData } = supabase.storage
           .from(BUCKET_NAME)
