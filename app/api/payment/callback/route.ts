@@ -44,6 +44,37 @@ async function notifyAdminsPaymentIssue(orderId: string, title: string, body: st
 }
 
 /**
+ * Notify admins that a paid order has been received. Sent from the server once the
+ * payment is approved, so it can't be lost when the customer's browser navigates away.
+ * Best-effort only, like notifyAdminsPaymentIssue.
+ */
+async function notifyAdminsNewPaidOrder(orderId: string): Promise<void> {
+  try {
+    const supabase = getSupabaseAdmin();
+    const { data: order } = await supabase
+      .from('orders')
+      .select('customer_name, total_amount, order_type, pickup_date')
+      .eq('id', orderId)
+      .single();
+
+    const { error } = await supabase.functions.invoke('send-push', {
+      body: {
+        orderId,
+        customerName: order?.customer_name,
+        totalAmount: Number(order?.total_amount ?? 0),
+        orderType: order?.order_type,
+        pickupDate: order?.pickup_date,
+      },
+    });
+    if (error) {
+      console.error('[Payment/Callback] New order push failed:', error);
+    }
+  } catch (err) {
+    console.error('[Payment/Callback] New order push threw:', err);
+  }
+}
+
+/**
  * Re-check the transaction with Yaad's own API, retrying once if the failure
  * looks transient (network error) rather than a definitive answer from the gateway.
  */
@@ -260,6 +291,9 @@ async function processPaymentCallback(callbackData: Record<string, string>) {
   // Send confirmation email for approved payments
   if (verifiedStatus.status === 'approved') {
     sendPaymentConfirmationEmail(orderId).catch(console.error);
+    if (!updateError) {
+      await notifyAdminsNewPaidOrder(orderId);
+    }
   }
 
   // Yaad expects a 200 response to confirm receipt (for all resolved outcomes).

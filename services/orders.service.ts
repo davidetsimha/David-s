@@ -164,14 +164,19 @@ export async function createOrder(orderData: CreateOrderDTO): Promise<string> {
 
   if (itemsError) throw itemsError;
 
-  // Notify admins of every new order, not just plateau ones.
-  sendPushNotification({
-    orderId: order.id,
-    customerName: order.customer_name,
-    totalAmount: order.total_amount,
-    orderType: order.order_type,
-    pickupDate: order.pickup_date,
-  }).catch(console.error); // Don't block order creation if push fails
+  // Plateau orders have no payment step: notify admins now. Awaited so the request
+  // isn't cancelled by the redirect that follows (sendPushNotification never throws).
+  // Individual (paid) orders are notified server-side by /api/payment/callback once
+  // the payment is approved.
+  if (order.order_type === 'plateau') {
+    await sendPushNotification({
+      orderId: order.id,
+      customerName: order.customer_name,
+      totalAmount: order.total_amount,
+      orderType: order.order_type,
+      pickupDate: order.pickup_date,
+    });
+  }
 
   return order.id;
 }

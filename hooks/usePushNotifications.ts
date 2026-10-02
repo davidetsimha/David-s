@@ -6,7 +6,9 @@ import {
   getNotificationPermission,
   subscribeToPush,
   unsubscribeFromPush,
-  getCurrentPushSubscription,
+  savePushSubscription,
+  isPushSubscriptionSaved,
+  isSubscriptionForKey,
 } from '@/services/push.service';
 
 // VAPID public key - should be set in environment variables
@@ -46,7 +48,26 @@ export function usePushNotifications(): UsePushNotificationsReturn {
         const reg = await navigator.serviceWorker.ready;
         setRegistration(reg);
 
-        const subscription = await getCurrentPushSubscription(reg);
+        let subscription = await reg.pushManager.getSubscription();
+        const granted = getNotificationPermission() === 'granted';
+
+        // Subscription created with an old VAPID key: the push service would reject it.
+        if (subscription && VAPID_PUBLIC_KEY && !isSubscriptionForKey(subscription, VAPID_PUBLIC_KEY)) {
+          await unsubscribeFromPush(reg);
+          subscription = null;
+          if (granted) {
+            await subscribeToPush(reg, VAPID_PUBLIC_KEY);
+            subscription = await reg.pushManager.getSubscription();
+          }
+        }
+
+        // The browser is subscribed but the database row is missing (expired and
+        // cleaned up by send-push, or never saved): re-register it so this device
+        // actually receives notifications.
+        if (subscription && granted && !(await isPushSubscriptionSaved(subscription.endpoint))) {
+          await savePushSubscription(subscription);
+        }
+
         setIsSubscribed(!!subscription);
         setPermission(getNotificationPermission());
       } catch (err) {
@@ -67,7 +88,7 @@ export function usePushNotifications(): UsePushNotificationsReturn {
       return subscribeToPush(registration, VAPID_PUBLIC_KEY);
     },
     onSuccess: () => {
-      setIsSubscribed(true);
+      setIsSubscribed(getNotificationPermission() === 'granted');
       setPermission(getNotificationPermission());
       queryClient.invalidateQueries({ queryKey: queryKeys.pushSubscriptions.all });
     },

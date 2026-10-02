@@ -94,7 +94,7 @@ export function PushNotificationToggle() {
             </p>
             <p className={`text-xs ${isSubscribed ? 'text-green-600' : 'text-amber-600'}`}>
               {isSubscribed
-                ? 'Vous recevrez une alerte pour chaque nouvelle commande plateau'
+                ? 'Vous recevrez une alerte pour chaque nouvelle commande'
                 : 'Activez les notifications pour etre alerte des nouvelles commandes'}
             </p>
           </div>

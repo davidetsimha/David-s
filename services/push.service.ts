@@ -54,13 +54,22 @@ export async function subscribeToPush(
     applicationServerKey: urlBase64ToUint8Array(vapidPublicKey) as BufferSource,
   });
 
+  return savePushSubscription(subscription);
+}
+
+// Save a browser subscription to the database for the current admin.
+// Uses the register_push_subscription RPC, which also takes over an endpoint
+// previously registered under another admin account (a plain upsert would be
+// rejected by RLS in that case). Falls back to the upsert if the RPC isn't deployed.
+export async function savePushSubscription(
+  subscription: globalThis.PushSubscription
+): Promise<PushSubscription | null> {
   const subscriptionJson = subscription.toJSON();
   const keys = subscriptionJson.keys as unknown as PushSubscriptionKeys;
   if (!keys || !keys.p256dh || !keys.auth) {
     throw new Error('Invalid subscription keys');
   }
 
-  // Save to database
   const { data: user } = await supabase.auth.getUser();
   if (!user.user) throw new Error('User not authenticated');
 
@@ -69,6 +78,16 @@ export async function subscribeToPush(
     p256dh: keys.p256dh,
     auth: keys.auth,
   };
+
+  const { error: rpcError } = await supabase.rpc('register_push_subscription', {
+    p_endpoint: subscriptionData.endpoint,
+    p_p256dh: subscriptionData.p256dh,
+    p_auth: subscriptionData.auth,
+  });
+
+  if (!rpcError) return null;
+  // PGRST202 = function not found (migration not applied yet)
+  if (rpcError.code !== 'PGRST202') throw rpcError;
 
   const { data, error } = await supabase
     .from('push_subscriptions')
@@ -81,6 +100,19 @@ export async function subscribeToPush(
 
   if (error) throw error;
   return data as PushSubscription;
+}
+
+// Check that the browser subscription is actually stored in the database
+// (rows can be removed by the send-push function when an endpoint expires).
+export async function isPushSubscriptionSaved(endpoint: string): Promise<boolean> {
+  const { data, error } = await supabase
+    .from('push_subscriptions')
+    .select('id')
+    .eq('endpoint', endpoint)
+    .limit(1);
+
+  if (error) throw error;
+  return !!data && data.length > 0;
 }
 
 // Unsubscribe from push notifications
@@ -116,6 +148,19 @@ export async function getAllAdminPushSubscriptions(): Promise<PushSubscription[]
 
   if (error) throw error;
   return data as PushSubscription[];
+}
+
+// Check whether a browser subscription was created with the given VAPID public key.
+// After a VAPID key rotation, old subscriptions are rejected by the push service (403).
+export function isSubscriptionForKey(
+  subscription: globalThis.PushSubscription,
+  vapidPublicKey: string
+): boolean {
+  const current = subscription.options?.applicationServerKey;
+  if (!current) return true; // Unknown (older browsers): assume it matches
+  const expected = urlBase64ToUint8Array(vapidPublicKey);
+  const actual = new Uint8Array(current);
+  return actual.length === expected.length && actual.every((b, i) => b === expected[i]);
 }
 
 // Helper function to convert VAPID key
